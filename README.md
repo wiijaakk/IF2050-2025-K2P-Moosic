@@ -8,9 +8,9 @@
 
 ## Teknologi yang Digunakan (Implementasi Desktop Ini)
 
--   **Bahasa Pemrograman**: Java (JDK 11 atau versi LTS terbaru)
--   **Framework GUI**: Java Swing
--   **Database**: SQLite (menggunakan JDBC Driver untuk SQLite)
+-   **Bahasa Pemrograman**: Java (JDK 21 atau versi LTS terbaru)
+-   **Framework GUI**: Java Fx
+-   **Database**: PostgreSQL (menggunakan JDBC driver PostgreSQL (jdbc:postgresql://))
 -   **IDE**: Visual Studio Code
 -   **Manajemen Versi**: Git & GitHub
 
