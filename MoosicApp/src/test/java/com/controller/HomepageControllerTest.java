@@ -6,11 +6,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.model.Product;
+import com.model.AllProduct;  // Changed from Product to AllProduct
 import java.math.BigDecimal;
 
 /**
  * FINAL: Unit Test untuk HomepageController
+ * Updated to use AllProduct instead of Product
  * Handle double price type correctly
  */
 public class HomepageControllerTest {
@@ -81,55 +82,78 @@ public class HomepageControllerTest {
     }
 
     // ===============================================
-    // TEST GROUP 2: Product Validation Logic
+    // TEST GROUP 2: AllProduct Validation Logic
     // ===============================================
     
     @Nested
-    @DisplayName("Product Validation Tests")
-    class ProductValidationTests {
+    @DisplayName("AllProduct Validation Tests")
+    class AllProductValidationTests {
         
         @Test
-        @DisplayName("Should validate valid product")
-        void testValidProduct() {
-            Product validProduct = new Product(
+        @DisplayName("Should validate valid AllProduct")
+        void testValidAllProduct() {
+            AllProduct validProduct = new AllProduct(
                 1, "Midnights Vinyl", "Taylor Swift album", 
                 new BigDecimal("525000"), "Pop", "Vinyl", "midnights.png", "4.5 ⭐"
             );
             
             boolean result = homepageController.isValidProduct(validProduct);
-            assertTrue(result, "Valid product should return true");
+            assertTrue(result, "Valid AllProduct should return true");
         }
         
         @Test
-        @DisplayName("Should reject null product")
-        void testNullProduct() {
-            Product nullProduct = null;
+        @DisplayName("Should reject null AllProduct")
+        void testNullAllProduct() {
+            AllProduct nullProduct = null;
             boolean result = homepageController.isValidProduct(nullProduct);
-            assertFalse(result, "Null product should return false");
+            assertFalse(result, "Null AllProduct should return false");
         }
         
         @Test
-        @DisplayName("Should reject product with null name")
-        void testProductWithNullName() {
-            Product productWithNullName = new Product(
+        @DisplayName("Should reject AllProduct with null name")
+        void testAllProductWithNullName() {
+            AllProduct productWithNullName = new AllProduct(
                 1, null, "Description", new BigDecimal("100000"), 
                 "Pop", "CD", "image.png", "4.0 ⭐"
             );
             
             boolean result = homepageController.isValidProduct(productWithNullName);
-            assertFalse(result, "Product with null name should return false");
+            assertFalse(result, "AllProduct with null name should return false");
         }
         
         @Test
-        @DisplayName("Should reject product with empty name")
-        void testProductWithEmptyName() {
-            Product productWithEmptyName = new Product(
+        @DisplayName("Should reject AllProduct with empty name")
+        void testAllProductWithEmptyName() {
+            AllProduct productWithEmptyName = new AllProduct(
                 1, "", "Description", new BigDecimal("100000"), 
                 "Pop", "CD", "image.png", "4.0 ⭐"
             );
             
             boolean result = homepageController.isValidProduct(productWithEmptyName);
-            assertFalse(result, "Product with empty name should return false");
+            assertFalse(result, "AllProduct with empty name should return false");
+        }
+        
+        @Test
+        @DisplayName("Should validate AllProduct with different genres")
+        void testAllProductDifferentGenres() {
+            AllProduct popProduct = new AllProduct(
+                1, "Pop Album", "Description", new BigDecimal("100000"), 
+                "Pop", "CD", "pop.png", "4.0 ⭐"
+            );
+            
+            AllProduct rockProduct = new AllProduct(
+                2, "Rock Album", "Description", new BigDecimal("150000"), 
+                "Rock", "Vinyl", "rock.png", "4.5 ⭐"
+            );
+            
+            AllProduct jazzProduct = new AllProduct(
+                3, "Jazz Album", "Description", new BigDecimal("200000"), 
+                "Jazz", "Cassette", "jazz.png", "4.8 ⭐"
+            );
+            
+            assertTrue(homepageController.isValidProduct(popProduct), "Pop AllProduct should be valid");
+            assertTrue(homepageController.isValidProduct(rockProduct), "Rock AllProduct should be valid");
+            assertTrue(homepageController.isValidProduct(jazzProduct), "Jazz AllProduct should be valid");
         }
     }
 
@@ -151,21 +175,21 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should calculate cart total correctly")
         void testCartTotalCalculation() {
-            Product product1 = new Product(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
-            Product product2 = new Product(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
+            AllProduct product1 = new AllProduct(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
+            AllProduct product2 = new AllProduct(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
             
             homepageController.getShoppingCart().add(product1);
             homepageController.getShoppingCart().add(product2);
             
             double total = homepageController.calculateCartTotalAsDouble();
-            assertEquals(250000.0, total, 0.01, "Cart total should be sum of all product prices");
+            assertEquals(250000.0, total, 0.01, "Cart total should be sum of all AllProduct prices");
         }
         
         @Test
         @DisplayName("Should return correct cart item count")
         void testCartItemCount() {
-            Product product1 = new Product(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
-            Product product2 = new Product(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
+            AllProduct product1 = new AllProduct(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
+            AllProduct product2 = new AllProduct(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
             
             assertEquals(0, homepageController.getCartItemCount(), "Empty cart should have 0 items");
             
@@ -179,7 +203,7 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should clear cart successfully")
         void testClearCart() {
-            Product product = new Product(1, "Album", "Desc", new BigDecimal("100000"), "Pop", "CD", "img.png", "4.0 ⭐");
+            AllProduct product = new AllProduct(1, "Album", "Desc", new BigDecimal("100000"), "Pop", "CD", "img.png", "4.0 ⭐");
             homepageController.getShoppingCart().add(product);
             
             homepageController.clearCart();
@@ -189,23 +213,23 @@ public class HomepageControllerTest {
         }
         
         @Test
-        @DisplayName("Should check if product exists in cart")
-        void testProductInCart() {
-            Product product1 = new Product(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
-            Product product2 = new Product(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
+        @DisplayName("Should check if AllProduct exists in cart")
+        void testAllProductInCart() {
+            AllProduct product1 = new AllProduct(1, "Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
+            AllProduct product2 = new AllProduct(2, "Album 2", "Desc", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
             
             homepageController.getShoppingCart().add(product1);
             
-            assertTrue(homepageController.isProductInCart(product1), "Product1 should be in cart");
-            assertFalse(homepageController.isProductInCart(product2), "Product2 should not be in cart");
+            assertTrue(homepageController.isProductInCart(product1), "AllProduct1 should be in cart");
+            assertFalse(homepageController.isProductInCart(product2), "AllProduct2 should not be in cart");
         }
         
         @Test
-        @DisplayName("Should count products by genre in cart")
-        void testCartProductCountByGenre() {
-            Product popAlbum1 = new Product(1, "Pop Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
-            Product popAlbum2 = new Product(2, "Pop Album 2", "Desc", new BigDecimal("120000"), "Pop", "Vinyl", "img2.png", "4.2 ⭐");
-            Product rockAlbum = new Product(3, "Rock Album", "Desc", new BigDecimal("150000"), "Rock", "CD", "img3.png", "4.5 ⭐");
+        @DisplayName("Should count AllProducts by genre in cart")
+        void testCartAllProductCountByGenre() {
+            AllProduct popAlbum1 = new AllProduct(1, "Pop Album 1", "Desc", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
+            AllProduct popAlbum2 = new AllProduct(2, "Pop Album 2", "Desc", new BigDecimal("120000"), "Pop", "Vinyl", "img2.png", "4.2 ⭐");
+            AllProduct rockAlbum = new AllProduct(3, "Rock Album", "Desc", new BigDecimal("150000"), "Rock", "CD", "img3.png", "4.5 ⭐");
             
             homepageController.getShoppingCart().add(popAlbum1);
             homepageController.getShoppingCart().add(popAlbum2);
@@ -214,6 +238,21 @@ public class HomepageControllerTest {
             assertEquals(2, homepageController.getCartProductCountByGenre("Pop"), "Should have 2 Pop albums in cart");
             assertEquals(1, homepageController.getCartProductCountByGenre("Rock"), "Should have 1 Rock album in cart");
             assertEquals(0, homepageController.getCartProductCountByGenre("Jazz"), "Should have 0 Jazz albums in cart");
+        }
+        
+        @Test
+        @DisplayName("Should handle mixed format AllProducts in cart")
+        void testCartMixedFormatAllProducts() {
+            AllProduct cdAlbum = new AllProduct(1, "CD Album", "Desc", new BigDecimal("75000"), "Pop", "CD", "cd.png", "4.0 ⭐");
+            AllProduct vinylAlbum = new AllProduct(2, "Vinyl Album", "Desc", new BigDecimal("125000"), "Rock", "Vinyl", "vinyl.png", "4.5 ⭐");
+            AllProduct cassetteAlbum = new AllProduct(3, "Cassette Album", "Desc", new BigDecimal("50000"), "Jazz", "Cassette", "cassette.png", "4.2 ⭐");
+            
+            homepageController.getShoppingCart().add(cdAlbum);
+            homepageController.getShoppingCart().add(vinylAlbum);
+            homepageController.getShoppingCart().add(cassetteAlbum);
+            
+            assertEquals(3, homepageController.getCartItemCount(), "Should have 3 AllProducts of different formats");
+            assertEquals(250000.0, homepageController.calculateCartTotalAsDouble(), 0.01, "Should calculate total correctly for mixed formats");
         }
     }
 
@@ -226,14 +265,14 @@ public class HomepageControllerTest {
     class IntegrationTests {
         
         @Test
-        @DisplayName("Should handle complete workflow")
-        void testCompleteWorkflow() {
+        @DisplayName("Should handle complete workflow with AllProduct")
+        void testCompleteWorkflowWithAllProduct() {
             // Test search
             assertTrue(homepageController.isValidSearchQuery("test query"));
             assertEquals("formatted", homepageController.formatSearchQuery("  FORMATTED  "));
             
-            // Test product validation
-            Product validProduct = new Product(1, "Test Album", "Desc", new BigDecimal("50000"), "Pop", "CD", "test.png", "4.0 ⭐");
+            // Test AllProduct validation
+            AllProduct validProduct = new AllProduct(1, "Test Album", "Desc", new BigDecimal("50000"), "Pop", "CD", "test.png", "4.0 ⭐");
             assertTrue(homepageController.isValidProduct(validProduct));
             
             // Test cart operations
@@ -248,8 +287,8 @@ public class HomepageControllerTest {
         }
         
         @Test
-        @DisplayName("Should handle edge cases gracefully")
-        void testEdgeCases() {
+        @DisplayName("Should handle edge cases gracefully with AllProduct")
+        void testEdgeCasesWithAllProduct() {
             // Null inputs
             assertFalse(homepageController.isValidSearchQuery(null));
             assertFalse(homepageController.isValidProduct(null));
@@ -259,6 +298,34 @@ public class HomepageControllerTest {
             assertFalse(homepageController.isValidSearchQuery(""));
             assertEquals(0, homepageController.getCartItemCount());
             assertEquals(0.0, homepageController.calculateCartTotalAsDouble(), 0.01);
+        }
+        
+        @Test
+        @DisplayName("Should handle multiple AllProduct operations")
+        void testMultipleAllProductOperations() {
+            AllProduct product1 = new AllProduct(1, "Album 1", "Desc 1", new BigDecimal("100000"), "Pop", "CD", "img1.png", "4.0 ⭐");
+            AllProduct product2 = new AllProduct(2, "Album 2", "Desc 2", new BigDecimal("150000"), "Rock", "Vinyl", "img2.png", "4.5 ⭐");
+            AllProduct product3 = new AllProduct(3, "Album 3", "Desc 3", new BigDecimal("200000"), "Jazz", "Cassette", "img3.png", "4.8 ⭐");
+            
+            // Validate all products
+            assertTrue(homepageController.isValidProduct(product1));
+            assertTrue(homepageController.isValidProduct(product2));
+            assertTrue(homepageController.isValidProduct(product3));
+            
+            // Add to cart
+            homepageController.getShoppingCart().add(product1);
+            homepageController.getShoppingCart().add(product2);
+            homepageController.getShoppingCart().add(product3);
+            
+            // Verify cart state
+            assertEquals(3, homepageController.getCartItemCount());
+            assertEquals(450000.0, homepageController.calculateCartTotalAsDouble(), 0.01);
+            
+            // Test genre counting
+            assertEquals(1, homepageController.getCartProductCountByGenre("Pop"));
+            assertEquals(1, homepageController.getCartProductCountByGenre("Rock"));
+            assertEquals(1, homepageController.getCartProductCountByGenre("Jazz"));
+            assertEquals(0, homepageController.getCartProductCountByGenre("Classical"));
         }
     }
 }
