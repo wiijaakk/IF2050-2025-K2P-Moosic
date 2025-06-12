@@ -12,7 +12,7 @@ repositories {
 }
 
 application {
-    mainClass.set("com.view.Checkout")
+    mainClass.set("com.view.ProductView")
 }
 
 javafx {

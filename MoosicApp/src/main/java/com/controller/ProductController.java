@@ -161,26 +161,28 @@ public class ProductController implements Initializable {
         return card;
     }
     
-@FXML
-private void handleCheckout() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
-        Parent root = loader.load();
+    @FXML
+    private void handleCheckout() {
+        try {
+            String fxmlPath = "/fxml/Checkout.fxml";
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
 
-        CheckoutController checkoutController = loader.getController();
+            CheckoutController checkoutController = loader.getController();
+            checkoutController.setProductData(currentProduct, quantity.get());
 
-        checkoutController.setProductData(currentProduct, quantity.get());
-
-        Stage stage = (Stage) checkoutButton.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
-        
-    } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Gagal memuat halaman Checkout.fxml");
+            Stage stage = (Stage) checkoutButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            
+            loadStylesheet(scene, fxmlPath);
+            
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Gagal memuat halaman Checkout.fxml");
+        }
     }
-}
 
     @FXML private void handleViewMore() {
         if (allProductReviews != null) {
@@ -257,16 +259,37 @@ private void handleCheckout() {
         // navigateTo("/fxml/Order.fxml", orderNavButton);
     }
 
-    private void navigateTo(String fxmlPath, Node currentNode) {
+private void navigateTo(String fxmlPath, Node currentNode) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
             Stage stage = (Stage) currentNode.getScene().getWindow();
             Scene scene = new Scene(root);
+
+            loadStylesheet(scene, fxmlPath);
+            
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("Gagal memuat halaman: " + fxmlPath);
+        }
+    }
+
+    private void loadStylesheet(Scene scene, String fxmlPath) {
+        String cssPath = fxmlPath.replace("/fxml/", "/css/").replace(".fxml", ".css");
+        
+        if (cssPath.contains("Shop")) {
+            cssPath = "/css/shopstyle.css";
+        } else if (cssPath.contains("LoginView")) {
+            cssPath = "/css/loginstyle.css";
+        }
+        
+        try {
+            String cssUri = getClass().getResource(cssPath).toExternalForm();
+            scene.getStylesheets().add(cssUri);
+            System.out.println("Stylesheet berhasil dimuat: " + cssUri);
+        } catch (NullPointerException e) {
+            System.err.println("Stylesheet tidak ditemukan untuk: " + cssPath + ". Menggunakan style default.");
         }
     }
     
