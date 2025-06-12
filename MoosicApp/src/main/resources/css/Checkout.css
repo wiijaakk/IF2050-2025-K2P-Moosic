@@ -23,10 +23,53 @@
     -fx-max-width: Infinity;
 }
 
+/* --- Logo Button Styles (No Hover Background) --- */
+#logoButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:hover {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-effect: none;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+/* --- Navigation Links Container --- */
 #navLinks {
     -fx-spacing: 15px;
 }
 
+/* --- Default Navigation Button Styles --- */
 #navLinks .button {
     -fx-padding: 8px 20px;
     -fx-font-family: 'Albert Sans';
@@ -35,16 +78,94 @@
     -fx-text-fill: #92AC4F;
     -fx-background-color: transparent;
     -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
 }
 
 #navLinks .button:hover {
     -fx-text-fill: #4D7111;
+    -fx-background-color: transparent;
+}
+
+#navLinks .button:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 #navLinks .button.active {
     -fx-text-fill: #4D7111;
 }
 
+/* --- Specific Navigation Button Styles --- */
+#shopNavButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #92AC4F;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:hover {
+    -fx-text-fill: #4D7111;
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+#shopNavButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+#cartNavButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4D7111;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+#cartNavButton:hover {
+    -fx-text-fill: #4D7111;
+    -fx-background-color: transparent;
+}
+
+#cartNavButton:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* --- Profile Icon --- */
 .profile-icon {
     -fx-cursor: hand;
 }
@@ -72,6 +193,11 @@
 
 .back-button-container:hover {
     -fx-background-color: #A8D665;
+}
+
+.back-button-container:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
 
 .back-button-label {
@@ -178,6 +304,11 @@
     -fx-text-fill: white;
 }
 
+.pay-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
 /* --- (Opsional) Tombol Exit --- */
 .exit-button {
     -fx-background-color: transparent;
@@ -190,4 +321,9 @@
 .exit-button:hover, .exit-button-hover {
     -fx-background-color: #FF0000;
     -fx-text-fill: white;
+}
+
+.exit-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
 }
