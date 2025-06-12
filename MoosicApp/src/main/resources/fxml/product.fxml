@@ -16,19 +16,14 @@
 
 <VBox fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <HBox fx:id="header" alignment="CENTER_LEFT">
+      <HBox fx:id="header" alignment="CENTER_LEFT" styleClass="header">
          <padding>
             <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
          </padding>
          <children>
-            <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../image/logo.png" />
-               </image>
-            </ImageView>
-            <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+            <Button fx:id="logoButton" onAction="#handleLogoClick" styleClass="logo-button">
                <graphic>
-                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../image/logo.png" />
                      </image>
@@ -36,12 +31,12 @@
                </graphic>
             </Button>
             <Region HBox.hgrow="ALWAYS" />
-
-            <HBox fx:id="navLinks" alignment="CENTER" spacing="10"> <children>
-                  <Button fx:id="promotionNavButton" mnemonicParsing="false" text="Promotion" />
-                  <Button fx:id="cartNavButton" mnemonicParsing="false" text="Cart" />
-                  <Button fx:id="shopNavButton" mnemonicParsing="false" text="Shop" />
-                  <Button fx:id="orderNavButton" mnemonicParsing="false" text="Order" />
+            <HBox fx:id="navLinks" alignment="CENTER" spacing="20">
+               <children>
+                  <Button fx:id="promotionNavButton" onAction="#handlePromotionNav" mnemonicParsing="false" text="Promotion" />
+                  <Button fx:id="cartNavButton" onAction="#handleCartNav" mnemonicParsing="false" text="Cart" />
+                  <Button fx:id="shopNavButton" onAction="#handleShopNav" mnemonicParsing="false" text="Shop" />
+                  <Button fx:id="orderNavButton" onAction="#handleOrderNav" mnemonicParsing="false" text="Order" />
                </children>
             </HBox>
             <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
@@ -51,7 +46,6 @@
             </ImageView>
          </children>
       </HBox>
-      
       <ScrollPane fx:id="rootScrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
          <content>
             <VBox alignment="TOP_CENTER" spacing="25.0">
@@ -72,14 +66,14 @@
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Hyperlink fx:id="backToShopLink" graphicTextGap="8.0" onAction = "handleBackToShopAction" styleClass="back-to-shop-link" text="Back to Shop">
-                                          <graphic>
-                                             <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                                                <image>
-                                                      <Image url="@../image/cart_vector.png" />
-                                                </image>
-                                             </ImageView>
-                                          </graphic>
+                                    <Hyperlink fx:id="backToShopLink" onAction="#handleBackToShop" graphicTextGap="8.0" styleClass="back-to-shop-link" text="Back to Shop">
+                                       <graphic>
+                                          <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../image/cart_vector.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Hyperlink>
                                  </children>
                                  <VBox.margin>
@@ -105,12 +99,12 @@
                                  <children>
                                     <HBox alignment="CENTER" styleClass="quantity-selector">
                                        <children>
-                                             <Button fx:id="decreaseQuantityButton" mnemonicParsing="false" styleClass="quantity-button" text="-" />
-                                             <Label fx:id="quantityLabel" alignment="CENTER" prefWidth="35.0" text="1" />
-                                             <Button fx:id="increaseQuantityButton" mnemonicParsing="false" styleClass="quantity-button" text="+" />
+                                          <Button fx:id="decreaseQuantityButton" onAction="#handleDecreaseQuantity" mnemonicParsing="false" styleClass="quantity-button" text="-" />
+                                          <Label fx:id="quantityLabel" alignment="CENTER" prefWidth="35.0" text="1" />
+                                          <Button fx:id="increaseQuantityButton" onAction="#handleIncreaseQuantity" mnemonicParsing="false" styleClass="quantity-button" text="+" />
                                        </children>
                                     </HBox>
-                                    <Button fx:id="checkoutButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" onAction ="handleCheckoutAction" styleClass="checkout-button" text="Checkout" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="checkoutButton" onAction="#handleCheckout" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="checkout-button" text="Checkout" HBox.hgrow="ALWAYS" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="15.0" />
@@ -144,8 +138,8 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </VBox>
-                  <Button fx:id="viewMoreButton" styleClass="view-more-button" text="view more" />
-                  <Button fx:id="viewLessButton" styleClass="view-more-button" text="view less" visible="false" />             
+                  <Button fx:id="viewMoreButton" onAction="#handleViewMore" styleClass="view-more-button" text="view more" />
+                  <Button fx:id="viewLessButton" onAction="#handleViewLess" styleClass="view-more-button" text="view less" visible="false" />
                </children>
             </VBox>
          </content>

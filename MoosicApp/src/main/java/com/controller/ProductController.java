@@ -6,8 +6,12 @@ import com.model.ProductReview;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -16,7 +20,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.NumberFormat;
@@ -28,91 +34,76 @@ import java.util.ResourceBundle;
 
 public class ProductController implements Initializable {
 
-    @FXML ImageView logoImageView;
-    @FXML Button promotionNavButton;
-    @FXML Button cartNavButton;
-    @FXML Button shopNavButton;
-    @FXML Button orderNavButton;
-    @FXML Hyperlink backToShopLink;
-    @FXML Label productTitleLabel;
-    @FXML Label productPriceLabel;
-    @FXML Label productDescriptionLabel;
-    @FXML ImageView productImageView;
-    @FXML Label ratingSummaryLabel;
-    @FXML Label reviewCountLabel;
-    @FXML VBox reviewListContainer;
-    @FXML Button viewMoreButton;
-    @FXML Button viewLessButton;
-    @FXML Button decreaseQuantityButton;
-    @FXML Label quantityLabel;
-    @FXML Button increaseQuantityButton;
-    @FXML Button checkoutButton;
+    @FXML private Button logoButton;
+    @FXML private Button promotionNavButton;
+    @FXML private Button cartNavButton;
+    @FXML private Button shopNavButton;
+    @FXML private Button orderNavButton;
+    @FXML private Hyperlink backToShopLink;
+    @FXML private Label productTitleLabel;
+    @FXML private Label productPriceLabel;
+    @FXML private Label productDescriptionLabel;
+    @FXML private ImageView productImageView;
+    @FXML private Label ratingSummaryLabel;
+    @FXML private Label reviewCountLabel;
+    @FXML private VBox reviewListContainer;
+    @FXML private Button viewMoreButton;
+    @FXML private Button viewLessButton;
+    @FXML private Label quantityLabel;
+    @FXML private Button checkoutButton;
 
-    Product currentProduct;
-    List<ProductReview> allProductReviews;
-    static final int INITIAL_REVIEW_COUNT = 2;
-    final IntegerProperty quantity = new SimpleIntegerProperty(1);
+    private Product currentProduct;
+    private List<ProductReview> allProductReviews;
+    private static final int INITIAL_REVIEW_COUNT = 2;
+    private final IntegerProperty quantity = new SimpleIntegerProperty(1);
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        this.currentProduct = ProductDAO.getProductById(1);
+        quantityLabel.textProperty().bind(quantity.asString());
+    }
+
+    public void initData(int productId) {
+        this.currentProduct = ProductDAO.getProductById(productId);
+
         if (this.currentProduct != null) {
             this.allProductReviews = this.currentProduct.getReviews();
             populateProductData(this.currentProduct);
             updateReviewSummary();
             displayReviews(INITIAL_REVIEW_COUNT);
         } else {
-            productTitleLabel.setText("Product not found");
+            productTitleLabel.setText("Product Not Found");
             reviewListContainer.getChildren().add(new Label("Could not load product details."));
-            checkoutButton.setDisable(true); 
+            checkoutButton.setDisable(true);
             viewMoreButton.setVisible(false);
             viewLessButton.setVisible(false);
         }
-        backToShopLink.setOnAction(event -> handleBackToShop());
-        quantityLabel.textProperty().bind(quantity.asString());
-        viewMoreButton.setOnAction(event -> handleViewMore());
-        viewLessButton.setOnAction(event -> handleViewLess());
-        increaseQuantityButton.setOnAction(event -> handleIncreaseQuantity());
-        decreaseQuantityButton.setOnAction(event -> handleDecreaseQuantity());
-        checkoutButton.setOnAction(event -> handleCheckout());
-        registerNavigationHandlers();
-    }
-    
-    void registerNavigationHandlers() {
-        logoImageView.setOnMouseClicked(event -> handleLogoClick());
-        promotionNavButton.setOnAction(event -> handlePromotionNav());
-        cartNavButton.setOnAction(event -> handleCartNav());
-        shopNavButton.setOnAction(event -> handleShopNav());
-        orderNavButton.setOnAction(event -> handleOrderNav());
     }
 
-    void populateProductData(Product product) {
+    private void populateProductData(Product product) {
         productTitleLabel.setText(product.getName());
         productDescriptionLabel.setText(product.getDescription());
         NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.of("id", "ID"));
         productPriceLabel.setText(currencyFormatter.format(product.getPrice()));
-        productImageView.setImage(createSafeImage(product.getGambar()));
-        if (productImageView.getImage() == null) {
-            productImageView.setImage(createSafeImage("/image/placeholder.png"));
-        }
+
+        Image image = createSafeImage(product.getGambar());
+        productImageView.setImage(image != null ? image : createSafeImage("/image/placeholder.png"));
     }
 
-    void updateReviewSummary() {
+    private void updateReviewSummary() {
         if (allProductReviews == null || allProductReviews.isEmpty()) {
             ratingSummaryLabel.setText("N/A");
             reviewCountLabel.setText("from 0 reviews");
             return;
         }
-        double totalStars = 0;
-        for (ProductReview review : allProductReviews) {
-            totalStars += review.getStar();
-        }
-        double averageRating = totalStars / allProductReviews.size();
+        double averageRating = allProductReviews.stream()
+                .mapToDouble(ProductReview::getStar)
+                .average()
+                .orElse(0.0);
         ratingSummaryLabel.setText(String.format("%.1f / 5", averageRating));
         reviewCountLabel.setText("from " + allProductReviews.size() + " reviews");
     }
 
-    void displayReviews(int limit) {
+    private void displayReviews(int limit) {
         reviewListContainer.getChildren().clear();
         if (allProductReviews == null || allProductReviews.isEmpty()) {
             reviewListContainer.getChildren().add(new Label("No reviews for this product yet."));
@@ -120,13 +111,15 @@ public class ProductController implements Initializable {
             viewLessButton.setVisible(false);
             return;
         }
-        List<ProductReview> reviewsToDisplay = allProductReviews.stream().limit(limit).toList();
-        for (ProductReview review : reviewsToDisplay) {
+
+        allProductReviews.stream().limit(limit).forEach(review -> {
             reviewListContainer.getChildren().add(createReviewCard(review));
-        }
-        boolean isExpanded = (limit >= allProductReviews.size());
-        boolean hasMoreReviewsThanInitial = allProductReviews.size() > INITIAL_REVIEW_COUNT;
-        if (hasMoreReviewsThanInitial) {
+        });
+
+        boolean hasMoreReviews = allProductReviews.size() > INITIAL_REVIEW_COUNT;
+        boolean isExpanded = limit >= allProductReviews.size();
+        
+        if (hasMoreReviews) {
             viewMoreButton.setVisible(!isExpanded);
             viewLessButton.setVisible(isExpanded);
         } else {
@@ -135,7 +128,9 @@ public class ProductController implements Initializable {
         }
     }
 
-    HBox createReviewCard(ProductReview review) {
+    // Metode untuk membuat kartu review
+    private HBox createReviewCard(ProductReview review) {
+        // ... (Implementasi tidak berubah, sudah baik)
         HBox card = new HBox(15);
         card.getStyleClass().add("card");
         card.setPadding(new Insets(15));
@@ -163,91 +158,107 @@ public class ProductController implements Initializable {
         return card;
     }
     
-    Image createSafeImage(String path) {
-        if (path == null || path.trim().isEmpty()) {
-            System.err.println("Image path is null or empty.");
-            return null;
-        }
-        try (InputStream stream = getClass().getResourceAsStream(path)) {
-            if (stream == null) {
-                System.err.println("Failed to find image at path: " + path);
-                return null;
-            }
-            return new Image(stream);
-        } catch (Exception e) {
-            System.err.println("Error loading image: " + path);
-            e.printStackTrace();
-            return null;
-        }
+@FXML
+private void handleCheckout() {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
+        Parent root = loader.load();
+
+        CheckoutController checkoutController = loader.getController();
+
+        checkoutController.setProductData(currentProduct, quantity.get());
+
+        Stage stage = (Stage) checkoutButton.getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.show();
+        
+    } catch (IOException e) {
+        e.printStackTrace();
+        System.err.println("Gagal memuat halaman Checkout.fxml");
     }
-    
-    ImageView createSafeImageView(String path, double fitWidth, double fitHeight) {
-        ImageView imageView = new ImageView();
-        Image image = createSafeImage(path);
-        if (image != null) {
-            imageView.setImage(image);
-            imageView.setFitWidth(fitWidth);
-            imageView.setFitHeight(fitHeight);
-            imageView.setPreserveRatio(true);
+}
+
+    @FXML private void handleViewMore() {
+        if (allProductReviews != null) {
+            displayReviews(allProductReviews.size());
         }
-        return imageView;
     }
 
-    void handleCheckout() {
-        int selectedQuantity = quantity.get();
-        Product productToCheckout = currentProduct;
-        System.out.println("Proceeding to checkout page...");
-        System.out.println("Product: " + productToCheckout.getName());
-        System.out.println("Quantity: " + selectedQuantity);
-        // TODO: Implement logic to navigate to "Checkout" page.
-        // 'productToCheckout' and 'selectedQuantity' will be passed to the next page's controller.
-    }
-    
-    void handleViewMore() {
-        displayReviews(allProductReviews.size());
-    }
-    
-    void handleViewLess() {
+    @FXML private void handleViewLess() {
         displayReviews(INITIAL_REVIEW_COUNT);
     }
-    
-    void handleIncreaseQuantity() {
+
+    @FXML private void handleIncreaseQuantity() {
         quantity.set(quantity.get() + 1);
     }
 
-    void handleDecreaseQuantity() {
+    @FXML private void handleDecreaseQuantity() {
         if (quantity.get() > 1) {
             quantity.set(quantity.get() - 1);
         }
     }
+
+    @FXML private void handleBackToShop() {
+        navigateTo("/fxml/Shop.fxml", backToShopLink);
+    }
+
+    @FXML private void handleLogoClick() {
+        navigateTo("/fxml/homepage.fxml", logoButton);
+    }
+
+    @FXML private void handlePromotionNav() {
+        System.out.println("Navigasi ke Promotion page...");
+        // navigateTo("/fxml/Promotion.fxml", promotionNavButton);
+    }
+
+    @FXML private void handleCartNav() {
+        System.out.println("Navigasi ke Cart page...");
+        // navigateTo("/fxml/Cart.fxml", cartNavButton);
+    }
+
+    @FXML private void handleShopNav() {
+        navigateTo("/fxml/Shop.fxml", shopNavButton);
+    }
+
+    @FXML private void handleOrderNav() {
+        System.out.println("Navigasi ke Order page...");
+        // navigateTo("/fxml/Order.fxml", orderNavButton);
+    }
+
+    private void navigateTo(String fxmlPath, Node currentNode) {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            Stage stage = (Stage) currentNode.getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("Gagal memuat halaman: " + fxmlPath);
+        }
+    }
     
-    void handleBackToShop() {
-        System.out.println("Back to Shop link clicked.");
-        // TODO: Implement navigation back to the main Shop page
+    private Image createSafeImage(String path) {
+        if (path == null || path.trim().isEmpty()) return null;
+        try (InputStream stream = getClass().getResourceAsStream(path)) {
+            if (stream == null) {
+                System.err.println("Gagal menemukan resource gambar: " + path);
+                return null;
+            }
+            return new Image(stream);
+        } catch (Exception e) {
+            System.err.println("Error saat memuat gambar: " + path);
+            e.printStackTrace();
+            return null;
+        }
     }
 
-    void handleLogoClick() {
-        System.out.println("Logo clicked, navigating to Home page...");
-        // TODO: Implement navigation to Home page
-    }
-
-    void handlePromotionNav() {
-        System.out.println("Promotion navigation button clicked.");
-        // TODO: Implement navigation to Promotion page
-    }
-
-    void handleCartNav() {
-        System.out.println("Cart navigation button clicked.");
-        // TODO: Implement navigation to Cart page
-    }
-
-    void handleShopNav() {
-        System.out.println("Shop navigation button clicked.");
-        // TODO: Implement navigation to Shop page
-    }
-
-    void handleOrderNav() {
-        System.out.println("Order navigation button clicked.");
-        // TODO: Implement navigation to Order page
+    private ImageView createSafeImageView(String path, double fitWidth, double fitHeight) {
+        ImageView imageView = new ImageView(createSafeImage(path));
+        imageView.setFitWidth(fitWidth);
+        imageView.setFitHeight(fitHeight);
+        imageView.setPreserveRatio(true);
+        return imageView;
     }
 }
