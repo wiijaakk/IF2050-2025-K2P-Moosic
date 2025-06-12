@@ -191,3 +191,15 @@
     -fx-background-color: #4D7111;
     -fx-text-fill: #C4EA57;
 }
+
+.logo-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+.logo-button:hover {
+    -fx-opacity: 1.2;
+}
