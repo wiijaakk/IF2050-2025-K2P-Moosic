@@ -44,6 +44,7 @@ public class ShopController {
 
     private ShopModel model;
     private int currentPage = 0;
+    private int currProductID;
 
     @FXML
     public void initialize() {
@@ -204,7 +205,7 @@ public class ShopController {
         itemBox.getStyleClass().add("product-item");
         // itemBox.setAlignment(Pos.CENTER_LEFT);
 
-        itemBox.setOnMouseClicked(event -> handleProductClick(product));
+        itemBox.setOnMouseClicked(event -> navigateToProductDetail(product));
 
         // Region imagePlaceholder = new Region();
         // imagePlaceholder.setPrefSize(180, 180);
@@ -264,23 +265,78 @@ public class ShopController {
 //     }
 // }
 
-    private void handleProductClick(AllProduct product) {
+    private void navigateToProductDetail(AllProduct product) {
         System.out.println("Anda mengklik produk: " + product.getName()); //kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        currProductID = product.getId();
+        if (!isValidProduct(product)) {
+            System.out.println("Cannot navigate: invalid product");
+            return;
+        }
+        currProductID = product.getId();
+        
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
+            Parent root = loader.load();
+            
+            ProductController productController = loader.getController();
+            productController.initData(currProductID);
+            
+            Stage stage = (Stage) searchField.getScene().getWindow();
+            
+            // Save window state
+            boolean wasMaximized = stage.isMaximized();
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            double currentX = stage.getX();
+            double currentY = stage.getY();
+            
+            Scene scene;
+            if (wasMaximized) {
+                scene = new Scene(root, stage.getWidth(), stage.getHeight());
+            } else {
+                scene = new Scene(root, currentWidth, currentHeight);
+            }
+            
+            stage.setScene(scene);
+            stage.setTitle("Moose - Product Details");
+            
+            if (wasMaximized) {
+                stage.setMaximized(false);
+                stage.setMaximized(true); 
+            } else {
+                stage.setWidth(currentWidth);
+                stage.setHeight(currentHeight);
+                stage.setX(currentX);
+                stage.setY(currentY);
+            }
+            
+            javafx.application.Platform.runLater(() -> {
+                if (wasMaximized && !stage.isMaximized()) {
+                    stage.setMaximized(true);
+                }
+                stage.toFront();
+                stage.requestFocus();
+                System.out.println("Final window state - Maximized: " + stage.isMaximized());
+            });
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", e.getMessage());
+        }
+    }
 
-        // try {
-        //     Stage stage = (Stage) productGrid.getScene().getWindow();
+    public int getCurrProductID(){
+        return currProductID;
+    }
 
-        //     FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/....fxml"));
-        //     Parent root = loader.load();
-
-        //     Scene scene = new Scene(root);
-        //     stage.setScene(scene);
-        //     stage.show();
-
-        // } catch (Exception e) {
-        //     e.printStackTrace();
-        //     System.err.println("Gagal memuat halaman detail produk.");
-        // }
+    public boolean isValidProduct(AllProduct product) { // FIXED: AllProduct
+        if (product == null) return false;
+        if (product.getName() == null || product.getName().trim().isEmpty()) return false;
+        
+        double priceValue = product.getPrice();
+        if (priceValue < 0) return false;
+        
+        return true;
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
