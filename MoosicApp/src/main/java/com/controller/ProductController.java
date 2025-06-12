@@ -12,11 +12,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -51,6 +53,7 @@ public class ProductController implements Initializable {
     @FXML private Button viewLessButton;
     @FXML private Label quantityLabel;
     @FXML private Button checkoutButton;
+    @FXML private VBox mainContainer;
 
     private Product currentProduct;
     private List<ProductReview> allProductReviews;
@@ -204,7 +207,35 @@ private void handleCheckout() {
     }
 
     @FXML private void handleLogoClick() {
-        navigateTo("/fxml/homepage.fxml", logoButton);
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Homepage.fxml"));
+            Parent homePage = loader.load();
+
+            // VBox approach - ganti content tanpa ganti scene
+            mainContainer.getChildren().clear();
+            mainContainer.getChildren().add(homePage);
+            VBox.setVgrow(homePage, javafx.scene.layout.Priority.ALWAYS);
+
+            // Load Homepage CSS
+            try {
+                String cssPath = getClass().getResource("/css/homepagestyle.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Homepage CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Homepage CSS not found, using default styling");
+            }
+
+            System.out.println("Switched to Homepage (inline) - maintaining fullscreen");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open homepage: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred: " + e.getMessage());
+        }
     }
 
     @FXML private void handlePromotionNav() {
@@ -260,5 +291,13 @@ private void handleCheckout() {
         imageView.setFitHeight(fitHeight);
         imageView.setPreserveRatio(true);
         return imageView;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

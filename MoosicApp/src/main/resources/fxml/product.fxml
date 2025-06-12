@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer">
    <children>
       <HBox fx:id="header" alignment="CENTER_LEFT" styleClass="header">
          <padding>

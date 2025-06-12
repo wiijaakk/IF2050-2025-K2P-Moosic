@@ -1,9 +1,11 @@
 package com.controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.animation.Interpolator;
@@ -13,21 +15,27 @@ import javafx.animation.Timeline;
 import javafx.util.Duration;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.geometry.Bounds;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.collections.FXCollections;
 import javafx.scene.control.TextField;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.IOException;
 import java.math.BigDecimal;
 import com.model.AllProduct; // FIXED: Import AllProduct
 import com.database.HomepageDAO;
 import com.database.DatabaseHomepage;
+import javafx.scene.control.Alert;
 
 public class HomepageController {
 
@@ -43,10 +51,14 @@ public class HomepageController {
     @FXML
     public TextField searchField;
 
+    @FXML
+    private BorderPane mainContainer;
+
     private Node lastHighlightedCard = null;
     private int originalCardCount;
     private static final int DUPLICATE_COUNT = 2;
     private ObservableList<AllProduct> shoppingCart = FXCollections.observableArrayList(); // FIXED: AllProduct
+    private int currProductID;
 
     @FXML
     public void initialize() {
@@ -452,11 +464,62 @@ public class HomepageController {
             System.out.println("Cannot navigate: invalid product");
             return;
         }
+        currProductID = product.getId();
         
-        System.out.println("Navigating to product detail page for: " + product.getName());
-        System.out.println("Product ID: " + product.getId());
-        System.out.println("Price: " + formatPrice(product.getPrice()));
-        System.out.println("Genre: " + product.getGenre());
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
+            Parent root = loader.load();
+            
+            ProductController productController = loader.getController();
+            productController.initData(currProductID);
+            
+            Stage stage = (Stage) searchField.getScene().getWindow();
+            
+            // Save window state
+            boolean wasMaximized = stage.isMaximized();
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            double currentX = stage.getX();
+            double currentY = stage.getY();
+            
+            // Create scene with same size as current stage
+            Scene scene;
+            if (wasMaximized) {
+                // Set scene to full screen dimensions immediately
+                scene = new Scene(root, stage.getWidth(), stage.getHeight());
+            } else {
+                scene = new Scene(root, currentWidth, currentHeight);
+            }
+            
+            // Set scene
+            stage.setScene(scene);
+            stage.setTitle("Moose - Product Details");
+            
+            // Force window state immediately after scene change
+            if (wasMaximized) {
+                stage.setMaximized(false); // Reset first
+                stage.setMaximized(true);  // Then maximize
+            } else {
+                stage.setWidth(currentWidth);
+                stage.setHeight(currentHeight);
+                stage.setX(currentX);
+                stage.setY(currentY);
+            }
+            
+            // Final check with Platform.runLater
+            javafx.application.Platform.runLater(() -> {
+                if (wasMaximized && !stage.isMaximized()) {
+                    stage.setMaximized(true);
+                }
+                stage.toFront();
+                stage.requestFocus();
+                System.out.println("Final window state - Maximized: " + stage.isMaximized());
+            });
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", e.getMessage());
+        }
     }
     
     @FXML
@@ -501,6 +564,35 @@ public class HomepageController {
     @FXML
     private void handleShopClick() {
         System.out.println("Shop clicked - navigating to shop page");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Shop.fxml"));
+            Parent homePage = loader.load();
+
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
+
+            try {
+                String cssPath = getClass().getResource("/css/shopstyle.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Home CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Home CSS not found, using default styling");
+            }
+
+            System.out.println("Switched to Home Page (inline)");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open home page: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred: " + e.getMessage());
+        }
     }
     
     @FXML
@@ -958,5 +1050,17 @@ public class HomepageController {
                 animateScroll(targetHvalue);
             }
         }
+    }
+
+    public int getCurrProductID(){
+        return currProductID;
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
