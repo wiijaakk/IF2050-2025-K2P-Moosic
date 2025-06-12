@@ -26,6 +26,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
+import javafx.scene.layout.BorderPane;
 
 import org.w3c.dom.Text;
 
@@ -139,62 +140,64 @@ public class ShopController {
         }
     }
 
-    // @FXML
-    // private void handleLogoClick(ActionEvent event) {
-    //     searchField.clear();
-    //     genreComboBox.setValue("Music Genre");
-    //     variantComboBox.setValue("Product Variant");
-    //     filterProducts();
-    // }
+    @FXML
+    private void handleLogoClick(ActionEvent event) {
+        searchField.clear();
+        genreComboBox.setValue("Music Genre");
+        variantComboBox.setValue("Product Variant");
+        filterProducts();
+    }
 
-    // @FXML
-    // private void handleLogoNavigationToHome(ActionEvent event) {
-    //     System.out.println("🏠 Logo clicked, navigating to Home page...");
-        
-    //     try {
-    //         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
-    //         Parent root = loader.load();
-            
-    //         Scene scene = new Scene(root);
-            
-    //         try {
-    //             String cssPath = getClass().getResource("/css/Home.css").toExternalForm();
-    //             scene.getStylesheets().add(cssPath);
-    //             System.out.println("Loading Home CSS from: " + cssPath);
-    //         } catch (Exception e) {
-    //             System.out.println("Home CSS not found, using default styling");
-    //         }
-            
-    //         Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-    //         currentStage.setScene(scene);
-    //         currentStage.setTitle("Moose - Home");
-            
-    //         System.out.println("✅ Successfully navigated to Home page!");
-            
-    //     } catch (IOException e) {
-    //         e.printStackTrace();
-    //         showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-    //             "Could not open home page: " + e.getMessage());
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //         showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
-    //             "An unexpected error occurred: " + e.getMessage());
-    //     }
-    // }
+    @FXML
+    private BorderPane mainContainer;
+
+    @FXML
+    private void handleLogoNavigationToHome(ActionEvent event) {
+        System.out.println("Logo clicked, navigating to Home page (inline)...");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
+            Parent homePage = loader.load();
+
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
+
+            try {
+                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Home CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Home CSS not found, using default styling");
+            }
+
+            System.out.println("Switched to Home Page (inline)");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open home page: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred: " + e.getMessage());
+        }
+    }
     
-    // @FXML
-    // private void handleLogoButtonEntered(MouseEvent event) {
-    //     if (logoButton != null) {
-    //         logoButton.setStyle("-fx-background-color: rgba(146, 172, 79, 0.1); -fx-border-color: transparent; -fx-cursor: hand; -fx-background-radius: 5;");
-    //     }
-    // }
+    @FXML
+    private void handleLogoButtonEntered(MouseEvent event) {
+        if (logoButton != null) {
+            logoButton.setStyle("-fx-background-color: rgba(146, 172, 79, 0.1); -fx-border-color: transparent; -fx-cursor: hand; -fx-background-radius: 5;");
+        }
+    }
     
-    // @FXML
-    // private void handleLogoButtonExited(MouseEvent event) {
-    //     if (logoButton != null) {
-    //         logoButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
-    //     }
-    // }
+    @FXML
+    private void handleLogoButtonExited(MouseEvent event) {
+        if (logoButton != null) {
+            logoButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
+        }
+    }
     
     private Node createProductItemNode(AllProduct product) {
         VBox itemBox = new VBox(8);
@@ -278,5 +281,13 @@ public class ShopController {
         //     e.printStackTrace();
         //     System.err.println("Gagal memuat halaman detail produk.");
         // }
+    }
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

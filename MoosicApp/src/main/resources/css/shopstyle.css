@@ -270,16 +270,51 @@
     -fx-font-family: 'Albert Sans';
 }
 
-.logo-icon {
-    -fx-cursor: hand;
-    -fx-padding: 0;
+#logoButton {
     -fx-background-color: transparent;
     -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
 }
 
-/* .logo-button {
-    -fx-background-color: transparent;
-    -fx-border-color: transparent;
-    -fx-padding: 0;
+#logoButton:hover {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-effect: none;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+.clickable {
     -fx-cursor: hand;
-} kalo mau pake button pas integrate */
+}
+
+.clickable:hover {
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}

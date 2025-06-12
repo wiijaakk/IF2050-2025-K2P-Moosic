@@ -32,15 +32,14 @@ public class CheckoutController {
 
     private Order currentOrder;
     
-    // Product data yang akan ditampilkan
     private Product selectedProduct;
     private int quantity = 1;
 
     @FXML private Button payButton;
     @FXML private Button exitButton;
-    @FXML private Button backButton;  // Back button (tanpa logic)
-    @FXML private Button logoButton;  // Logo button (tanpa logic)
-    @FXML private Button shopNavButton;  // Shop navigation button (tanpa logic)
+    @FXML private Button backButton; 
+    @FXML private Button logoButton;  
+    @FXML private Button shopNavButton;  
     @FXML private Label navPromotion;
     @FXML private Label navCart;
     @FXML private Button navShop;
@@ -71,16 +70,13 @@ public class CheckoutController {
     public void initialize() {
         this.currentOrder = new Order();
         
-        // DEFAULT: Kalau tidak ada data yang di-pass, gunakan produk default
         if (selectedProduct == null) {
-            // Gunakan data default yang sesuai dengan database
             selectedProduct = new Product(1, "Midnights Vinyl – Taylor Swift", 
                 "Exclusive \"Midnights\" edition by Taylor Swift", 
                 new BigDecimal("525000.00"), "Pop", "Vinyl", 
                 "midnight-ts-vinyl.jpg", new ArrayList<>());
         }
         
-        // Load product data ke UI
         loadProductToUI();
         
         setupTextFieldFocusListeners(nameField);
@@ -101,7 +97,6 @@ public class CheckoutController {
         }
     }
     
-    // METHOD UNTUK MENERIMA DATA DARI HALAMAN SEBELUMNYA
     public void setProductData(Product product, int qty) {
         this.selectedProduct = product;
         this.quantity = qty;
@@ -111,100 +106,85 @@ public class CheckoutController {
         System.out.println("   Quantity: " + qty);
         System.out.println("   Price: Rp" + String.format("%,.0f", product.getPrice().doubleValue()));
         
-        // Kalau controller sudah di-initialize, langsung update UI
         if (productNameLabel != null) {
             loadProductToUI();
         }
     }
     
-    // METHOD UNTUK LOAD PRODUCT DATA KE UI
     private void loadProductToUI() {
         if (selectedProduct == null) return;
         
         System.out.println("🔄 Loading product data to UI...");
         
-        // Update product name
         if (productNameLabel != null) {
             productNameLabel.setText(selectedProduct.getName());
             System.out.println("   ✅ Product name loaded: " + selectedProduct.getName());
         }
         
-        // Update price - convert BigDecimal to double
         if (priceLabel != null) {
             double priceValue = selectedProduct.getPrice().doubleValue();
             priceLabel.setText(String.format("Rp%,.0f", priceValue));
             System.out.println("   ✅ Price loaded: Rp" + String.format("%,.0f", priceValue));
         }
         
-        // Update quantity
         if (quantityLabel != null) {
             quantityLabel.setText("x " + quantity);
             System.out.println("   ✅ Quantity loaded: x" + quantity);
         }
         
-        // Update total price
         double totalPrice = selectedProduct.getPrice().doubleValue() * quantity;
         if (totalPriceLabel != null) {
             totalPriceLabel.setText(String.format("Rp%,.0f", totalPrice));
             System.out.println("   ✅ Total price loaded: Rp" + String.format("%,.0f", totalPrice));
         }
         
-        // Update subtotal di footer
         if (subtotalLabel != null) {
             subtotalLabel.setText(String.format("Rp%,.0f", totalPrice));
         }
         
-        // Update final total (tanpa discount dulu)
         if (finalTotalLabel != null) {
             finalTotalLabel.setText(String.format("Rp%,.0f", totalPrice));
         }
         
-        // Load product image
         loadProductImage();
         
-        // Update order model
         updateOrderModel();
         
         System.out.println("✅ All product data loaded successfully!");
     }
     
-    // METHOD UNTUK LOAD GAMBAR PRODUK
     private void loadProductImage() {
         if (selectedProduct == null || productImageView == null) return;
         
         try {
-            // Path ke folder album yang kamu buat
             String imagePath = "/image/album/" + selectedProduct.getGambar();
             System.out.println("🖼️ Trying to load image: " + imagePath);
             
-            // Coba load image
             Image image = new Image(getClass().getResourceAsStream(imagePath));
             
             if (!image.isError()) {
                 productImageView.setImage(image);
-                System.out.println("   ✅ Image loaded successfully: " + imagePath);
+                System.out.println("Image loaded successfully: " + imagePath);
             } else {
-                System.out.println("   ❌ Image error, using default image");
+                System.out.println("Image error, using default image");
                 useDefaultImage();
             }
             
         } catch (Exception e) {
-            System.out.println("   ❌ Error loading image: " + e.getMessage());
+            System.out.println("Error loading image: " + e.getMessage());
             useDefaultImage();
         }
     }
     
     private void useDefaultImage() {
         try {
-            // UPDATED: Gunakan midnight-ts-vinyl.jpg sebagai default (dengan extension)
             Image defaultImage = new Image(getClass().getResourceAsStream("/image/album/midnight-ts-vinyl.jpg"));
             if (productImageView != null && !defaultImage.isError()) {
                 productImageView.setImage(defaultImage);
-                System.out.println("   ✅ Default image loaded: midnight-ts-vinyl.jpg");
+                System.out.println("Default image loaded: midnight-ts-vinyl.jpg");
             } else {
-                System.out.println("   ❌ midnight-ts-vinyl.jpg not found, trying other options...");
+                System.out.println("midnight-ts-vinyl.jpg not found, trying other options...");
                 
-                // Coba alternatif lain dari folder album
                 String[] alternatives = {
                     "/image/album/midnight-ts-cd.jpg",
                     "/image/album/midnight-ts-cassette.jpg"
@@ -215,57 +195,50 @@ public class CheckoutController {
                         Image altImage = new Image(getClass().getResourceAsStream(altPath));
                         if (!altImage.isError()) {
                             productImageView.setImage(altImage);
-                            System.out.println("   ✅ Alternative image loaded: " + altPath);
+                            System.out.println("Alternative image loaded: " + altPath);
                             return;
                         }
                     } catch (Exception e) {
-                        System.out.println("   ❌ " + altPath + " also not found");
+                        System.out.println(altPath + " also not found");
                     }
                 }
                 
-                System.out.println("   ❌ No album images found");
+                System.out.println("No album images found");
             }
         } catch (Exception e) {
-            System.out.println("   ❌ Error loading default album image: " + e.getMessage());
+            System.out.println("Error loading default album image: " + e.getMessage());
         }
     }
     
-    // METHOD UNTUK UPDATE ORDER MODEL
     private void updateOrderModel() {
         if (selectedProduct == null) return;
         
-        // Clear existing items
         currentOrder = new Order();
         
-        // Create new order item dengan data asli
         OrderItem item = new OrderItem(selectedProduct, quantity);
         currentOrder.addItem(item);
         
-        System.out.println("✅ Order model updated with current product");
+        System.out.println("Order model updated with current product");
     }
 
-    // UPDATED: Handler untuk logo button - TANPA LOGIC (button kosong)
     @FXML
     private void handleLogoButtonAction(ActionEvent event) {
-        System.out.println("🏠 Logo button clicked - no action implemented yet");
-        // TODO: Nanti akan ditambahkan logic navigation ke Home page
+        System.out.println("Logo button clicked - no action implemented yet");
+        // insert logic
     }
     
-    // UPDATED: Handler untuk shop button - TANPA LOGIC (button kosong)
     @FXML
     private void handleShopButtonAction(ActionEvent event) {
-        System.out.println("🛍️ Shop button clicked - no action implemented yet");
-        // TODO: Nanti akan ditambahkan logic navigation ke Shop page
+        System.out.println("Shop button clicked - no action implemented yet");
+        // insert logic
     }
 
-    // UPDATED: Handler untuk back button - TANPA LOGIC (button kosong)
     @FXML
     private void handleBackButtonAction(ActionEvent event) {
-        System.out.println("🔙 Back button clicked - no action implemented yet");
-        // TODO: Nanti akan ditambahkan logic navigation ke Product page
+        System.out.println("Back button clicked - no action implemented yet");
+        // insert logic
     }
     
-    // Hover effects untuk logo button (tetap ada untuk visual feedback)
     @FXML
     private void handleLogoButtonEntered(MouseEvent event) {
         if (logoButton != null) {
@@ -280,7 +253,6 @@ public class CheckoutController {
         }
     }
     
-    // Hover effects untuk shop button (tetap ada untuk visual feedback)
     @FXML
     private void handleShopButtonEntered(MouseEvent event) {
         if (shopNavButton != null) {
@@ -295,7 +267,6 @@ public class CheckoutController {
         }
     }
     
-    // Hover effects untuk back button (tetap ada untuk visual feedback)
     @FXML
     private void handleBackButtonEntered(MouseEvent event) {
         if (backButton != null) {

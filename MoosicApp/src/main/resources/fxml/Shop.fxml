@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.StackPane?>
 
-<BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.ShopController">
+<BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.ShopController"  fx:id="mainContainer">
    <top>
       <VBox spacing="10.0">
          <children>
