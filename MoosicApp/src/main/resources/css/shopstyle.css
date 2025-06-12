@@ -1,0 +1,320 @@
+@font-face {
+    -fx-font-family: 'Alata';
+    src: url('../fonts/Alata-Regular.ttf');
+}
+@font-face {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    src: url('../fonts/AlbertSans-Bold.ttf');
+}
+@font-face {
+    -fx-font-family: 'Alatsi';
+    -fx-font-weight: bold;
+    src: url('../fonts/Alatsi-Regular.ttf');
+}
+
+.root-pane {
+    -fx-background-color: #E5E9DB;
+    -fx-font-family: 'Alata';
+}
+
+/* --- Header --- */
+#header {
+    -fx-background-color: #E5E9DB;
+    -fx-padding: 10px 30px;
+    -fx-alignment: center-left;
+    -fx-spacing: 30.0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+}
+#navLinks {
+    -fx-spacing: 15px;
+}
+#navLinks .button {
+    -fx-padding: 8px 20px;
+    -fx-font-family: 'Alata';  
+    -fx-font-weight: 400;     
+    -fx-font-size: 16px;
+    -fx-text-fill: #92AC4F;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+#navLinks .button:hover {
+    -fx-text-fill: #4D7111; 
+}
+
+#navLinks .button.active {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: 800;        
+    -fx-text-fill: #4D7111;
+}
+/* --- Control Bar --- */
+#searchField {
+    -fx-pref-height: 40px;
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-font-family: 'Alata';
+    -fx-font-size: 14px;
+}
+
+#controlBar .combo-box {
+    -fx-pref-height: 40px;
+    -fx-max-width: 160px;
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 8px; 
+    -fx-background-radius: 8px;
+    -fx-font-family: 'Alata';
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+}
+
+#searchField .text-input{
+    -fx-prompt-text-fill: #BABABA;
+}
+#controlBar .combo-box .text-input {
+    -fx-prompt-text-fill: #BABABA;
+}
+
+#searchField:hover, #controlBar .combo-box:hover {
+    -fx-border-color: #92AC4F;
+}
+
+#searchField:focused, #controlBar .combo-box:focused {
+    -fx-border-color: #92AC4F;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: white;
+    -fx-border-color: #CED4DA;
+    -fx-border-width: 1px;
+    -fx-background-radius: 15px;
+    -fx-border-radius: 15px;
+}
+.combo-box-popup .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #1F4B2C;
+    -fx-font-family: 'Alata';
+    -fx-font-size: 14px;
+    -fx-padding: 8px 15px;
+    -fx-cursor: hand;
+}
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:filled:selected {
+    -fx-background-color: #D3DEB8;
+}
+.combo-box-popup .list-cell:first-child {
+    -fx-background-radius: 15px 15px 0em 0em;
+    -fx-border-radius: 15px 15px 0em 0em;
+}
+.combo-box-popup .list-cell:last-child {
+    -fx-background-radius: 0em 0em 15px 15px;
+    -fx-border-radius: 0em 0em 15px 15px;
+}
+
+
+/* --- Paginasi --- */
+.pagination {
+    -fx-padding: 20px;
+    -fx-spacing: 8px;
+    -fx-alignment: center;
+}
+
+.pagination .button.inactive {
+    -fx-min-width: 30px;
+    -fx-pref-width: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-height: 30px;
+    -fx-background-color: #E5E9DB;
+    -fx-border-color: #92AC4F;
+    -fx-border-width: 1.5px;
+    -fx-text-fill: #4D7111;
+    -fx-font-family: 'Alata';
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px; 
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+}
+.pagination .button.inactive:hover {
+    -fx-background-color: #F1FCF9;
+}
+
+.pagination .button.active {
+    -fx-min-width: 30px;
+    -fx-pref-width: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-height: 30px;
+    -fx-background-color: #C4EA57;
+    -fx-border-color: transparent;
+    -fx-text-fill: #4D7111;
+    -fx-font-family: 'Alata';
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-cursor: hand;
+}
+
+.pagination .button.arrow-button {
+    -fx-min-width: 30px;
+    -fx-pref-width: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-height: 30px;
+    -fx-background-color: #D7DDC7;
+    -fx-border-color: #92AC4F;
+    -fx-border-width: 1.5px;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 12px;
+    -fx-cursor: hand;
+}
+.pagination .button.arrow-button .svg-path {
+    -fx-fill: #4D7111;
+}
+.pagination .button.arrow-button:hover {
+    -fx-background-color: #C4EA57;
+}
+.pagination .button.arrow-button:disabled {
+    -fx-opacity: 0.5;
+}
+
+/* --- Item Produk --- */
+.product-grid {
+    -fx-padding: 10px 30px;
+    -fx-background-color: #F1FCF9;
+    -fx-alignment: center; 
+}
+
+/* --- Tampilan per Item Produk --- */
+
+.product-item {
+    -fx-pref-width: 300px;
+    -fx-max-width: 300px;
+    -fx-pref-height: 320px;
+    -fx-min-height: 320px;
+    -fx-background-color: #F1FCF9;
+    -fx-padding: 15px;
+    -fx-spacing: 8px;
+    -fx-background-radius: 8px; 
+    -fx-border-radius: 8px;    
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+    -fx-cursor: hand;
+}
+.product-item:hover {
+    -fx-border-color: #92AC4F;
+    -fx-border-width: 1.5px;
+    -fx-cursor: hand;
+}
+
+.product-name {
+    -fx-font-family: 'Alatsi'; 
+    -fx-font-weight: bold;  
+    -fx-font-size: 15px;
+    -fx-text-fill: #1F4B2C;
+}
+
+.stock-info { 
+    -fx-font-size: 12px;
+    -fx-text-fill: #495057;
+}
+
+.price-label {
+    -fx-font-family: 'Alatsi';
+    -fx-font-weight: bold; 
+    -fx-font-size: 18px;
+    -fx-text-fill: #343A40;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .corner {
+    -fx-background-color: transparent;
+}
+
+.product-grid {
+    -fx-padding: 10px 30px;
+    -fx-background-color: #E5E9DB;
+}
+
+.profile-icon {
+    -fx-cursor: hand;
+}
+
+.rating-star {
+    -fx-font-size: 14px;
+    -fx-text-fill: #FFD700;
+}
+
+.rating-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #757575; 
+    -fx-font-family: 'Albert Sans';
+}
+
+#logoButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:hover {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-effect: none;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+.clickable {
+    -fx-cursor: hand;
+}
+
+.clickable:hover {
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}

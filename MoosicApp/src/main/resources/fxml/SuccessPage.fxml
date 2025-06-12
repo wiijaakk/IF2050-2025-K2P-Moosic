@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+
+<ScrollPane fitToWidth="true" fitToHeight="true" xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.controller.SuccessPageController"
+            stylesheets="@../css/success-page.css">
+    <StackPane fx:id="root" alignment="CENTER">
+        <VBox alignment="CENTER" spacing="20">
+            <Region VBox.vgrow="ALWAYS" />
+            <ImageView fx:id="checkIcon" fitWidth="302" fitHeight="302">
+                <image>
+                    <Image url="@../image/check-decagram.png" preserveRatio="true"/>
+                </image>
+            </ImageView>
+            <Label text="Your Transaction is&#10;Successful!" styleClass="label-success" textAlignment="CENTER"/>
+            <Button text="Return to Home" onAction="#handleReturntoHome" styleClass="button-return-to-home"/>
+            <Region VBox.vgrow="ALWAYS" />
+        </VBox>
+    </StackPane>
+</ScrollPane>

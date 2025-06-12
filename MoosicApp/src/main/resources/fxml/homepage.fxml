@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+<?import javafx.scene.control.Button?>
+<?import java.net.URL?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.HomepageController" fx:id="mainContainer">
+   <top>
+            <HBox fx:id="header" alignment="CENTER_LEFT">
+               <padding>
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+               <children>
+                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#handleLogoClick" styleClass="clickable">
+                     <image>
+                        <Image url="@../image/logo.png" />
+                     </image>
+                  </ImageView>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox fx:id="navLinks" alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Promotion" onAction="#handlePromotionClick" />
+                        <Button mnemonicParsing="false" text="Cart" onAction="#handleCartClick" />
+                        <Button mnemonicParsing="false" text="Shop" onAction="#handleShopClick" />
+                        <Button mnemonicParsing="false" text="Order" onAction="#handleOrderClick" />
+                     </children>
+                  </HBox>
+                  <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
+                     <image>
+                        <Image url="@../image/profile.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+    </top>
+   <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane">
+            <content>
+                <VBox fx:id="rootLayout" alignment="TOP_CENTER" styleClass="root-container">
+                    <stylesheets>
+                        <URL value="@../css/homepage.css"/>
+                    </stylesheets>
+                    <!-- Hero Section -->
+                    <VBox alignment="CENTER" prefHeight="300.0" prefWidth="800.0" styleClass="hero-section-container">
+                        <children>
+                            <HBox alignment="CENTER_LEFT">
+                                <children>
+                                    <Text styleClass="discover-label" text="Discover the "/>
+                                    <ImageView fitHeight="195.0" fitWidth="395.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="/image/logohijau.png"/>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                                <VBox.margin>
+                                    <Insets left="50.0"/>
+                                </VBox.margin>
+                            </HBox>
+                            <HBox alignment="CENTER_LEFT">
+                                <children>
+                                    <Text styleClass="discover-label" text="that makes you "/>
+                                    <ImageView fitHeight="84.0" fitWidth="507.0" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="/image/groove.png"/>
+                                        </image>
+                                    </ImageView>
+                                </children>
+                                <VBox.margin>
+                                    <Insets bottom="50.0" left="220.0"/>
+                                </VBox.margin>
+                            </HBox>
+                            <HBox alignment="CENTER" styleClass="search-bar-container">
+                                <children>
+                                    <ImageView fitHeight="30" fitWidth="30" preserveRatio="true">
+                                        <image>
+                                            <Image url="/image/Search.png"/>
+                                        </image>
+                                    </ImageView>
+                                    <TextField fx:id="searchField" promptText="Search here" styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#handleSearchAction"/>
+                                </children>
+                            </HBox>
+                        </children>
+                        <padding>
+                            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+                        </padding>
+                        <VBox.margin>
+                            <Insets bottom="20.0" left="50.0" right="50.0" top="20.0"/>
+                        </VBox.margin>
+                    </VBox>
+
+                    <!-- Section A -->
+                    <VBox alignment="CENTER" spacing="30.0" styleClass="sectionA">
+                        <padding>
+                            <Insets top="40.0" right="0.0" bottom="0.0" left="0.0"/>
+                        </padding>
+                        <children>
+                            <Label styleClass="sectionA-title" text="Top Selling Products This Month"/>
+                            <HBox fx:id="topSellingProductsContainer" alignment="CENTER" spacing="30.0" fillHeight="false">
+                                <padding>
+                                    <Insets top="20.0" right="0.0" bottom="20.0" left="0.0"/>
+                                </padding>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <!-- Section B -->
+                    <VBox alignment="CENTER" spacing="20.0" styleClass="sectionB">
+                        <padding>
+                            <Insets top="0.0" right="0.0" bottom="40.0" left="0.0"/>
+                        </padding>
+                        <children>
+                            <Label styleClass="sectionB-title" text="Recommended Products"/>
+                            <HBox alignment="CENTER" spacing="10.0">
+                                <children>
+                                    <Button fx:id="leftArrowRecommended" styleClass="scroll-arrow" text="&lt;" onAction="#scrollLeft"/>
+                                    <ScrollPane fx:id="recommendedScrollPane" styleClass="recommended-scroll-pane" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+                                        <content>
+                                            <HBox fx:id="recommendedProductsContainer" alignment="CENTER_LEFT" spacing="20.0">
+                                                <padding>
+                                                    <Insets top="30.0" right="50.0" bottom="10.0" left="50.0"/>
+                                                </padding>
+                                            </HBox>
+                                        </content>
+                                    </ScrollPane>
+                                    <Button fx:id="rightArrowRecommended" styleClass="scroll-arrow" text="&gt;" onAction="#scrollRight"/>
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

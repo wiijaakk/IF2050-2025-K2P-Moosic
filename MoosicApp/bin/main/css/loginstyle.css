@@ -1,0 +1,72 @@
+
+#login-form-box {
+    -fx-background-color: rgba(31, 75, 44, 0.9);
+    -fx-border-radius: 33px;
+    -fx-background-radius: 33px;
+}
+
+.input-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: transparent;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-padding: 8px 10px;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #BABABA;
+    -fx-text-fill: #676767;
+    -fx-font-family: "Alata";
+    -fx-max-width: 1.7976931348623157E308;
+}
+
+.input-label {
+    -fx-text-fill: #92AC4F;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-font-family: "Alata";
+    -fx-alignment: BASELINE_LEFT;
+    -fx-max-width: 1.7976931348623157E308;
+}
+
+.login-button {
+    -fx-background-color: #C4EA57;
+    -fx-text-fill: #4D7111;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 0px;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-cursor: hand;
+    -fx-font-family: "Alata";
+    -fx-max-width: 1.7976931348623157E308;
+}
+
+.login-button:hover {
+    -fx-background-color: #4D7111;
+    -fx-text-fill: #C4EA57;
+}
+
+.dont-have-account-label {
+    -fx-text-fill: #92AC4F;
+    -fx-font-size: 14px;
+    -fx-font-family: "Alata";
+}
+
+.register-link {
+    -fx-text-fill: #C4EA57;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-underline: false;
+    -fx-cursor: hand;
+    -fx-font-family: "Albert Sans ExtraBold";
+}
+
+.register-link:hover {
+    -fx-underline: true;
+}
+
+.error-message {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FF0000;
+    -fx-font-family: "Alata";
+}

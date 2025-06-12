@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
+
+<BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.ShopController">
+   <top>
+      <VBox spacing="10.0">
+         <children>
+            <HBox fx:id="header" alignment="CENTER_LEFT">
+               <padding>
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                     <graphic>
+                        <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/logo.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox fx:id="navLinks" alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Promotion" />
+                        <Button mnemonicParsing="false" text="Cart" />
+                        <Button fx:id="shopNavButton" mnemonicParsing="false" text="Shop" />
+                        <Button mnemonicParsing="false" text="Order" />
+                     </children>
+                  </HBox>
+                  <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
+                     <image>
+                        <Image url="@../image/profile.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </HBox>
+            <HBox fx:id="controlBar" alignment="CENTER_LEFT" spacing="10.0">
+               <padding>
+                  <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+               <children>
+                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/Search.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="searchField" promptText="What are you looking for?" HBox.hgrow="ALWAYS" />
+                  <ComboBox fx:id="genreComboBox" prefWidth="180.0" promptText="Music Genre" />
+                  <ComboBox fx:id="variantComboBox" prefWidth="180.0" promptText="Product Variant" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+         <content>
+            <TilePane fx:id="productGrid" hgap="20.0" vgap="20.0" prefColumns="3" styleClass="product-grid" />
+         </content>
+         <padding>
+            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+         </padding>
+      </ScrollPane>
+   </center>
+   <bottom>
+      <HBox fx:id="paginationContainer" alignment="CENTER" styleClass="pagination" />
+   </bottom>
+</BorderPane>

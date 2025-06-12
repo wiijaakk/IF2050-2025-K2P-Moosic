@@ -1,0 +1,329 @@
+/* --- Font Definitions (Using System Fonts for now) --- */
+/* Temporary: Using system fonts until we add the actual font files */
+
+/* --- Style Utama & Latar Belakang --- */
+.root-pane {
+    -fx-background-color: #E5E9DB;
+    -fx-font-family: "System";
+}
+
+.root {
+    -fx-background-color: #E5E9DB;
+    -fx-font-family: "System"; /* Font default untuk seluruh halaman */
+}
+
+/* --- Header Navigation Bar --- */
+#header {
+    -fx-background-color: #E5E9DB;
+    -fx-padding: 10px 30px;
+    -fx-alignment: center-left;
+    -fx-spacing: 30.0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+    -fx-pref-width: 100%;
+    -fx-max-width: Infinity;
+}
+
+/* --- Logo Button Styles (No Hover Background) --- */
+#logoButton {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:hover {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-effect: none;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+/* --- Navigation Links Container --- */
+#navLinks {
+    -fx-spacing: 15px;
+}
+
+/* --- Default Navigation Button Styles --- */
+#navLinks .button {
+    -fx-padding: 8px 20px;
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 16px;
+    -fx-text-fill: #92AC4F;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+#navLinks .button:hover {
+    -fx-text-fill: #4D7111;
+    -fx-background-color: transparent;
+}
+
+#navLinks .button:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+#navLinks .button.active {
+    -fx-text-fill: #4D7111;
+}
+
+/* --- Specific Navigation Button Styles --- */
+#shopNavButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #92AC4F;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:hover {
+    -fx-text-fill: #4D7111;
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+#shopNavButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#shopNavButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+}
+
+#cartNavButton {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4D7111;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 20px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+}
+
+#cartNavButton:hover {
+    -fx-text-fill: #4D7111;
+    -fx-background-color: transparent;
+}
+
+#cartNavButton:focused {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* --- Profile Icon --- */
+.profile-icon {
+    -fx-cursor: hand;
+}
+
+/* --- Konten Utama (Dalam ScrollPane) --- */
+.scroll-pane {
+    -fx-background-color: #E5E9DB;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent; /* Membuat area scroll transparan */
+}
+
+.scroll-pane-content {
+    -fx-background-color: #E5E9DB;
+}
+
+/* --- Back Button & Judul Halaman --- */
+.back-button-container {
+    -fx-background-color: #C4EA57;
+    -fx-background-radius: 8;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.back-button-container:hover {
+    -fx-background-color: #A8D665;
+}
+
+.back-button-container:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.back-button-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-text-fill: WHITE;
+}
+
+.title-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 26px;
+    -fx-text-fill: #4D7111;
+}
+
+.subtitle-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-text-fill: #4D7111;
+}
+
+/* --- Elemen Form (Label & TextField) --- */
+.form-label {
+    -fx-font-family: 'Alata';
+    -fx-font-size: 14px;
+    -fx-text-fill: #92AC4F;
+}
+
+/* State default untuk TextField */
+.text-field {
+    -fx-background-color: #F1FCF9;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 0 10 0 10;
+    -fx-font-size: 12px;
+}
+
+/* State focus untuk TextField */
+.text-field:focused, .text-field-focused {
+    -fx-border-color: #1F4B2C;
+    -fx-border-width: 2;
+}
+
+/* --- Kotak Detail Pesanan ("Your Order") --- */
+.order-item-container {
+    -fx-background-color: #D7DDC7;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+}
+
+.order-item-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;
+}
+
+/* --- Bagian Footer (Total & Tombol Pay Now) --- */
+.footer {
+    -fx-background-color: #92AC4F;
+}
+
+.footer-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: 500; /* Medium */
+    -fx-font-size: 14px;
+    -fx-text-fill: WHITE;
+}
+
+.footer-label-bold {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-text-fill: WHITE;
+}
+
+.total-label {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: 800; /* ExtraBold */
+    -fx-font-size: 26px;
+    -fx-text-fill: WHITE;
+}
+
+/* --- Tombol Pay Now --- */
+.pay-button {
+    -fx-background-color: #C4EA57;
+    -fx-text-fill: #4D7111;
+    -fx-background-radius: 8;
+    -fx-border-width: 0;
+    -fx-cursor: hand;
+    -fx-font-family: 'Albert Sans Bold';
+    -fx-font-size: 16px;
+}
+
+/* State hover untuk tombol Pay Now */
+.pay-button:hover, .pay-button-hover {
+    -fx-background-color: #4D7111;
+    -fx-text-fill: white;
+}
+
+.pay-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+/* --- (Opsional) Tombol Exit --- */
+.exit-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 6;
+}
+
+.exit-button:hover, .exit-button-hover {
+    -fx-background-color: #FF0000;
+    -fx-text-fill: white;
+}
+
+.exit-button:focused {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
