@@ -50,6 +50,10 @@ public class User {
         return address;
     }
 
+    public int getId() { 
+        return id_user;
+    }
+
     public void setId_user(int id_user) {
         this.id_user = id_user;
     }
