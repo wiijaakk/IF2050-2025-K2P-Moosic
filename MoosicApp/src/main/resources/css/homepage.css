@@ -1,0 +1,429 @@
+/* General Body/Root Styles */
+.root-container {
+    -fx-background-color: #E5E9DB; /* Warna abu-abu background utama */
+    -fx-font-family: "Albert Sans"; /* Default font untuk seluruh aplikasi */
+}
+
+/* --- Top Navigation Bar - */
+#header {
+    -fx-background-color: #E5E9DB;
+    -fx-padding: 10px 30px;
+    -fx-alignment: center-left;
+    -fx-spacing: 30.0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+}
+#navLinks {
+    -fx-spacing: 15px;
+}
+#navLinks .button {
+    -fx-padding: 8px 20px;
+    -fx-font-family: 'Alata';  
+    -fx-font-weight: 400;     
+    -fx-font-size: 16px;
+    -fx-text-fill: #92AC4F;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+#navLinks .button:hover {
+    -fx-text-fill: #4D7111; 
+}
+
+/* --- Hero Section Container --- */
+.hero-section-container {
+    -fx-background-color: #C4EA57; /* Warna hijau cerah dari gambar */
+    -fx-background-radius: 20px; /* Sudut membulat */
+    /* Alignment, spacing, prefWidth/Height diatur di FXML */
+}
+
+/* --- Discover Label (teks utama di TextFlow) --- */
+.discover-label {
+    -fx-font-family: "Albert Sans";
+    -fx-font-size: 80px; /* Ukuran font yang lebih besar */
+    -fx-font-weight: bold;
+    -fx-fill: #34571A; /* Warna teks hijau gelap */
+}
+
+/* --- Groove Label (teks utama di TextFlow) --- */
+.groove-label {
+    -fx-font-family: "Albert Sans";
+    -fx-font-size: 80px;
+    -fx-font-weight: bold;
+    -fx-fill: #34571A; /* Warna teks hijau gelap */
+}
+
+/* --- Moosic Logo Text & Groove Highlight Text (font Alata) --- */
+/* Ini berlaku untuk <Text> node yang menggunakan Alata */
+.groove-highlight-text {
+    -fx-font-family: "Kocha Rough"; /* Menggunakan font Alata */
+    -fx-font-size: 60px; /* Ukuran font lebih besar dari teks sekitarnya */
+    -fx-fill: #4D7111; /* Warna hijau gelap untuk penekanan */
+}
+
+/* --- Search Bar Container --- */
+.search-bar-container {
+    -fx-background-color: #ffffff; /* Latar belakang putih */
+    -fx-background-radius: 30px; /* Sudut membulat */
+    -fx-padding: 10px 20px 10px 20px; /* Padding di dalam search bar */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Bayangan halus */
+    -fx-max-width: 500px; /* Batasi lebar maksimum */
+}
+
+/* --- Search Field (TextField di dalam search bar) --- */
+.search-field {
+    -fx-background-color: transparent; /* Transparan agar background dari container yang terlihat */
+    -fx-border-color: transparent; /* Hilangkan border default */
+    -fx-prompt-text-fill: #aaaaaa; /* Warna placeholder text */
+    -fx-text-fill: #333333; /* Warna teks input */
+    -fx-font-size: 20px;
+    -fx-padding: 10px; /* Hilangkan padding default */
+}
+.search-field:focused {
+    -fx-focussed-border-color: transparent; /* Hilangkan border saat fokus */
+}
+
+.search-field .text { /* Untuk teks aktual di dalam TextField */
+    -fx-fill: #333333;
+}
+
+
+/* --- Section Titles (Top Selling, Recommended) --- */
+.sectionA {
+    -fx-background-color: #1F4B2C; /* Latar belakang transparan */
+    -fx-padding: 40px 0px 5px 0px; /* Padding atas/bawah */
+    -fx-alignment: CENTER; /* Konten di tengah */
+    -fx-spacing: 35px; /* Jarak antar elemen anak */
+}
+
+.sectionA-title {
+    -fx-font-family: "Albert Sans"; /* Menggunakan font Albert Sans */
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #E5E9DB; /* Warna teks gelap */
+}
+
+/* --- Product Cards --- */
+.product-card {
+    -fx-background-radius: 10px; /* Sudut membulat */
+    -fx-padding: 15px; /* Padding di dalam kartu produk */
+    -fx-alignment: CENTER; /* Konten di tengah kartu */
+    -fx-spacing: 10px; /* Jarak antar elemen di dalam kartu */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2); /* Bayangan */
+    /* -fx-min-width: 200px; /* Lebar minimum */
+    /* -fx-pref-width: 200px; /* Lebar preferensi */
+    /* -fx-max-width: 200px; Lebar maksimum */ 
+}
+
+/* Warna latar belakang spesifik untuk kartu produk */
+.sectionB {
+    -fx-background-color: transparent; /* Latar belakang transparan */
+    -fx-padding: 40px 0px 40px 0px; /* Padding atas/bawah */
+    -fx-alignment: CENTER; /* Konten di tengah */
+    -fx-spacing: 20px; /* Jarak antar elemen anak */
+}
+.sectionB-title {
+    -fx-font-family: "Albert Sans"; /* Menggunakan font Albert Sans */
+    -fx-font-size: 48px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4D7111; /* Warna teks gelap */
+}
+.product-card-yellow {
+    -fx-background-color: #FFE691;
+}
+
+.product-card-grey {
+    -fx-background-color: #E0E0E0;
+}
+
+.product-card-brown {
+    -fx-background-color: #C0A88B;
+}
+
+.product-card-white {
+    -fx-background-color: #ffffff;
+}
+
+.product-image {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 10, 0, 0, 2); /* Bayangan pada gambar produk */
+}
+
+.product-name {
+    -fx-font-family: "Albert Sans";
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-text-alignment: center; /* Teks rata tengah */
+}
+
+.product-sales {
+    -fx-font-family: "Albert Sans";
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.product-price {
+    -fx-font-family: "Albert Sans";
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+/* --- Product Card Index (untuk Top Selling) --- */
+.card-index-label {
+    -fx-background-color: #333333; /* Latar belakang gelap */
+    -fx-background-radius: 50%; /* Bentuk lingkaran */
+    -fx-text-fill: white; /* Teks putih */
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 5px 8px; /* Padding agar menjadi lingkaran yang pas */
+    -fx-alignment: CENTER;
+    -fx-min-width: 30px; /* Lebar minimum */
+    -fx-min-height: 30px; /* Tinggi minimum */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 1); /* Bayangan */
+}
+
+/* Warna lingkaran index spesifik */
+.card-index-circle-yellow {
+    -fx-background-color: #FFE691;
+    -fx-text-fill: #333333;
+}
+
+.card-index-circle-grey {
+    -fx-background-color: #E0E0E0;
+    -fx-text-fill: #333333;
+}
+
+.card-index-circle-brown {
+    -fx-background-color: #C0A88B;
+    -fx-text-fill: #333333;
+}
+
+
+/* --- Recommended Products Scroll Pane --- */
+.recommended-scroll-pane {
+    -fx-background-color: transparent; /* Latar belakang transparan */
+    -fx-fit-to-height: true; /* Sesuaikan tinggi dengan konten */
+    -fx-hbar-policy: never; /* Sembunyikan scrollbar horizontal */
+    -fx-vbar-policy: never; /* Sembunyikan scrollbar vertikal */
+}
+
+/* Sembunyikan actual scrollbar thumb dan track */
+.recommended-scroll-pane .scroll-bar:horizontal .track,
+.recommended-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0;
+}
+
+.recommended-scroll-pane .scroll-bar:horizontal .thumb,
+.recommended-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5px;
+}
+
+.recommended-scroll-pane .scroll-bar .increment-button,
+.recommended-scroll-pane .scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+/* Arrows untuk scroll */
+.scroll-arrow {
+    -fx-background-color: #f0f0f0; /* Latar belakang abu-abu terang */
+    -fx-background-radius: 50%; /* Bentuk lingkaran */
+    -fx-padding: 10px; /* Padding */
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 1); /* Bayangan */
+    -fx-min-width: 40px; /* Ukuran minimum untuk lingkaran */
+    -fx-min-height: 40px;
+    -fx-alignment: CENTER; /* Teks panah di tengah */
+}
+
+.scroll-arrow:hover {
+    -fx-background-color: #dddddd; /* Warna lebih gelap saat hover */
+}
+
+.highlighted-card {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 20, 0, 0, 5); /* Bayangan lebih kuat */
+    -fx-border-color: #4D7111; /* Border hijau gelap */
+    -fx-border-width: 3px;
+    -fx-border-radius: 10px;
+    -fx-scale-x: 1.05; /* Sedikit membesar */
+    -fx-scale-y: 1.05; /* Sedikit membesar */
+    -fx-translate-y: -10px; /* Sedikit naik */
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* ===============================================
+   RANKING BADGE STYLES & CLICKABLE ELEMENTS
+   Add this to your main CSS file
+   =============================================== */
+
+/* Base ranking badge style */
+.ranking-badge {
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+    -fx-max-width: 32px;
+    -fx-max-height: 32px;
+    -fx-background-radius: 50%;
+    -fx-border-radius: 50%;
+    -fx-border-width: 2px;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 2, 2);
+    -fx-text-fill: white;
+}
+
+/* Gold badge for #1 position */
+.ranking-gold {
+    -fx-background-color: linear-gradient(to bottom, #FFD700, #FFA500);
+    -fx-border-color: #FFD700;
+}
+
+/* Silver badge for #2 position */
+.ranking-silver {
+    -fx-background-color: linear-gradient(to bottom, #C0C0C0, #A8A8A8);
+    -fx-border-color: #C0C0C0;
+}
+
+/* Bronze badge for #3 position */
+.ranking-bronze {
+    -fx-background-color: linear-gradient(to bottom, #CD7F32, #A0522D);
+    -fx-border-color: #CD7F32;
+}
+
+/* Default badge for positions 4+ */
+.ranking-default {
+    -fx-background-color: linear-gradient(to bottom, #6C757D, #495057);
+    -fx-border-color: #6C757D;
+}
+
+/* Hover effects for ranking badges */
+.ranking-badge:hover {
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 6, 0, 3, 3);
+}
+
+/* Animation for ranking badge */
+.ranking-badge {
+    -fx-transition: -fx-scale-x 0.2s ease, -fx-scale-y 0.2s ease;
+}
+
+/* ===============================================
+   CLICKABLE ELEMENTS
+   =============================================== */
+
+/* Clickable cards */
+.clickable-card {
+    -fx-cursor: hand;
+}
+
+.clickable-card:hover {
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 15, 0, 0, 3);
+}
+
+/* Clickable images (logo only) */
+.clickable {
+    -fx-cursor: hand;
+}
+
+.clickable:hover {
+    -fx-opacity: 0.8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+/* Profile icon (non-clickable) */
+.profile-icon {
+    -fx-cursor: default;
+}
+
+/* Search field enhancement */
+.search-field {
+    -fx-cursor: text;
+}
+
+.search-field:focused {
+    -fx-effect: dropshadow(gaussian, rgba(77, 113, 17, 0.3), 8, 0, 0, 2);
+}
+
+/* Navbar buttons enhanced hover */
+#navLinks .button:hover {
+    -fx-text-fill: #4D7111; 
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Top selling card hover enhancement */
+.product-card-yellow:hover,
+.product-card-grey:hover,
+.product-card-brown:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 20, 0, 0, 5);
+}
+
+/* Alternative circular number style (if you prefer simpler) */
+.ranking-simple {
+    -fx-background-color: #FF6B6B;
+    -fx-background-radius: 50%;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-min-width: 24px;
+    -fx-min-height: 24px;
+    -fx-max-width: 24px;
+    -fx-max-height: 24px;
+    -fx-alignment: center;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 3, 0, 1, 1);
+}
+
+/* Crown icon for #1 (alternative approach) */
+.ranking-crown {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFD700;
+    -fx-font-family: "Segoe UI Emoji", "Arial Unicode MS";
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 2, 0, 1, 1);
+}
+
+/* ===============================================
+   CAROUSEL BACKGROUND FIX
+   =============================================== */
+
+/* Container produk recommended jadi transparent */
+#recommendedProductsContainer {
+    -fx-background-color: transparent;
+}
+
+/* HBox container juga transparent */
+.sectionB HBox {
+    -fx-background-color: transparent;
+}
+
+/* ScrollPane content transparent */
+.recommended-scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+/* ScrollPane content area */
+.recommended-scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+/* Pastikan semua HBox di section B transparent */
+.sectionB .scroll-pane,
+.sectionB .scroll-pane .viewport,
+.sectionB .scroll-pane .content {
+    -fx-background-color: transparent;
+}
