@@ -23,6 +23,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+import javafx.application.Platform;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -133,7 +137,6 @@ public class ProductController implements Initializable {
 
     // Metode untuk membuat kartu review
     private HBox createReviewCard(ProductReview review) {
-        // ... (Implementasi tidak berubah, sudah baik)
         HBox card = new HBox(15);
         card.getStyleClass().add("card");
         card.setPadding(new Insets(15));
@@ -161,26 +164,191 @@ public class ProductController implements Initializable {
         return card;
     }
     
-@FXML
-private void handleCheckout() {
-    try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
-        Parent root = loader.load();
-
-        CheckoutController checkoutController = loader.getController();
-
-        checkoutController.setProductData(currentProduct, quantity.get());
-
-        Stage stage = (Stage) checkoutButton.getScene().getWindow();
-        Scene scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+    // ==================== NAVIGATION METHODS WITH FULL SCREEN ====================
+    
+    @FXML
+    private void handleCheckout() {
+        System.out.println("🛒 Navigating to Checkout page (Full Screen)...");
         
-    } catch (IOException e) {
-        e.printStackTrace();
-        System.err.println("Gagal memuat halaman Checkout.fxml");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
+            Parent root = loader.load();
+
+            // Get CheckoutController and pass product data
+            CheckoutController checkoutController = loader.getController();
+            checkoutController.setProductData(currentProduct, quantity.get());
+            
+            System.out.println("✅ Product data passed to checkout:");
+            System.out.println("   Product: " + currentProduct.getName());
+            System.out.println("   Quantity: " + quantity.get());
+            System.out.println("   Price: " + currentProduct.getPrice());
+
+            // Get current stage and apply full screen navigation
+            Stage stage = (Stage) checkoutButton.getScene().getWindow();
+            
+            // Save current window state
+            boolean wasMaximized = stage.isMaximized();
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            
+            // Create scene with appropriate size
+            Scene scene;
+            if (wasMaximized) {
+                scene = new Scene(root, stage.getWidth(), stage.getHeight());
+            } else {
+                scene = new Scene(root, currentWidth, currentHeight);
+                // Force maximize for navigation
+                wasMaximized = true;
+            }
+            
+            // Load Checkout CSS
+            try {
+                String cssUrl = getClass().getResource("/css/checkout.css").toExternalForm();
+                scene.getStylesheets().add(cssUrl);
+                System.out.println("✅ Loaded Checkout CSS");
+            } catch (Exception e) {
+                System.out.println("⚠️ Checkout CSS not found - " + e.getMessage());
+            }
+            
+            // Set scene and title
+            stage.setScene(scene);
+            stage.setTitle("Moosic - Checkout");
+            
+            // Force maximize window with enhanced method
+            ensureMaximizedWindow(stage);
+            
+            stage.show();
+            System.out.println("✅ Successfully navigated to Checkout page (Full Screen)");
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.err.println("❌ Failed to load Checkout.fxml: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                     "Could not navigate to Checkout page. File not found.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("❌ Unexpected error during checkout navigation: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
+                     "An unexpected error occurred: " + e.getMessage());
+        }
     }
-}
+
+    /**
+     * Generic navigation method with FULL SCREEN enforcement
+     * @param fxmlPath Path to FXML file
+     * @param title Window title
+     * @param cssPath Path to CSS file (can be null)
+     * @param sourceNode Node for getting current stage
+     */
+    private void navigateToPageFullScreen(String fxmlPath, String title, String cssPath, Node sourceNode) {
+        try {
+            System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            // Get current stage
+            Stage stage = (Stage) sourceNode.getScene().getWindow();
+            
+            // Save current window state
+            boolean wasMaximized = stage.isMaximized();
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            
+            // Create scene with appropriate size
+            Scene scene;
+            if (wasMaximized) {
+                scene = new Scene(root, stage.getWidth(), stage.getHeight());
+            } else {
+                scene = new Scene(root, currentWidth, currentHeight);
+                // Force maximize for navigation
+                wasMaximized = true;
+            }
+
+            // Load CSS if provided
+            if (cssPath != null) {
+                try {
+                    String cssUrl = getClass().getResource(cssPath).toExternalForm();
+                    scene.getStylesheets().add(cssUrl);
+                    System.out.println("✅ Loaded CSS: " + cssPath);
+                } catch (Exception e) {
+                    System.out.println("⚠️ CSS not found: " + cssPath + " - " + e.getMessage());
+                }
+            }
+
+            // Set scene and title
+            stage.setScene(scene);
+            stage.setTitle(title);
+            
+            // Force maximize window with enhanced method
+            ensureMaximizedWindow(stage);
+            
+            stage.show();
+            System.out.println("✅ Successfully navigated to " + title + " (Full Screen)");
+
+        } catch (IOException e) {
+            System.err.println("❌ IO Error navigating to " + title + ": " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                     "Could not navigate to " + title + ". File not found: " + fxmlPath);
+        } catch (Exception e) {
+            System.err.println("❌ Unexpected error navigating to " + title + ": " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
+                     "An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Enhanced method untuk memastikan window full screen
+     * @param stage The JavaFX Stage to maximize
+     */
+    private void ensureMaximizedWindow(Stage stage) {
+        try {
+            // Method 1: Set maximized immediately
+            stage.setMaximized(false); // Reset first
+            stage.setMaximized(true);  // Then maximize
+            
+            // Method 2: Use Platform.runLater for delayed execution
+            Platform.runLater(() -> {
+                if (!stage.isMaximized()) {
+                    stage.setMaximized(true);
+                }
+                stage.toFront();
+                stage.requestFocus();
+            });
+            
+            // Method 3: Use Timeline for multiple attempts (aggressive approach)
+            Timeline maxChecker = new Timeline();
+            maxChecker.getKeyFrames().addAll(
+                new KeyFrame(Duration.millis(50), e -> {
+                    if (!stage.isMaximized()) {
+                        stage.setMaximized(true);
+                        System.out.println("🔄 Maximized check 1 - Applied");
+                    }
+                }),
+                new KeyFrame(Duration.millis(150), e -> {
+                    if (!stage.isMaximized()) {
+                        stage.setMaximized(true);
+                        System.out.println("🔄 Maximized check 2 - Applied");
+                    }
+                }),
+                new KeyFrame(Duration.millis(300), e -> {
+                    if (!stage.isMaximized()) {
+                        stage.setMaximized(true);
+                        System.out.println("🔄 Final maximized attempt completed");
+                    }
+                    System.out.println("✅ Final window state - Maximized: " + stage.isMaximized());
+                })
+            );
+            maxChecker.play();
+            
+        } catch (Exception e) {
+            System.err.println("⚠️ Error ensuring maximized window: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // ==================== OTHER NAVIGATION HANDLERS ====================
 
     @FXML private void handleViewMore() {
         if (allProductReviews != null) {
@@ -203,29 +371,53 @@ private void handleCheckout() {
     }
 
     @FXML private void handleBackToShop() {
-        navigateTo("/fxml/Shop.fxml", backToShopLink);
+        System.out.println("🔙 Navigating back to Shop page (Full Screen)...");
+        navigateToPageFullScreen("/fxml/Shop.fxml", "Moosic - Shop", "/css/shopstyle.css", backToShopLink);
     }
 
     @FXML private void handleLogoClick() {
+        System.out.println("🏠 Navigating to Homepage (Full Screen)...");
+        
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Homepage.fxml"));
-            Parent homePage = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
+            Parent root = loader.load();
 
-            // VBox approach - ganti content tanpa ganti scene
-            mainContainer.getChildren().clear();
-            mainContainer.getChildren().add(homePage);
-            VBox.setVgrow(homePage, javafx.scene.layout.Priority.ALWAYS);
+            // Get current stage
+            Stage stage = (Stage) logoButton.getScene().getWindow();
+            
+            // Save current window state
+            boolean wasMaximized = stage.isMaximized();
+            double currentWidth = stage.getWidth();
+            double currentHeight = stage.getHeight();
+            
+            // Create scene with appropriate size
+            Scene scene;
+            if (wasMaximized) {
+                scene = new Scene(root, stage.getWidth(), stage.getHeight());
+            } else {
+                scene = new Scene(root, currentWidth, currentHeight);
+                // Force maximize for navigation
+                wasMaximized = true;
+            }
 
             // Load Homepage CSS
             try {
-                String cssPath = getClass().getResource("/css/homepagestyle.css").toExternalForm();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Homepage CSS from: " + cssPath);
+                String cssUrl = getClass().getResource("/css/homepage.css").toExternalForm();
+                scene.getStylesheets().add(cssUrl);
+                System.out.println("✅ Loaded Homepage CSS");
             } catch (Exception e) {
-                System.out.println("Homepage CSS not found, using default styling");
+                System.out.println("⚠️ Homepage CSS not found - " + e.getMessage());
             }
 
-            System.out.println("Switched to Homepage (inline) - maintaining fullscreen");
+            // Set scene and title
+            stage.setScene(scene);
+            stage.setTitle("Moosic - Home");
+            
+            // Force maximize window
+            ensureMaximizedWindow(stage);
+            
+            stage.show();
+            System.out.println("✅ Successfully navigated to Homepage (Full Screen)");
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -239,36 +431,48 @@ private void handleCheckout() {
     }
 
     @FXML private void handlePromotionNav() {
-        System.out.println("Navigasi ke Promotion page...");
-        // navigateTo("/fxml/Promotion.fxml", promotionNavButton);
+        System.out.println("🎯 Navigating to Promotion page (Full Screen)...");
+        // navigateToPageFullScreen("/fxml/Promotion.fxml", "Moosic - Promotion", "/css/promotion.css", promotionNavButton);
     }
 
     @FXML private void handleCartNav() {
-        System.out.println("Navigasi ke Cart page...");
-        // navigateTo("/fxml/Cart.fxml", cartNavButton);
+        System.out.println("🛒 Navigating to Cart page (Full Screen)...");
+        // navigateToPageFullScreen("/fxml/Cart.fxml", "Moosic - Cart", "/css/cart.css", cartNavButton);
     }
 
     @FXML private void handleShopNav() {
-        navigateTo("/fxml/Shop.fxml", shopNavButton);
+        System.out.println("🛍️ Navigating to Shop page (Full Screen)...");
+        navigateToPageFullScreen("/fxml/Shop.fxml", "Moosic - Shop", "/css/shopstyle.css", shopNavButton);
     }
 
     @FXML private void handleOrderNav() {
-        System.out.println("Navigasi ke Order page...");
-        // navigateTo("/fxml/Order.fxml", orderNavButton);
+        System.out.println("📦 Navigating to Order page (Full Screen)...");
+        // navigateToPageFullScreen("/fxml/Order.fxml", "Moosic - Order", "/css/order.css", orderNavButton);
     }
 
+    // ==================== LEGACY NAVIGATION (for backward compatibility) ====================
+
     private void navigateTo(String fxmlPath, Node currentNode) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
-            Stage stage = (Stage) currentNode.getScene().getWindow();
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Gagal memuat halaman: " + fxmlPath);
+        // Redirect to full screen navigation method
+        String title = "Moosic Application";
+        String cssPath = null;
+        
+        // Determine appropriate title and CSS based on path
+        if (fxmlPath.contains("Shop")) {
+            title = "Moosic - Shop";
+            cssPath = "/css/shopstyle.css";
+        } else if (fxmlPath.contains("homepage") || fxmlPath.contains("Homepage")) {
+            title = "Moosic - Home";
+            cssPath = "/css/homepage.css";
+        } else if (fxmlPath.contains("Checkout")) {
+            title = "Moosic - Checkout";
+            cssPath = "/css/checkout.css";
         }
+        
+        navigateToPageFullScreen(fxmlPath, title, cssPath, currentNode);
     }
+    
+    // ==================== UTILITY METHODS ====================
     
     private Image createSafeImage(String path) {
         if (path == null || path.trim().isEmpty()) return null;
