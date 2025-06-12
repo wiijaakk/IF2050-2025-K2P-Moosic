@@ -1,0 +1,56 @@
+/* Mengimpor font Alata dari folder resources/font */
+@font-face {
+    font-family: 'Alata';
+    src: url('../font/Alata.ttf'); /* Pastikan path ini benar */
+}
+
+.root-pane {
+    -fx-background-color: #E5E9D6;
+    -fx-font-family: 'Alata';
+}
+/* Pastikan semua font yang ingin menggunakan Alata secara eksplisit menentukannya */
+.root {
+    -fx-background-color: #E5E9D6;
+    -fx-font-family: 'Alata';
+}
+
+.label-success {
+    -fx-font-size: 64px;
+    -fx-text-fill: #1F4B2C;
+    -fx-font-family: 'Alata';
+}
+
+.button-return-to-home {
+    -fx-background-color: #C4EA57;
+    -fx-text-fill: #4D7111;
+    -fx-padding: 8 20 8 20;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-font-family: 'Alata';
+    -fx-font-size: 24px;
+}
+
+.button-return-to-home:hover {
+    -fx-background-color: #AACC3E;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.scroll-pane {
+    -fx-background-color: #E5E9D6;
+    -fx-font-family: 'Alata';
+    -fx-hbar-policy: as_needed;
+    -fx-vbar-policy: as_needed;
+}
+
+.scroll-pane {
+    -fx-background-color: #E5E9DB;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent; /* Membuat area scroll transparan */
+}
+
+.scroll-pane-content {
+    -fx-background-color: #E5E9DB;
+}
