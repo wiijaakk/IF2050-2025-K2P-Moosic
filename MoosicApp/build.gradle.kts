@@ -22,9 +22,13 @@ javafx {
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
-    implementation("io.github.cdimascio:dotenv-java:2.3.0") 
-    implementation("org.postgresql:postgresql:42.7.3") 
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    implementation("org.postgresql:postgresql:42.7.3")
+    implementation("io.github.cdimascio:java-dotenv:5.2.2")
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.2")
+    testImplementation("org.testfx:testfx-junit5:4.0.16-alpha")
 }
 
 tasks.test {
