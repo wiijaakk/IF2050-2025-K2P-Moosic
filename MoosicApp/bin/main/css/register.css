@@ -1,0 +1,106 @@
+/* =================================================================
+   register.css  
+   Styling lengkap: kotak hijau tua + border membulat, label, input,  
+   & tombol Register persis mock-up
+   ================================================================= */
+
+/* ==============================
+   1) Root Pane: background pattern
+   ============================== */
+   .root-pane {
+    -fx-background-image: url("/image/background.png");
+    -fx-background-size: cover; /* Ini yang membuat background meluas dan menutupi area */
+}
+
+/* ==============================================
+   2) Form Container: kotak hijau tua + border bulat
+   ============================================== */
+.form-container {
+    /* Warna hijau tua (RGB 31,75,44) + opacity 0.9 */
+    -fx-background-color: rgba(31, 75, 44, 0.9);
+
+    /* Border: hijau tua (#1F4B2C) 2px solid, sudut membulat 20px */
+    -fx-border-color: #1F4B2C;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+
+    /* Matikan efek drop-shadow bawaan agar sudut halus */
+    -fx-effect: dropshadow(gaussian, transparent, 0, 0, 0, 0);
+}
+
+/* =====================
+   3) Styling Label
+   ===================== */
+.field-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #CAD68B;       /* hijau muda */
+    -fx-font-family: "Segoe UI";
+}
+
+/* =====================================
+   4) Styling Input: TextField / PasswordField
+   ===================================== */
+.input-field {
+    /* sudut input membulat (agar sesuai mock-up) */
+    -fx-background-radius: 12;
+    /* prompt (placeholder) berwarna abu-abu terang */
+    -fx-prompt-text-fill: #A3A3A3;
+    /* hilangkan border default */
+    -fx-border-color: transparent;
+}
+
+/* Saat TextField/PasswordField di-focus, tambahkan outline biru terang */
+.input-field:focused {
+    -fx-border-color: #6EB1FF;       /* garis biru muda saat aktif */
+    -fx-border-width: 2;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+}
+
+/* Supaya teks dalam TextField sedikit lebih besar */
+.input-field .text {
+    -fx-font-size: 13px;
+}
+
+/* =====================
+   5) Error Text (validasi)
+   ===================== */
+.error-text {
+    -fx-fill: #FF3B3B;           /* merah cerah */
+    -fx-font-size: 12px;
+    -fx-font-family: "Segoe UI";
+}
+
+/* =====================================
+   6) Tombol Register: default & hover
+   ===================================== */
+.register-button {
+    /* Warna latar default */
+    -fx-background-color: #CAD68B;
+    /* Warna teks default */
+    -fx-text-fill: #1F4B2C;
+
+    -fx-font-size: 16px;
+    -fx-font-family: "Segoe UI";
+
+    /* Sudut membulat */
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+
+    /* Hilangkan border default */
+    -fx-border-color: transparent;
+
+    /* HAPUS prefWidth dan prefHeight dari sini agar dikontrol FXML atau penskalaan */
+    /* -fx-pref-width: 500; */
+    /* -fx-pref-height: 40; */
+
+    /* Saat hover, kursor berubah menjadi pointer/hand */
+    -fx-cursor: hand;
+}
+
+.register-button:hover {
+    /* Ganti warna latar & teks saat hover */
+    -fx-background-color: #1F4B2C;
+    -fx-text-fill: #CAD68B;
+}
