@@ -471,6 +471,24 @@ public class ProductController implements Initializable {
         
         navigateToPageFullScreen(fxmlPath, title, cssPath, currentNode);
     }
+
+    private void loadStylesheet(Scene scene, String fxmlPath) {
+        String cssPath = fxmlPath.replace("/fxml/", "/css/").replace(".fxml", ".css");
+        
+        if (cssPath.contains("Shop")) {
+            cssPath = "/css/shopstyle.css";
+        } else if (cssPath.contains("LoginView")) {
+            cssPath = "/css/loginstyle.css";
+        }
+        
+        try {
+            String cssUri = getClass().getResource(cssPath).toExternalForm();
+            scene.getStylesheets().add(cssUri);
+            System.out.println("Stylesheet berhasil dimuat: " + cssUri);
+        } catch (NullPointerException e) {
+            System.err.println("Stylesheet tidak ditemukan untuk: " + cssPath + ". Menggunakan style default.");
+        }
+    }
     
     // ==================== UTILITY METHODS ====================
     
