@@ -27,7 +27,7 @@
         <children>
             <!-- UPDATED: Logo menjadi Button yang bisa diklik untuk ke Home -->
             <Button fx:id="logoButton" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;" 
-                    onAction="#handleLogoButtonAction" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                    onAction="#handleLogoNavigationToHome" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
                 <graphic>
                     <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                         <image>

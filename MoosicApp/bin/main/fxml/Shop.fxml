@@ -23,12 +23,7 @@
                   <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
                </padding>
                <children>
-                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true" styleClass="logo-icon">
-                     <image>
-                        <Image url="@../image/logo.png" />
-                     </image>
-                  </ImageView>
-                  <!-- <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                  <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
                      <graphic>
                         <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -36,7 +31,7 @@
                            </image>
                         </ImageView>
                      </graphic>
-                  </Button> integrate nanti pake ini biar bisa teken logo trs ke home-->
+                  </Button>
                   <Region HBox.hgrow="ALWAYS" />
                   <HBox fx:id="navLinks" alignment="CENTER">
                      <children>

@@ -26,7 +26,15 @@
                   <Image url="@../image/logo.png" />
                </image>
             </ImageView>
-
+            <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+               <graphic>
+                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../image/logo.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
             <Region HBox.hgrow="ALWAYS" />
 
             <HBox fx:id="navLinks" alignment="CENTER" spacing="10"> <children>
@@ -64,7 +72,7 @@
                            <children>
                               <HBox alignment="CENTER_LEFT">
                                  <children>
-                                    <Hyperlink fx:id="backToShopLink" graphicTextGap="8.0" styleClass="back-to-shop-link" text="Back to Shop">
+                                    <Hyperlink fx:id="backToShopLink" graphicTextGap="8.0" onAction = "handleBackToShopAction" styleClass="back-to-shop-link" text="Back to Shop">
                                           <graphic>
                                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
                                                 <image>
@@ -102,7 +110,7 @@
                                              <Button fx:id="increaseQuantityButton" mnemonicParsing="false" styleClass="quantity-button" text="+" />
                                        </children>
                                     </HBox>
-                                    <Button fx:id="checkoutButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="checkout-button" text="Checkout" HBox.hgrow="ALWAYS" />
+                                    <Button fx:id="checkoutButton" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" onAction ="handleCheckoutAction" styleClass="checkout-button" text="Checkout" HBox.hgrow="ALWAYS" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="15.0" />
