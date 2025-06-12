@@ -12,17 +12,17 @@ repositories {
 }
 
 application {
-    mainClass.set("com.view.Homepage")
+    mainClass.set("com.view.ShopView")
 }
 
 javafx {
-    version = "24"
+    version = "21"
     modules = listOf("javafx.controls", "javafx.fxml")
 }
 
 dependencies {
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     implementation("io.github.cdimascio:dotenv-java:2.3.0") 
     implementation("org.postgresql:postgresql:42.7.3") 
 }
@@ -30,7 +30,7 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
     testLogging {
-        events("passed", "skipped", "failed") 
+        events("passed", "skipped", "failed")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
         showStandardStreams = true
     }

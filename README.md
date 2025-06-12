@@ -1,5 +1,3 @@
-# IF2050-2025-K2P-Moosic
-
 # Moosic - Sistem Manajemen Toko Musik
 
 **Moosic** adalah sistem informasi manajemen toko musik yang dikembangkan sebagai bagian dari tugas mata kuliah IF2050 - Dasar Rekayasa Perangkat Lunak di Program Studi Sistem dan Teknologi Informasi, STEI ITB. Versi ini merupakan implementasi aplikasi desktop menggunakan Java Swing. Sistem ini dirancang untuk membantu pemilik toko musik dalam mengelola produk, transaksi, laporan keuangan, dan pengalaman pelanggan secara efisien.
