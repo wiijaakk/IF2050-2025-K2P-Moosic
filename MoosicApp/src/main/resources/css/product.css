@@ -18,6 +18,17 @@
     -fx-font-family: 'Alata';
 }
 
+#header {
+    -fx-background-color: #E5E9DB;
+    -fx-padding: 10px 30px;
+    -fx-alignment: center-left;
+    -fx-spacing: 30.0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+    -fx-pref-width: 100%;
+    -fx-max-width: Infinity;
+    -fx-min-height: 60px;
+}
+
 .scroll-pane {
     -fx-background-color: #E5E9DB;
     -fx-background: #E5E9DB;
@@ -31,24 +42,13 @@
     -fx-background-color: #E5E9DB;
 }
 
-#header {
-    -fx-background-color: #E5E9DB;
-    -fx-padding: 10px 30px;
-    -fx-alignment: center-left;
-    -fx-spacing: 30.0;
-    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 15, 0.3, 0, 3);
-    -fx-pref-width: 100%;
-    -fx-max-width: Infinity;
-    -fx-min-height: 60px;
-}
-
 #navLinks {
     -fx-spacing: 15px;
 }
 
 #navLinks .button {
     -fx-padding: 8px 20px;
-    -fx-font-family: 'Albert Sans';
+    -fx-font-family: 'Alata';
     -fx-font-weight: bold;
     -fx-font-size: 16px;
     -fx-text-fill: #92AC4F;
@@ -57,6 +57,7 @@
 }
 
 #navLinks .button:hover {
+    -fx-font-family: 'Albert Sans';
     -fx-text-fill: #4D7111;
 }
 
