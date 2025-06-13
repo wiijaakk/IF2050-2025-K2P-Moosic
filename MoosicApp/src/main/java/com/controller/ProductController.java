@@ -67,6 +67,10 @@ public class ProductController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         quantityLabel.textProperty().bind(quantity.asString());
+
+        if (shopNavButton != null) {
+            shopNavButton.getStyleClass().add("active");
+        }
     }
 
     public void initData(int productId) {

@@ -18,9 +18,9 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.controller.CheckoutController" styleClass="root-pane"
-      stylesheets="@../css/Checkout.css">
+      stylesheets="@../css/Checkout.css" spacing="10.0">
 
-    <HBox fx:id="header" alignment="CENTER_LEFT" style="-fx-background-color: #E5E9DB; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);">
+    <HBox fx:id="header" alignment="CENTER_LEFT">
         <padding>
             <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
         </padding>
@@ -39,13 +39,14 @@
             <Region HBox.hgrow="ALWAYS" />
             <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
                 <children>
-                    <Button mnemonicParsing="false" text="Promotion" style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
-                    <Button fx:id="cartNavButton" mnemonicParsing="false" text="Cart" style="-fx-background-color: transparent; -fx-text-fill: #4D7111; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8px 20px;" />
-                    <!-- UPDATED: Shop button dengan navigation functionality -->
-                    <Button fx:id="shopNavButton" mnemonicParsing="false" text="Shop" 
-                            onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited"
-                            style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
-                    <Button mnemonicParsing="false" text="Order" style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
+                    <HBox fx:id="navLinks" alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" text="Promotion" />
+                        <Button fx:id="navCart" mnemonicParsing="false" text="Cart" />
+                        <Button mnemonicParsing="false" text="Shop" />
+                        <Button mnemonicParsing="false" text="Order" />
+                     </children>
+                  </HBox>
                 </children>
             </HBox>
             <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
@@ -66,16 +67,21 @@
                 <HBox spacing="15" alignment="CENTER_LEFT">
                     <children>
                         <!-- Back Button untuk kembali ke Product page -->
-                        <Button fx:id="backButton" prefWidth="35" prefHeight="35" styleClass="back-button-container" 
-                                onAction="#handleBackButtonAction" onMouseEntered="#handleBackButtonEntered" 
+                        <Button fx:id="backButton" prefWidth="45" prefHeight="45" styleClass="back-button-container"
+                                onAction="#handleBackButtonAction" onMouseEntered="#handleBackButtonEntered"
                                 onMouseExited="#handleBackButtonExited">
                             <graphic>
-                                <Label text="←" styleClass="back-button-label"/>
+                                <ImageView fitWidth="20" fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../image/backtoproduct.png" />
+                                    </image>
+                                </ImageView>
                             </graphic>
                         </Button>
                         <Label text="Check Out" styleClass="title-label"/>
                     </children>
                 </HBox>
+
 
                 <VBox spacing="10">
                     <Label text="Shipping Information" styleClass="subtitle-label"/>

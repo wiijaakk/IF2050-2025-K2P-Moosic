@@ -47,7 +47,7 @@ public class CheckoutController {
     @FXML private Button logoButton;  // Logo button to Home page
     @FXML private Button shopNavButton;  // Shop navigation button to Shop page
     @FXML private Label navPromotion;
-    @FXML private Label navCart;
+    @FXML private Button navCart;
     @FXML private Button navShop;
     @FXML private Label navOrder;
     @FXML private TextField nameField;
@@ -103,6 +103,9 @@ public class CheckoutController {
 
         if (navShop != null){
             navShop.getStyleClass().add("active");
+        }
+        if (navCart != null) {
+            navCart.getStyleClass().add("active");
         }
     }
     
