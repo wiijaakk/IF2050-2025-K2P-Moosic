@@ -18,18 +18,24 @@ import javafx.util.Duration;
 import javafx.application.Platform;
 import java.io.IOException;
 import java.net.URL;
+import javafx.scene.control.Button;
 
 public class LoginController {
 
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
+    @FXML private Button loginButton;
 
     private UserDAO userDAO;
 
     @FXML
     public void initialize() {
         userDAO = new UserDAO();
+
+        passwordField.setOnAction(e -> handleLoginButtonAction());
+
+        usernameField.setOnAction(e -> passwordField.requestFocus());
     }
 
     @FXML
