@@ -364,6 +364,7 @@
     -fx-text-fill: #4D7111; 
     -fx-scale-x: 1.05;
     -fx-scale-y: 1.05;
+    -fx-font-family: "Albert Sans";
 }
 
 /* Top selling card hover enhancement */

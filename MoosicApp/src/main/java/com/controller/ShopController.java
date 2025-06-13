@@ -59,6 +59,64 @@ public class ShopController {
 
         updateProductDisplay();
         createPaginationControls();
+
+        variantComboBox.setCellFactory(listView -> new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    int index = getIndex();
+                    int lastIndex = variantComboBox.getItems().size() - 1;
+
+                    if (index == 0) {
+                        setStyle("-fx-background-radius: 15px 15px 0 0;");
+                    } else if (index == lastIndex) {
+                        setStyle("-fx-background-radius: 0 0 15px 15px;");
+                    } else {
+                        setStyle("-fx-background-radius: 0;");
+                    }
+                }
+            }
+        });
+
+        genreComboBox.setCellFactory(listView -> new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    int index = getIndex();
+                    int lastIndex = genreComboBox.getItems().size() - 1;
+
+                    if (index == 0) {
+                        setStyle("-fx-background-radius: 15px 15px 0 0;");
+                    } else if (index == lastIndex) {
+                        setStyle("-fx-background-radius: 0 0 15px 15px;");
+                    } else {
+                        setStyle("-fx-background-radius: 0;");
+                    }
+                }
+            }
+        });
+
+        variantComboBox.setButtonCell(new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item);
+            }
+        });
+
+        genreComboBox.setButtonCell(new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item);
+            }
+        });
         // if (shopNavButton != null) {
         //     shopNavButton.getStyleClass().add("active");
         // }
