@@ -75,7 +75,7 @@
 #logoButton:hover {
     -fx-background-color: transparent !important;
     -fx-border-color: transparent !important;
-    -fx-effect: none;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
     -fx-background-insets: 0;
     -fx-border-insets: 0;
 }
@@ -205,6 +205,7 @@
 /* --- Profile Icon --- */
 .profile-icon {
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
 
 /* --- Konten Utama (Dalam ScrollPane) --- */

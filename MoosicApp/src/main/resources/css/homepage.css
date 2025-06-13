@@ -1,4 +1,19 @@
 /* General Body/Root Styles */
+@font-face {
+    -fx-font-family: 'Alata';
+    src: url('../fonts/Alata-Regular.ttf');
+}
+@font-face {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    src: url('../fonts/AlbertSans-Bold.ttf');
+}
+@font-face {
+    -fx-font-family: 'Alatsi';
+    -fx-font-weight: bold;
+    src: url('../fonts/Alatsi-Regular.ttf');
+}
+
 .root-container {
     -fx-background-color: #E5E9DB; /* Warna abu-abu background utama */
     -fx-font-family: "Albert Sans"; /* Default font untuk seluruh aplikasi */
@@ -26,6 +41,7 @@
 }
 
 #navLinks .button:hover {
+    -fx-font-family: 'Albert Sans';
     -fx-text-fill: #4D7111; 
 }
 
@@ -347,7 +363,8 @@
 
 /* Profile icon (non-clickable) */
 .profile-icon {
-    -fx-cursor: default;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
 
 /* Search field enhancement */
@@ -357,14 +374,6 @@
 
 .search-field:focused {
     -fx-effect: dropshadow(gaussian, rgba(77, 113, 17, 0.3), 8, 0, 0, 2);
-}
-
-/* Navbar buttons enhanced hover */
-#navLinks .button:hover {
-    -fx-text-fill: #4D7111; 
-    -fx-scale-x: 1.05;
-    -fx-scale-y: 1.05;
-    -fx-font-family: "Albert Sans";
 }
 
 /* Top selling card hover enhancement */

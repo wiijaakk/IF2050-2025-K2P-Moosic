@@ -68,6 +68,7 @@
 
 .profile-icon {
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
 
 .back-to-shop-link {
@@ -204,4 +205,5 @@
 
 .logo-button:hover {
     -fx-opacity: 1.2;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
