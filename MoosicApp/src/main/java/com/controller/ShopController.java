@@ -55,7 +55,9 @@ public class ShopController {
         
         genreComboBox.setOnAction(e -> filterProducts());
         variantComboBox.setOnAction(e -> filterProducts());
-        searchField.setOnAction(e -> filterProducts());
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterProducts();
+        });
 
         updateProductDisplay();
         createPaginationControls();
@@ -356,7 +358,7 @@ public class ShopController {
             }
             
             stage.setScene(scene);
-            stage.setTitle("Moose - Product Details");
+            stage.setTitle("Moosic - Product Details");
             
             if (wasMaximized) {
                 stage.setMaximized(false);
