@@ -5,6 +5,7 @@ import com.model.Product;
 import com.model.ProductReview;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,6 +19,7 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
@@ -57,7 +59,7 @@ public class ProductController implements Initializable {
     @FXML private Button viewLessButton;
     @FXML private Label quantityLabel;
     @FXML private Button checkoutButton;
-    @FXML private VBox mainContainer;
+    @FXML private BorderPane mainContainer;
 
     private Product currentProduct;
     private List<ProductReview> allProductReviews;
@@ -172,68 +174,38 @@ public class ProductController implements Initializable {
     
     @FXML
     private void handleCheckout() {
-        System.out.println("🛒 Navigating to Checkout page (Full Screen)...");
-        
+        System.out.println("🛒 Navigating to Checkout page (inline)...");
+
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
-            Parent root = loader.load();
+            Parent checkoutPage = loader.load();
 
-            // Get CheckoutController and pass product data
             CheckoutController checkoutController = loader.getController();
             checkoutController.setProductData(currentProduct, quantity.get());
-            
-            System.out.println("✅ Product data passed to checkout:");
-            System.out.println("   Product: " + currentProduct.getName());
-            System.out.println("   Quantity: " + quantity.get());
-            System.out.println("   Price: " + currentProduct.getPrice());
 
-            // Get current stage and apply full screen navigation
-            Stage stage = (Stage) checkoutButton.getScene().getWindow();
-            
-            // Save current window state
-            boolean wasMaximized = stage.isMaximized();
-            double currentWidth = stage.getWidth();
-            double currentHeight = stage.getHeight();
-            
-            // Create scene with appropriate size
-            Scene scene;
-            if (wasMaximized) {
-                scene = new Scene(root, stage.getWidth(), stage.getHeight());
-            } else {
-                scene = new Scene(root, currentWidth, currentHeight);
-                // Force maximize for navigation
-                wasMaximized = true;
-            }
-            
-            // Load Checkout CSS
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(checkoutPage);
+
             try {
-                String cssUrl = getClass().getResource("/css/checkout.css").toExternalForm();
-                scene.getStylesheets().add(cssUrl);
-                System.out.println("✅ Loaded Checkout CSS");
+                String cssPath = getClass().getResource("/css/checkout.css").toExternalForm();
+                checkoutPage.getStylesheets().add(cssPath);
             } catch (Exception e) {
                 System.out.println("⚠️ Checkout CSS not found - " + e.getMessage());
             }
-            
-            // Set scene and title
-            stage.setScene(scene);
-            stage.setTitle("Moosic - Checkout");
-            
-            // Force maximize window with enhanced method
-            ensureMaximizedWindow(stage);
-            
-            stage.show();
-            System.out.println("✅ Successfully navigated to Checkout page (Full Screen)");
-            
+            System.out.println("✅ Successfully navigated to Checkout page (inline)");
+
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("❌ Failed to load Checkout.fxml: " + e.getMessage());
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                     "Could not navigate to Checkout page. File not found.");
+                "Could not navigate to Checkout page. File not found.");
         } catch (Exception e) {
             e.printStackTrace();
             System.err.println("❌ Unexpected error during checkout navigation: " + e.getMessage());
             showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
-                     "An unexpected error occurred: " + e.getMessage());
+                "An unexpected error occurred: " + e.getMessage());
         }
     }
 
@@ -374,63 +346,87 @@ public class ProductController implements Initializable {
         }
     }
 
-    @FXML private void handleBackToShop() {
-        System.out.println("🔙 Navigating back to Shop page (Full Screen)...");
-        navigateToPageFullScreen("/fxml/Shop.fxml", "Moosic - Shop", "/css/shopstyle.css", backToShopLink);
-    }
-
-    @FXML private void handleLogoClick() {
-        System.out.println("🏠 Navigating to Homepage (Full Screen)...");
+    @FXML
+    private void handleBackToShop() {
+        System.out.println("🔙 Navigating back to Shop page (inline)...");
         
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Shop.fxml"));
+            Parent shopPage = loader.load();
 
-            // Get current stage
-            Stage stage = (Stage) logoButton.getScene().getWindow();
-            
-            // Save current window state
-            boolean wasMaximized = stage.isMaximized();
-            double currentWidth = stage.getWidth();
-            double currentHeight = stage.getHeight();
-            
-            // Create scene with appropriate size
-            Scene scene;
-            if (wasMaximized) {
-                scene = new Scene(root, stage.getWidth(), stage.getHeight());
-            } else {
-                scene = new Scene(root, currentWidth, currentHeight);
-                // Force maximize for navigation
-                wasMaximized = true;
-            }
+            // GUNAKAN INI untuk BorderPane:
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(shopPage);
 
-            // Load Homepage CSS
+            // JANGAN gunakan ini untuk BorderPane:
+            // mainContainer.getChildren().clear();
+            // mainContainer.getChildren().add(shopPage);
+
+            // Load CSS
             try {
-                String cssUrl = getClass().getResource("/css/homepage.css").toExternalForm();
-                scene.getStylesheets().add(cssUrl);
-                System.out.println("✅ Loaded Homepage CSS");
+                String cssPath = getClass().getResource("/css/shopstyle.css").toExternalForm();
+                shopPage.getStylesheets().add(cssPath);
+                System.out.println("Loading Shop CSS from: " + cssPath);
             } catch (Exception e) {
-                System.out.println("⚠️ Homepage CSS not found - " + e.getMessage());
+                System.out.println("Shop CSS not found, using default styling");
             }
 
-            // Set scene and title
-            stage.setScene(scene);
-            stage.setTitle("Moosic - Home");
-            
-            // Force maximize window
-            ensureMaximizedWindow(stage);
-            
-            stage.show();
-            System.out.println("✅ Successfully navigated to Homepage (Full Screen)");
+            System.out.println("Successfully navigated back to Shop page (inline)");
 
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error",
-                "Could not open homepage: " + e.getMessage());
+                "Could not open shop page: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleLogoNavigationToHome(ActionEvent event) {
+        System.out.println("Logo clicked, navigating to Home page (inline)...");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
+            Parent homePage = loader.load();
+
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
+
+            try {
+                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Home CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Home CSS not found, using default styling");
+            }
+
+            System.out.println("Switched to Home Page (inline)");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open home page: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Unexpected Error",
                 "An unexpected error occurred: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleLogoButtonEntered(MouseEvent event) {
+        if (logoButton != null) {
+            logoButton.setStyle("-fx-background-color: rgba(146, 172, 79, 0.1); -fx-border-color: transparent; -fx-cursor: hand; -fx-background-radius: 5;");
+        }
+    }
+    
+    @FXML
+    private void handleLogoButtonExited(MouseEvent event) {
+        if (logoButton != null) {
+            logoButton.setStyle("-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;");
         }
     }
 

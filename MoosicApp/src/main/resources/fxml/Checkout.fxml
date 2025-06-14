@@ -25,9 +25,7 @@
             <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
         </padding>
         <children>
-            <!-- UPDATED: Logo menjadi Button yang bisa diklik untuk ke Home -->
-            <Button fx:id="logoButton" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;" 
-                    onAction="#handleLogoNavigationToHome" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+            <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
                 <graphic>
                     <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                         <image>
@@ -36,6 +34,17 @@
                     </ImageView>
                 </graphic>
             </Button>
+            <!-- UPDATED: Logo menjadi Button yang bisa diklik untuk ke Home -->
+            <!-- <Button fx:id="logoButton" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;" 
+                    onAction="#handleLogoNavigationToHome" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                <graphic>
+                    <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../image/logo.png" />
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button> -->
             <Region HBox.hgrow="ALWAYS" />
             <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
                 <children>

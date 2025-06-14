@@ -22,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
@@ -330,10 +331,42 @@ public class CheckoutController {
     // ==================== NAVIGATION METHODS WITH FULL SCREEN ====================
     
     // Handler untuk logo button - Navigate to Home page (homepage.fxml di folder fxml)
+
+    @FXML
+    private BorderPane mainContainer;
+
     @FXML
     private void handleLogoNavigationToHome(ActionEvent event) {
-        System.out.println("🏠 Navigating to Home page (Full Screen)...");
-        navigateToPage(event, "/fxml/homepage.fxml", "Moosic - Home");
+        System.out.println("Logo clicked, navigating to Home page (inline)...");
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
+            Parent homePage = loader.load();
+
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
+
+            try {
+                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Home CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Home CSS not found, using default styling");
+            }
+
+            System.out.println("Switched to Home Page (inline)");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open home page: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred: " + e.getMessage());
+        }
     }
     
     // Handler untuk shop button - Navigate to Shop page (Shop.fxml di folder fxml)

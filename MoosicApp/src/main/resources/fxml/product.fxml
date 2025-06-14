@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,16 +15,16 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer" spacing="10.0">
-   <children>
+<BorderPane fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer">
+   <top>
       <HBox fx:id="header" alignment="CENTER_LEFT">
          <padding>
             <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
          </padding>
          <children>
-            <Button fx:id="logoButton" onAction="#handleLogoClick" styleClass="logo-button">
+            <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
                <graphic>
-                  <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../image/logo.png" />
                      </image>
@@ -41,12 +42,15 @@
             </HBox>
             <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
                <image>
-                  <Image url="@../image/Account circle.png" />
+                  <Image url="@../image/profile.png" />
                </image>
             </ImageView>
          </children>
       </HBox>
-      <ScrollPane fx:id="rootScrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+   </top>
+   
+   <center>
+      <ScrollPane fx:id="rootScrollPane" fitToWidth="true" hbarPolicy="NEVER">
          <content>
             <VBox alignment="TOP_CENTER" spacing="25.0">
                <padding>
@@ -144,5 +148,5 @@
             </VBox>
          </content>
       </ScrollPane>
-   </children>
-</VBox>
+   </center>
+</BorderPane>
