@@ -43,9 +43,9 @@ public class CheckoutController {
 
     @FXML private Button payButton;
     @FXML private Button exitButton;
-    @FXML private Button backButton;  // Back button to Product page
-    @FXML private Button logoButton;  // Logo button to Home page
-    @FXML private Button shopNavButton;  // Shop navigation button to Shop page
+    @FXML private Button backButton;    // Back button to Product page
+    @FXML private Button logoButton;    // Logo button to Home page
+    @FXML private Button shopNavButton;    // Shop navigation button to Shop page
     @FXML private Label navPromotion;
     @FXML private Button navCart;
     @FXML private Button navShop;
@@ -107,6 +107,22 @@ public class CheckoutController {
         if (navCart != null) {
             navCart.getStyleClass().add("active");
         }
+
+        // --- NEW CODE FOR ENTER KEY NAVIGATION ---
+        nameField.setOnAction(e -> mobilePhoneField.requestFocus());
+        mobilePhoneField.setOnAction(e -> addressField.requestFocus());
+        addressField.setOnAction(e -> countryField.requestFocus());
+        countryField.setOnAction(e -> stateField.requestFocus());
+        stateField.setOnAction(e -> cityField.requestFocus());
+        cityField.setOnAction(e -> zipCodeField.requestFocus());
+        zipCodeField.setOnAction(e -> cardNameField.requestFocus());
+        cardNameField.setOnAction(e -> cardNumberField.requestFocus());
+        cardNumberField.setOnAction(e -> validThroughField.requestFocus());
+        validThroughField.setOnAction(e -> cvvField.requestFocus());
+        cvvField.setOnAction(e -> promoCodeField.requestFocus());
+        // PERBAIKAN DI SINI: Memberikan source yang benar (payButton) saat memicu handlePayButtonAction
+        promoCodeField.setOnAction(e -> handlePayButtonAction(new ActionEvent(payButton, payButton)));
+        // --- END NEW CODE ---
     }
     
     // ==================== DATA SETTERS - SUPPORT MULTIPLE PRODUCT TYPES ====================
@@ -411,23 +427,24 @@ public class CheckoutController {
         if (!success) {
             System.err.println("❌ Could not navigate to Product page!");
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                     "Could not navigate to Product page.\n\n" +
-                     "Possible issues:\n" +
-                     "1. Product.fxml file not found in /fxml/ folder\n" +
-                     "2. ProductController has missing methods\n" +
-                     "3. CSS file missing\n" +
-                     "4. Database connection issue");
+                            "Could not navigate to Product page.\n\n" +
+                            "Possible issues:\n" +
+                            "1. Product.fxml file not found in /fxml/ folder\n" +
+                            "2. ProductController has missing methods\n" +
+                            "3. CSS file missing\n" +
+                            "4. Database connection issue");
         }
     }
     
     // Generic navigation method with FULL SCREEN enforcement
+    // PERBAIKAN DI SINI: Menambahkan penanganan ClassCastException yang lebih baik
     private void navigateToPage(ActionEvent event, String fxmlPath, String title) {
         try {
             System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             
-            // Get current stage
+            // Dapatkan Stage dari event.getSource(). Jika event.getSource() bukan Node, ini akan dilemparkan ke ClassCastException
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             
             // Save current window state
@@ -457,6 +474,8 @@ public class CheckoutController {
                 cssPath = "/css/shopstyle.css";
             } else if (fxmlPath.contains("product")) {
                 cssPath = "/css/product.css";
+            } else if (fxmlPath.contains("SuccessPage")) {
+                cssPath = "/css/successpage.css";
             }
             
             if (cssPath != null) {
@@ -484,12 +503,56 @@ public class CheckoutController {
             System.err.println("❌ Failed FXML path: " + fxmlPath);
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                     "Could not navigate to " + title + ". File not found: " + fxmlPath);
-        } catch (Exception e) {
+                            "Could not navigate to " + title + ". File not found: " + fxmlPath);
+        } catch (ClassCastException e) { // PERBAIKAN DI SINI: Menambahkan penanganan khusus untuk ClassCastException
+            System.err.println("❌ ClassCastException in navigateToPage: " + e.getMessage());
+            System.err.println("This often happens when navigateToPage is called from a non-Node source (like a Task).");
+            e.printStackTrace();
+            // Coba dapatkan stage dari FXML element yang pasti ada
+            try {
+                // Menggunakan payButton sebagai Node referensi untuk mendapatkan Stage
+                Stage stage = (Stage) payButton.getScene().getWindow(); 
+                
+                // Lanjutkan navigasi dengan stage yang benar
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Parent root = loader.load();
+                Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+
+                String cssPath = null;
+                if (fxmlPath.contains("homepage")) {
+                    cssPath = "/css/homepage.css";
+                } else if (fxmlPath.contains("Shop")) {
+                    cssPath = "/css/shopstyle.css";
+                } else if (fxmlPath.contains("product")) {
+                    cssPath = "/css/product.css";
+                } else if (fxmlPath.contains("SuccessPage")) {
+                    cssPath = "/css/successpage.css";
+                }
+                if (cssPath != null) {
+                    try {
+                        String cssUrl = getClass().getResource(cssPath).toExternalForm();
+                        scene.getStylesheets().add(cssUrl);
+                    } catch (Exception cssE) {
+                        System.out.println("⚠️ CSS not found during ClassCastException recovery: " + cssPath + " - " + cssE.getMessage());
+                    }
+                }
+                stage.setScene(scene);
+                stage.setTitle(title);
+                ensureMaximizedWindow(stage);
+                stage.show();
+                System.out.println("✅ Successfully navigated to " + title + " (Full Screen) via ClassCastException recovery.");
+            } catch (Exception recoveryE) {
+                System.err.println("❌ Error during ClassCastException recovery: " + recoveryE.getMessage());
+                recoveryE.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                                "An error occurred during navigation: " + recoveryE.getMessage());
+            }
+        }
+        catch (Exception e) {
             System.err.println("❌ Unexpected error navigating to " + title + ": " + e.getMessage());
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
-                     "An unexpected error occurred: " + e.getMessage());
+                            "An unexpected error occurred: " + e.getMessage());
         }
     }
     
@@ -658,7 +721,8 @@ public class CheckoutController {
         saveOrderTask.setOnSucceeded(e -> {
             boolean success = saveOrderTask.getValue();
             if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Berhasil", "Pesanan Anda telah berhasil disimpan!");
+                // PERBAIKAN DI SINI: Memberikan ActionEvent yang valid dengan sumber (payButton)
+                navigateToPage(new ActionEvent(payButton, payButton), "/fxml/SuccessPage.fxml", "Moosic - Payment Success"); 
             } else {
                 showAlert(Alert.AlertType.ERROR, "Gagal", "Terjadi kesalahan saat menyimpan pesanan.");
             }
