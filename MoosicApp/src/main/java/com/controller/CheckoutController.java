@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
+import javafx.application.Platform;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -73,6 +74,8 @@ public class CheckoutController {
     @FXML private Label subtotalLabel;
     @FXML private Label finalTotalLabel;
 
+    @FXML private BorderPane mainContainer;
+
     @FXML
     public void initialize() {
         this.currentOrder = new Order();
@@ -109,7 +112,7 @@ public class CheckoutController {
             navCart.getStyleClass().add("active");
         }
 
-        // --- NEW CODE FOR ENTER KEY NAVIGATION ---
+        // Enter key navigation untuk smooth form filling
         nameField.setOnAction(e -> mobilePhoneField.requestFocus());
         mobilePhoneField.setOnAction(e -> addressField.requestFocus());
         addressField.setOnAction(e -> countryField.requestFocus());
@@ -121,9 +124,7 @@ public class CheckoutController {
         cardNumberField.setOnAction(e -> validThroughField.requestFocus());
         validThroughField.setOnAction(e -> cvvField.requestFocus());
         cvvField.setOnAction(e -> promoCodeField.requestFocus());
-        // PERBAIKAN DI SINI: Memberikan source yang benar (payButton) saat memicu handlePayButtonAction
         promoCodeField.setOnAction(e -> handlePayButtonAction(new ActionEvent(payButton, payButton)));
-        // --- END NEW CODE ---
     }
     
     // ==================== DATA SETTERS - SUPPORT MULTIPLE PRODUCT TYPES ====================
@@ -310,7 +311,6 @@ public class CheckoutController {
             currentOrder.addItem(item);
         } else if (selectedAllProduct != null) {
             // Convert AllProduct to Product for OrderItem if needed
-            // This assumes OrderItem constructor exists for AllProduct or we need to adapt
             Product tempProduct = new Product(
                 selectedAllProduct.getId(),
                 selectedAllProduct.getName(),
@@ -330,43 +330,11 @@ public class CheckoutController {
 
     // ==================== NAVIGATION METHODS WITH FULL SCREEN ====================
     
-    // Handler untuk logo button - Navigate to Home page (homepage.fxml di folder fxml)
-
-    @FXML
-    private BorderPane mainContainer;
-
+    // Handler untuk logo button - Navigate to Homepage page dengan full screen
     @FXML
     private void handleLogoNavigationToHome(ActionEvent event) {
-        System.out.println("Logo clicked, navigating to Home page (inline)...");
-
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
-            Parent homePage = loader.load();
-
-            mainContainer.setTop(null);
-            mainContainer.setBottom(null);
-            mainContainer.setCenter(null);
-            mainContainer.setCenter(homePage);
-
-            try {
-                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Home CSS from: " + cssPath);
-            } catch (Exception e) {
-                System.out.println("Home CSS not found, using default styling");
-            }
-
-            System.out.println("Switched to Home Page (inline)");
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error",
-                "Could not open home page: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
-                "An unexpected error occurred: " + e.getMessage());
-        }
+        System.out.println("🏠 Logo clicked, navigating to Homepage (Full Screen)...");
+        navigateToPage(event, "/fxml/homepage.fxml", "Moosic - Home");
     }
     
     // Handler untuk shop button - Navigate to Shop page (Shop.fxml di folder fxml)
@@ -460,24 +428,23 @@ public class CheckoutController {
         if (!success) {
             System.err.println("❌ Could not navigate to Product page!");
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                            "Could not navigate to Product page.\n\n" +
-                            "Possible issues:\n" +
-                            "1. Product.fxml file not found in /fxml/ folder\n" +
-                            "2. ProductController has missing methods\n" +
-                            "3. CSS file missing\n" +
-                            "4. Database connection issue");
+                     "Could not navigate to Product page.\n\n" +
+                     "Possible issues:\n" +
+                     "1. Product.fxml file not found in /fxml/ folder\n" +
+                     "2. ProductController has missing methods\n" +
+                     "3. CSS file missing\n" +
+                     "4. Database connection issue");
         }
     }
     
     // Generic navigation method with FULL SCREEN enforcement
-    // PERBAIKAN DI SINI: Menambahkan penanganan ClassCastException yang lebih baik
     private void navigateToPage(ActionEvent event, String fxmlPath, String title) {
         try {
             System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             
-            // Dapatkan Stage dari event.getSource(). Jika event.getSource() bukan Node, ini akan dilemparkan ke ClassCastException
+            // Dapatkan Stage dari event.getSource()
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             
             // Save current window state
@@ -536,8 +503,8 @@ public class CheckoutController {
             System.err.println("❌ Failed FXML path: " + fxmlPath);
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                            "Could not navigate to " + title + ". File not found: " + fxmlPath);
-        } catch (ClassCastException e) { // PERBAIKAN DI SINI: Menambahkan penanganan khusus untuk ClassCastException
+                     "Could not navigate to " + title + ". File not found: " + fxmlPath);
+        } catch (ClassCastException e) {
             System.err.println("❌ ClassCastException in navigateToPage: " + e.getMessage());
             System.err.println("This often happens when navigateToPage is called from a non-Node source (like a Task).");
             e.printStackTrace();
@@ -578,14 +545,14 @@ public class CheckoutController {
                 System.err.println("❌ Error during ClassCastException recovery: " + recoveryE.getMessage());
                 recoveryE.printStackTrace();
                 showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                                "An error occurred during navigation: " + recoveryE.getMessage());
+                         "An error occurred during navigation: " + recoveryE.getMessage());
             }
         }
         catch (Exception e) {
             System.err.println("❌ Unexpected error navigating to " + title + ": " + e.getMessage());
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
-                            "An unexpected error occurred: " + e.getMessage());
+                     "An unexpected error occurred: " + e.getMessage());
         }
     }
     
@@ -597,7 +564,7 @@ public class CheckoutController {
             stage.setMaximized(true);  // Then maximize
             
             // Method 2: Use Platform.runLater for delayed execution
-            javafx.application.Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 if (!stage.isMaximized()) {
                     stage.setMaximized(true);
                 }
@@ -642,7 +609,7 @@ public class CheckoutController {
             // Multiple attempts to ensure maximized state
             stage.setMaximized(false);
             
-            javafx.application.Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 stage.setMaximized(true);
                 
                 // Double-check setelah delay kecil
@@ -754,7 +721,7 @@ public class CheckoutController {
         saveOrderTask.setOnSucceeded(e -> {
             boolean success = saveOrderTask.getValue();
             if (success) {
-                // PERBAIKAN DI SINI: Memberikan ActionEvent yang valid dengan sumber (payButton)
+                // Navigate to success page after payment successful
                 navigateToPage(new ActionEvent(payButton, payButton), "/fxml/SuccessPage.fxml", "Moosic - Payment Success"); 
             } else {
                 showAlert(Alert.AlertType.ERROR, "Gagal", "Terjadi kesalahan saat menyimpan pesanan.");
