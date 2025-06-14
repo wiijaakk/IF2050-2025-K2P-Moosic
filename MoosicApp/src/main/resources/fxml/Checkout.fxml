@@ -43,7 +43,7 @@
                      <children>
                         <Button mnemonicParsing="false" text="Promotion" />
                         <Button fx:id="navCart" mnemonicParsing="false" text="Cart" />
-                        <Button mnemonicParsing="false" text="Shop" />
+                        <Button mnemonicParsing="false" text="Shop" onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited" />
                         <Button mnemonicParsing="false" text="Order" />
                      </children>
                   </HBox>
