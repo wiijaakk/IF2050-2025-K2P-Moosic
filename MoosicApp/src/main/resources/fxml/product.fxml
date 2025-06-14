@@ -138,8 +138,8 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </VBox>
-                  <Button fx:id="viewMoreButton" onAction="#handleViewMore" styleClass="view-more-button" text="view more" />
-                  <Button fx:id="viewLessButton" onAction="#handleViewLess" styleClass="view-more-button" text="view less" visible="false" />
+                  <Button fx:id="viewMoreButton" onAction="#handleViewMore" styleClass="view-more-button" text="View More" />
+                  <Button fx:id="viewLessButton" onAction="#handleViewLess" styleClass="view-more-button" text="View Less" visible="false" />
                </children>
             </VBox>
          </content>

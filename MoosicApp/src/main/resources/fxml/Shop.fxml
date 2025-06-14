@@ -53,13 +53,19 @@
                   <Insets bottom="15.0" left="30.0" right="30.0" top="10.0" />
                </padding>
                <children>
-                  <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../image/Search.png" />
-                     </image>
-                  </ImageView>
-                  <TextField fx:id="searchField" promptText="What are you looking for?" HBox.hgrow="ALWAYS" />
-                  <ComboBox fx:id="genreComboBox" prefWidth="180.0" promptText="Music Genre" />
+                  <StackPane HBox.hgrow="ALWAYS">
+                        <children>
+                           <TextField fx:id="searchField" promptText="What are you looking for?" 
+                                    style="-fx-padding: 10px 10px 10px 40px;"/> <!-- Padding kiri untuk ruang icon -->
+                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="false" 
+                                    StackPane.alignment="CENTER_LEFT" translateX="12">
+                              <image>
+                                    <Image url="@../image/Search.png" />
+                              </image>
+                           </ImageView>
+                        </children>
+                  </StackPane>
+                  <ComboBox fx:id="genreComboBox" prefWidth="180.0" promptText="Music Genre"/>
                   <ComboBox fx:id="variantComboBox" prefWidth="180.0" promptText="Product Variant" />
                </children>
             </HBox>
