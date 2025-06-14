@@ -171,7 +171,7 @@ public class RegisterController implements Initializable {
                 errorRegistrationText.setStyle("-fx-fill: green;");
 
                 // Navigate to login page with full screen after successful registration
-                navigateToPage("/fxml/LoginView.fxml", "Moosic - Login", "/css/login.css");
+                navigateToPage("/fxml/LoginView.fxml", "Moosic - Login", "/css/loginstyle.css");
                 
             } else {
                 errorRegistrationText.setText("Registrasi gagal. Mohon coba lagi.");

@@ -177,23 +177,51 @@ public class ProductController implements Initializable {
         System.out.println("🛒 Navigating to Checkout page (inline)...");
 
         try {
+            // Debug: Print current product data BEFORE loading
+            System.out.println("🔍 DEBUG - Current product data before checkout:");
+            if (currentProduct != null) {
+                System.out.println(" Product: " + currentProduct.getName());
+                System.out.println(" Price: " + currentProduct.getPrice());
+            } else {
+                System.out.println(" ❌ currentProduct is NULL!");
+            }
+            System.out.println(" Quantity: " + quantity.get());
+
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
             Parent checkoutPage = loader.load();
 
+            // Get CheckoutController and pass product data
             CheckoutController checkoutController = loader.getController();
+            
+            // Debug: Verify controller is not null
+            if (checkoutController == null) {
+                System.out.println("❌ CheckoutController is NULL!");
+                throw new RuntimeException("Failed to get CheckoutController");
+            }
+
+            // Pass the product data
             checkoutController.setProductData(currentProduct, quantity.get());
 
+            System.out.println("✅ Product data passed to checkout:");
+            System.out.println(" Product: " + currentProduct.getName());
+            System.out.println(" Quantity: " + quantity.get());
+            System.out.println(" Price: " + currentProduct.getPrice());
+
+            // Clear and set the checkout page in main container
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(checkoutPage);
 
+            // Load Checkout CSS
             try {
                 String cssPath = getClass().getResource("/css/checkout.css").toExternalForm();
                 checkoutPage.getStylesheets().add(cssPath);
+                System.out.println("✅ Loaded Checkout CSS from: " + cssPath);
             } catch (Exception e) {
                 System.out.println("⚠️ Checkout CSS not found - " + e.getMessage());
             }
+
             System.out.println("✅ Successfully navigated to Checkout page (inline)");
 
         } catch (IOException e) {

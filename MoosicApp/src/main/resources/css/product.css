@@ -195,17 +195,42 @@
     -fx-text-fill: #C4EA57;
 }
 
-.logo-button {
+#logoButton {
     -fx-background-color: transparent;
-    -fx-padding: 0;
-    -fx-border-width: 0;
-    -fx-background-insets: 0;
-    -fx-background-radius: 0;
+    -fx-border-color: transparent;
     -fx-cursor: hand;
+    -fx-background-radius: 0;
+    -fx-border-radius: 0;
+    -fx-padding: 0;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
 }
 
-.logo-button:hover {
-    -fx-opacity: 1.2;
+#logoButton:hover {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
-    -fx-cursor: hand;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:pressed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:focused {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+}
+
+#logoButton:armed {
+    -fx-background-color: transparent !important;
+    -fx-border-color: transparent !important;
 }

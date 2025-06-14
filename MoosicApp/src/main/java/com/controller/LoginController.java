@@ -19,6 +19,9 @@ import javafx.application.Platform;
 import java.io.IOException;
 import java.net.URL;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.StackPane;
+
 
 public class LoginController {
 
@@ -26,6 +29,7 @@ public class LoginController {
     @FXML private PasswordField passwordField;
     @FXML private Label errorLabel;
     @FXML private Button loginButton;
+    @FXML private BorderPane mainContainer;
 
     private UserDAO userDAO;
 
@@ -60,10 +64,45 @@ public class LoginController {
 
     @FXML
     private void handleRegisterLinkAction() {
-        System.out.println("Register clicked!");
-        
-        // Navigate to register page with full screen
-        navigateToPage("/fxml/register.fxml", "Moosic - Register Account", "/css/register.css");
+        // 1. Informasi yang tadinya parameter, sekarang kita definisikan di sini
+        String fxmlPath = "/fxml/register.fxml";
+        String title = "Register Page";
+        String cssPath = "/css/register.css";
+
+        // 2. Sisa logika di dalamnya tetap sama persis
+        try {
+            System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent homePage = loader.load();
+
+            // Clear main container and set page
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
+
+            // Load CSS if provided
+            if (cssPath != null && !cssPath.isEmpty()) {
+                try {
+                    String cssUrl = getClass().getResource(cssPath).toExternalForm();
+                    homePage.getStylesheets().add(cssUrl);
+                    System.out.println("Loading CSS from: " + cssUrl);
+                } catch (Exception e) {
+                    System.out.println("CSS not found, using default styling");
+                }
+            }
+
+            System.out.println("Switched to " + title + " (inline)");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open page: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred while navigating: " + e.getMessage());
+        }
     }
 
     /**
@@ -76,61 +115,35 @@ public class LoginController {
         try {
             System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
+            Parent homePage = loader.load();
 
-            // Get current stage
-            Stage stage = (Stage) usernameField.getScene().getWindow();
-            
-            // Save current window state
-            boolean wasMaximized = stage.isMaximized();
-            double currentWidth = stage.getWidth();
-            double currentHeight = stage.getHeight();
-            
-            // Create scene with appropriate size
-            Scene scene;
-            if (wasMaximized) {
-                scene = new Scene(root, stage.getWidth(), stage.getHeight());
-            } else {
-                scene = new Scene(root, currentWidth, currentHeight);
-                // Force maximize for navigation
-                wasMaximized = true;
-            }
+            // Clear main container and set page
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
 
             // Load CSS if provided
-            if (cssPath != null) {
+            if (cssPath != null && !cssPath.isEmpty()) {
                 try {
-                    URL cssUrl = getClass().getResource(cssPath);
-                    if (cssUrl != null) {
-                        scene.getStylesheets().add(cssUrl.toExternalForm());
-                        System.out.println("✅ Loaded CSS: " + cssPath);
-                    } else {
-                        System.out.println("⚠️ CSS not found: " + cssPath);
-                    }
+                    String cssUrl = getClass().getResource(cssPath).toExternalForm();
+                    homePage.getStylesheets().add(cssUrl);
+                    System.out.println("Loading CSS from: " + cssUrl);
                 } catch (Exception e) {
-                    System.out.println("⚠️ Error loading CSS: " + cssPath + " - " + e.getMessage());
+                    System.out.println("CSS not found, using default styling");
                 }
             }
 
-            // Set scene
-            stage.setScene(scene);
-            stage.setTitle(title);
-            
-            // Force maximize window with enhanced method
-            ensureMaximizedWindow(stage);
-            
-            stage.show();
-            System.out.println("✅ Successfully navigated to " + title + " (Full Screen)");
+            System.out.println("Switched to " + title + " (inline)");
 
         } catch (IOException e) {
-            System.err.println("❌ IO Error navigating to " + title + ": " + e.getMessage());
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", 
-                     "Could not navigate to " + title + ". File not found: " + fxmlPath);
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open page: " + e.getMessage());
         } catch (Exception e) {
-            System.err.println("❌ Unexpected error navigating to " + title + ": " + e.getMessage());
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
-                     "An unexpected error occurred: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred while navigating: " + e.getMessage());
         }
     }
 

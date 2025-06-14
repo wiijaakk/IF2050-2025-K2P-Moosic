@@ -9,57 +9,73 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane fx:id="rootAnchorPane" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.controller.LoginController">
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.controller.LoginController">
     <children>
-        <ImageView fx:id="backgroundImageView" pickOnBounds="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <!-- Background layer (paling belakang) -->
+        <ImageView fx:id="backgroundImageView" pickOnBounds="false">
             <image>
                 <Image url="/image/backgroundlogin.png" />
             </image>
         </ImageView>
-
-        <VBox fx:id="loginFormBox" alignment="CENTER" spacing="10" maxWidth="675" maxHeight="924"
-              id="login-form-box" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="50.0">
-            <padding>
-                <Insets top="20" right="30" bottom="20" left="30" />
-            </padding>
-            <children>
-                <ImageView preserveRatio="true" smooth="true" fx:id="logoImageView">
-                    <image>
-                        <Image url="/image/logo.png" />
-                    </image>
-                    <VBox.margin>
-                        <Insets bottom="10.0" />
-                    </VBox.margin>
-                </ImageView>
-
-                <Label text="Username or E-mail address" styleClass="input-label" maxWidth="1.7976931348623157E308" />
-                <TextField fx:id="usernameField" promptText="Enter your username or email" styleClass="input-field"
-                           HBox.hgrow="ALWAYS" />
-
-                <Label text="Password" styleClass="input-label" maxWidth="1.7976931348623157E308" />
-                <PasswordField fx:id="passwordField" promptText="Enter your password" styleClass="input-field"
-                               HBox.hgrow="ALWAYS" />
-
-                <Label fx:id="errorLabel" text="The username or password you entered is incorrect."
-                       visible="false" styleClass="error-message" />
-
-                <Button text="Log In" onAction="#handleLoginButtonAction" styleClass="login-button"
-                        maxWidth="1.7976931348623157E308" />
-
-                <HBox alignment="CENTER" spacing="5">
+        
+        <!-- Main content layer (di atas background) -->
+        <BorderPane fx:id="mainContainer">
+            <center>
+                <AnchorPane>
                     <children>
-                        <Label text="Don't have an account?" styleClass="dont-have-account-label" />
-                        <Hyperlink text="Register" onAction="#handleRegisterLinkAction" styleClass="register-link" />
+                        <VBox fx:id="loginFormBox" alignment="CENTER" spacing="10" maxWidth="675" maxHeight="924"
+                              id="login-form-box" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0" 
+                              AnchorPane.bottomAnchor="50.0">
+                            <padding>
+                                <Insets top="20" right="30" bottom="20" left="30" />
+                            </padding>
+                            <children>
+                                <ImageView preserveRatio="true" smooth="true" fx:id="logoImageView">
+                                    <image>
+                                        <Image url="/image/logo.png" />
+                                    </image>
+                                    <VBox.margin>
+                                        <Insets bottom="10.0" />
+                                    </VBox.margin>
+                                </ImageView>
+
+                                <Label text="Username or E-mail address" styleClass="input-label" 
+                                       maxWidth="1.7976931348623157E308" />
+                                <TextField fx:id="usernameField" promptText="Enter your username or email" 
+                                          styleClass="input-field" HBox.hgrow="ALWAYS" />
+
+                                <Label text="Password" styleClass="input-label" 
+                                       maxWidth="1.7976931348623157E308" />
+                                <PasswordField fx:id="passwordField" promptText="Enter your password" 
+                                              styleClass="input-field" HBox.hgrow="ALWAYS" />
+
+                                <Label fx:id="errorLabel" text="The username or password you entered is incorrect."
+                                       visible="false" styleClass="error-message" />
+
+                                <Button text="Log In" onAction="#handleLoginButtonAction" styleClass="login-button"
+                                        maxWidth="1.7976931348623157E308" />
+
+                                <HBox alignment="CENTER" spacing="5">
+                                    <children>
+                                        <Label text="Don't have an account?" styleClass="dont-have-account-label" />
+                                        <Hyperlink text="Register" onAction="#handleRegisterLinkAction" 
+                                                  styleClass="register-link" />
+                                    </children>
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </HBox>
+                            </children>
+                        </VBox>
                     </children>
-                    <VBox.margin>
-                        <Insets top="10.0" />
-                    </VBox.margin>
-                </HBox>
-            </children>
-        </VBox>
+                </AnchorPane>
+            </center>
+        </BorderPane>
     </children>
-</AnchorPane>
+</StackPane>
