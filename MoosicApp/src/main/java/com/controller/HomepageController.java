@@ -458,66 +458,51 @@ public class HomepageController {
         }
     }
     
-    public void navigateToProductDetail(AllProduct product) {
+    private void navigateToProductDetail(AllProduct product) {
+        System.out.println("Anda mengklik produk: " + product.getName()); // kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        currProductID = product.getId();
+        
         if (!isValidProduct(product)) {
             System.out.println("Cannot navigate: invalid product");
             return;
         }
+        
         currProductID = product.getId();
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
-            Parent root = loader.load();
+            Parent productPage = loader.load();
             
+            // Initialize product controller with data
             ProductController productController = loader.getController();
             productController.initData(currProductID);
             
-            if (searchField != null) {
-                Stage stage = (Stage) searchField.getScene().getWindow();
-                
-                // Save window state
-                boolean wasMaximized = stage.isMaximized();
-                double currentWidth = stage.getWidth();
-                double currentHeight = stage.getHeight();
-                double currentX = stage.getX();
-                double currentY = stage.getY();
-                
-                // Create scene with same size as current stage
-                Scene scene;
-                if (wasMaximized) {
-                    scene = new Scene(root, stage.getWidth(), stage.getHeight());
-                } else {
-                    scene = new Scene(root, currentWidth, currentHeight);
-                }
-                
-                stage.setScene(scene);
-                stage.setTitle("Moose - Product Details");
-                
-                // Force window state immediately after scene change
-                if (wasMaximized) {
-                    stage.setMaximized(false);
-                    stage.setMaximized(true);
-                } else {
-                    stage.setWidth(currentWidth);
-                    stage.setHeight(currentHeight);
-                    stage.setX(currentX);
-                    stage.setY(currentY);
-                }
-                
-                // Final check with Platform.runLater
-                javafx.application.Platform.runLater(() -> {
-                    if (wasMaximized && !stage.isMaximized()) {
-                        stage.setMaximized(true);
-                    }
-                    stage.toFront();
-                    stage.requestFocus();
-                    System.out.println("Final window state - Maximized: " + stage.isMaximized());
-                });
+            // Clear main container and set product page
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(productPage);
+            
+            // Load product page CSS
+            try {
+                String cssPath = getClass().getResource("/css/product.css").toExternalForm();
+                productPage.getStylesheets().clear();
+                productPage.getStylesheets().add(cssPath);
+                System.out.println("Loading Product CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Product CSS not found, using default styling");
             }
             
+            System.out.println("Switched to Product Detail Page (inline) - Product ID: " + currProductID);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open product detail page: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred while navigating to product detail: " + e.getMessage());
         }
     }
     
