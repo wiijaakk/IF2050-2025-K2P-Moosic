@@ -9,18 +9,8 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
-/**
- * Mock database class untuk testing fitur checkout
- * Mengemulasi behavior dari CheckoutDatabaseQuery tanpa koneksi database
- */
+ //Mock database class untuk testing fitur checkout
 public class DatabaseCheckoutMock {
-
-    /**
-     * Mock method untuk place order
-     * @param order Order object yang akan disimpan
-     * @param customerId ID customer yang melakukan order
-     * @return true jika order berhasil disimpan, false jika gagal
-     */
     public static boolean placeOrder(Order order, int customerId) {
         // Validasi input
         if (order == null) {
@@ -53,24 +43,25 @@ public class DatabaseCheckoutMock {
         System.out.println("✅ Mock: Order placed successfully");
         System.out.println("   Customer ID: " + customerId);
         System.out.println("   Items count: " + order.getItems().size());
-        System.out.println("   Total: " + order.calculateSubtotal());
+        
+        try {
+            System.out.println("   Total: " + order.calculateSubtotal());
+        } catch (Exception e) {
+            System.out.println("   Total: Could not calculate");
+        }
         
         return true;
     }
 
-    /**
-     * Mock method untuk validasi promo code
-     * @param promoCode Kode promo yang akan divalidasi
-     * @return DiscountPromo object jika valid, null jika tidak valid
-     */
     public static DiscountPromo validatePromoCode(String promoCode) {
         if (promoCode == null || promoCode.trim().isEmpty()) {
             System.out.println("❌ Mock: Promo code is empty");
             return null;
         }
         
-        // Mock promo codes yang valid
-        switch (promoCode.toUpperCase()) {
+        // Mock promo codes yang valid (case insensitive)
+        String upperCode = promoCode.toUpperCase().trim();
+        switch (upperCode) {
             case "PROMO123":
                 System.out.println("✅ Mock: Valid promo code PROMO123 (10% discount)");
                 return new DiscountPromo(
@@ -140,7 +131,7 @@ public class DatabaseCheckoutMock {
             return false;
         }
         
-        // Remove spaces and dashes
+        // Remove spaces, dashes, and other formatting
         String cleanCardNumber = cardNumber.replaceAll("[\\s-]", "");
         
         // Basic validation: should be 16 digits

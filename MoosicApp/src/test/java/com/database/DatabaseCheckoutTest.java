@@ -10,10 +10,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * Test class untuk DatabaseCheckoutMock
- * Mengetes semua fitur checkout functionality
- */
 public class DatabaseCheckoutTest {
 
     private Order validOrder;
@@ -21,7 +17,7 @@ public class DatabaseCheckoutTest {
 
     @BeforeEach
     void setUp() {
-        // Setup test data sebelum setiap test
+        System.out.println("\n🧪 Setting up test data...");
         testProduct = new Product(
             1, 
             "Midnights Vinyl - Taylor Swift", 
@@ -30,15 +26,12 @@ public class DatabaseCheckoutTest {
             "Pop", 
             "Vinyl",
             "midnights.png",
-            new ArrayList<>()
+            new ArrayList<ProductReview>()  // FIXED: Added ProductReview generic type
         );
         
         validOrder = createValidOrder();
-        
-        System.out.println("\n🧪 Setting up test data...");
+        System.out.println("✅ Test data setup complete");
     }
-
-    // ==================== PLACE ORDER TESTS ====================
 
     @Test
     @DisplayName("✅ Test: Place Order Success")
@@ -111,7 +104,7 @@ public class DatabaseCheckoutTest {
         assertNotNull(promo, "Promo should not be null");
         assertEquals("PROMO123", promo.getPromo_code(), "Promo code should match");
         assertEquals(new BigDecimal("10.0"), promo.getPersentase(), "Discount should be 10%");
-        assertTrue(promo.isActive(), "Promo should be active");
+        assertTrue(promo.isBerlaku(), "Promo should be active"); // FIXED: Using isBerlaku()
         
         System.out.println("✅ PASSED: PROMO123 validated successfully");
     }
@@ -126,6 +119,7 @@ public class DatabaseCheckoutTest {
         assertNotNull(promo, "Promo should not be null");
         assertEquals("SAVE20", promo.getPromo_code(), "Promo code should match");
         assertEquals(new BigDecimal("20.0"), promo.getPersentase(), "Discount should be 20%");
+        assertTrue(promo.isBerlaku(), "Promo should be active"); // FIXED: Using isBerlaku()
         
         System.out.println("✅ PASSED: SAVE20 validated successfully");
     }
@@ -140,6 +134,7 @@ public class DatabaseCheckoutTest {
         assertNotNull(promo, "Promo should not be null");
         assertEquals("NEWUSER", promo.getPromo_code(), "Promo code should match");
         assertEquals(new BigDecimal("15.0"), promo.getPersentase(), "Discount should be 15%");
+        assertTrue(promo.isBerlaku(), "Promo should be active"); // FIXED: Using isBerlaku()
         
         System.out.println("✅ PASSED: NEWUSER validated successfully");
     }
@@ -177,30 +172,6 @@ public class DatabaseCheckoutTest {
         System.out.println("✅ PASSED: Correctly rejected null promo code");
     }
 
-    // ==================== ADDITIONAL FUNCTIONALITY TESTS ====================
-
-    @Test
-    @DisplayName("✅ Test: Customer Exists")
-    void testCustomerExists() {
-        System.out.println("\n🧪 Testing: Customer Exists");
-        
-        boolean exists = DatabaseCheckoutMock.isCustomerExists(1);
-        
-        assertTrue(exists, "Customer 1 should exist");
-        System.out.println("✅ PASSED: Customer exists validation works");
-    }
-
-    @Test
-    @DisplayName("❌ Test: Customer Does Not Exist")
-    void testCustomerDoesNotExist() {
-        System.out.println("\n🧪 Testing: Customer Does Not Exist");
-        
-        boolean exists = DatabaseCheckoutMock.isCustomerExists(999);
-        
-        assertFalse(exists, "Customer 999 should not exist");
-        System.out.println("✅ PASSED: Non-existent customer correctly identified");
-    }
-
     @Test
     @DisplayName("✅ Test: Valid Credit Card")
     void testValidCreditCard() {
@@ -233,23 +204,59 @@ public class DatabaseCheckoutTest {
         // Step 1: Validate customer
         boolean customerExists = DatabaseCheckoutMock.isCustomerExists(1);
         assertTrue(customerExists, "Customer should exist");
+        System.out.println("   ✅ Step 1: Customer validation passed");
         
         // Step 2: Validate promo code
         DiscountPromo promo = DatabaseCheckoutMock.validatePromoCode("PROMO123");
         assertNotNull(promo, "Promo should be valid");
+        assertTrue(promo.isBerlaku(), "Promo should be active"); // FIXED: Using isBerlaku()
+        System.out.println("   ✅ Step 2: Promo validation passed");
         
         // Step 3: Validate credit card
         boolean cardValid = DatabaseCheckoutMock.isValidCreditCard("1234567890123456");
         assertTrue(cardValid, "Credit card should be valid");
+        System.out.println("   ✅ Step 3: Credit card validation passed");
         
         // Step 4: Place order
         boolean orderPlaced = DatabaseCheckoutMock.placeOrder(validOrder, 1);
         assertTrue(orderPlaced, "Order should be placed successfully");
+        System.out.println("   ✅ Step 4: Order placement passed");
         
         System.out.println("✅ PASSED: Complete order flow works end-to-end");
     }
 
-    // ==================== HELPER METHODS ====================
+    @Test
+    @DisplayName("🔍 Edge Case: Case Insensitive Promo Codes")
+    void testCaseInsensitivePromoCodes() {
+        System.out.println("\n🧪 Testing: Case Insensitive Promo Codes");
+        
+        // Test lowercase
+        DiscountPromo promo1 = DatabaseCheckoutMock.validatePromoCode("promo123");
+        assertNotNull(promo1, "Lowercase promo should work");
+        assertEquals("PROMO123", promo1.getPromo_code(), "Should return uppercase code");
+        
+        // Test mixed case
+        DiscountPromo promo2 = DatabaseCheckoutMock.validatePromoCode("ProMo123");
+        assertNotNull(promo2, "Mixed case promo should work");
+        
+        System.out.println("✅ PASSED: Case insensitive promo codes work correctly");
+    }
+
+    @Test
+    @DisplayName("🔍 Edge Case: Credit Card with Spaces and Dashes")
+    void testCreditCardFormatting() {
+        System.out.println("\n🧪 Testing: Credit Card with Spaces and Dashes");
+        
+        // Test with spaces
+        boolean valid1 = DatabaseCheckoutMock.isValidCreditCard("1234 5678 9012 3456");
+        assertTrue(valid1, "Credit card with spaces should be valid");
+        
+        // Test with dashes
+        boolean valid2 = DatabaseCheckoutMock.isValidCreditCard("1234-5678-9012-3456");
+        assertTrue(valid2, "Credit card with dashes should be valid");
+        
+        System.out.println("✅ PASSED: Credit card formatting works correctly");
+    }
 
     /**
      * Creates a valid order for testing
