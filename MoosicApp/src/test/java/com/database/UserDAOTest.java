@@ -4,19 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-public class UserDAOTest { // Ubah nama kelas dari UserAuthTest menjadi UserDAOTest
+public class UserDAOTest { 
 
-    // Ganti UserAuth dengan UserDAO
-    // Kita akan menggunakan mock untuk menghindari koneksi database saat unit testing
+   
     private UserDAO userDAO;
 
     @BeforeEach
     void setUp() {
-        // Inisialisasi mock sebelum setiap tes
         userDAO = new UserDAOMock();
     }
 
-    // --- Tes untuk Fitur Login ---
+  
     @Test
     void testLoginBerhasilSebagaiAdminUsername() {
         String result = userDAO.login("admin", "admin123");
@@ -33,7 +31,7 @@ public class UserDAOTest { // Ubah nama kelas dari UserAuthTest menjadi UserDAOT
 
     @Test
     void testLoginBerhasilSebagaiCustomer() {
-        // Asumsi ada user "user" di mock Anda atau tambahkan di UserDAOMock
+        
         String result = userDAO.login("user", "user123");
         assertTrue(result.contains("Berhasil"), "Login seharusnya berhasil untuk customer.");
         assertTrue(result.contains("customer"), "Login seharusnya mengidentifikasi sebagai customer.");
@@ -59,7 +57,6 @@ public class UserDAOTest { // Ubah nama kelas dari UserAuthTest menjadi UserDAOT
         assertTrue(result.contains("Gagal"), "Login seharusnya gagal jika input kosong.");
     }
 
-    // --- Tes untuk Fitur Register ---
     @Test
     void testRegisterBerhasil() {
         boolean result = userDAO.register("new_user", "pass123", "newuser@example.com", "New User", "Jl. Baru");
@@ -80,17 +77,13 @@ public class UserDAOTest { // Ubah nama kelas dari UserAuthTest menjadi UserDAOT
 
     @Test
     void testRegisterGagalKasusErrorMock() {
-        // Contoh skenario di mana mock mengembalikan kegagalan yang disimulasikan
         boolean result = userDAO.register("error_case", "anypass", "any@example.com", "Error User", "Any Address");
         assertFalse(result, "Registrasi seharusnya gagal pada kasus error yang disimulasikan.");
     }
 
-    // --- Tes untuk Fitur Logout ---
+ 
     @Test
     void testLogout() {
-        // Metode logout di UserDAO hanya mencetak pesan, jadi kita bisa tes bahwa ia tidak menyebabkan error
-        // atau jika Anda menggunakan framework mock seperti Mockito, Anda bisa memverifikasi bahwa metode logout dipanggil.
-        // Untuk saat ini, karena hanya mencetak, kita asumsikan jika tidak ada exception berarti berhasil.
         assertDoesNotThrow(() -> userDAO.logout());
     }
 }

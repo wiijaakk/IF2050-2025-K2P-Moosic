@@ -18,14 +18,10 @@ public class Checkout extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
-        // Font.loadFont(getClass().getResourceAsStream("/fonts/Alata-Regular.ttf"), 10);
-        // Font.loadFont(getClass().getResourceAsStream("/fonts/AlbertSans-Bold.ttf"), 10);
+       
         Parent root = loader.load();
 
-        // Set StageStyle to UNDECORATED to remove default window frame
-        // primaryStage.initStyle(StageStyle.UNDECORATED);
-
-        // Make the stage draggable
+        
         root.setOnMousePressed(event -> {
             xOffset = event.getSceneX();
             yOffset = event.getSceneY();

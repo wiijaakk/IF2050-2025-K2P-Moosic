@@ -1,14 +1,14 @@
-/* Mengimpor font Alata dari folder resources/font */
+
 @font-face {
     font-family: 'Alata';
-    src: url('../font/Alata.ttf'); /* Pastikan path ini benar */
+    src: url('../font/Alata.ttf'); 
 }
 
 .root-pane {
     -fx-background-color: #E5E9D6;
     -fx-font-family: 'Alata';
 }
-/* Pastikan semua font yang ingin menggunakan Alata secara eksplisit menentukannya */
+
 .root {
     -fx-background-color: #E5E9D6;
     -fx-font-family: 'Alata';
@@ -48,7 +48,7 @@
 }
 
 .scroll-pane > .viewport {
-   -fx-background-color: transparent; /* Membuat area scroll transparan */
+   -fx-background-color: transparent; 
 }
 
 .scroll-pane-content {

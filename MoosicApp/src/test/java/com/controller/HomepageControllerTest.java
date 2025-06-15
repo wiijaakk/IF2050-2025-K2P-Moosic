@@ -9,11 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import com.model.AllProduct;
 import java.math.BigDecimal;
 
-/**
- * FIXED: Unit Test untuk HomepageController
- * Updated to use correct AllProduct constructor (9 parameters)
- * Fixed constructor calls to match: (int id, String name, String desc, BigDecimal price, String genre, String variant, String image, Float rating, int sold)
- */
+
 public class HomepageControllerTest {
 
     private HomepageController homepageController;
@@ -23,10 +19,6 @@ public class HomepageControllerTest {
         homepageController = new HomepageController();
     }
 
-    // ===============================================
-    // TEST GROUP 1: Search Validation Logic
-    // ===============================================
-    
     @Nested
     @DisplayName("Search Validation Tests")
     class SearchValidationTests {
@@ -81,10 +73,7 @@ public class HomepageControllerTest {
         }
     }
 
-    // ===============================================
-    // TEST GROUP 2: AllProduct Validation Logic
-    // ===============================================
-    
+   
     @Nested
     @DisplayName("AllProduct Validation Tests")
     class AllProductValidationTests {
@@ -92,7 +81,7 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should validate valid AllProduct")
         void testValidAllProduct() {
-            // FIXED: Use correct constructor (id, name, desc, price, genre, variant, image, rating, sold)
+            
             AllProduct validProduct = new AllProduct(
                 1, "Midnights Vinyl", "Taylor Swift album", 
                 new BigDecimal("525000"), "Pop", "Vinyl", "midnights.png", 4.5f, 15
@@ -113,7 +102,7 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should reject AllProduct with null name")
         void testAllProductWithNullName() {
-            // FIXED: Use correct constructor
+           
             AllProduct productWithNullName = new AllProduct(
                 1, null, "Description", new BigDecimal("100000"), 
                 "Pop", "CD", "image.png", 4.0f, 10
@@ -126,7 +115,7 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should reject AllProduct with empty name")
         void testAllProductWithEmptyName() {
-            // FIXED: Use correct constructor
+           
             AllProduct productWithEmptyName = new AllProduct(
                 1, "", "Description", new BigDecimal("100000"), 
                 "Pop", "CD", "image.png", 4.0f, 10
@@ -139,7 +128,7 @@ public class HomepageControllerTest {
         @Test
         @DisplayName("Should validate AllProduct with different genres")
         void testAllProductDifferentGenres() {
-            // FIXED: Use correct constructor for all products
+           
             AllProduct popProduct = new AllProduct(
                 1, "Pop Album", "Description", new BigDecimal("100000"), 
                 "Pop", "CD", "pop.png", 4.0f, 5
@@ -161,9 +150,6 @@ public class HomepageControllerTest {
         }
     }
 
-    // ===============================================
-    // TEST GROUP 3: Shopping Cart Logic
-    // ===============================================
     
     @Nested
     @DisplayName("Shopping Cart Tests")
@@ -266,9 +252,6 @@ public class HomepageControllerTest {
         }
     }
 
-    // ===============================================
-    // TEST GROUP 4: Basic Integration Tests
-    // ===============================================
     
     @Nested
     @DisplayName("Integration Tests")
@@ -285,7 +268,7 @@ public class HomepageControllerTest {
             AllProduct validProduct = new AllProduct(1, "Test Album", "Desc", new BigDecimal("50000"), "Pop", "CD", "test.png", 4.0f, 3);
             assertTrue(homepageController.isValidProduct(validProduct));
             
-            // Test cart operations
+   
             homepageController.getShoppingCart().add(validProduct);
             assertEquals(1, homepageController.getCartItemCount());
             assertTrue(homepageController.isProductInCart(validProduct));
@@ -340,10 +323,7 @@ public class HomepageControllerTest {
         }
     }
 
-    // ===============================================
-    // TEST GROUP 5: Additional Edge Cases
-    // ===============================================
-    
+  
     @Nested
     @DisplayName("Additional Edge Case Tests")
     class AdditionalEdgeCaseTests {

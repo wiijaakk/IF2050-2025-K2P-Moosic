@@ -10,7 +10,7 @@ public class RegisterServiceTest {
     @Test
     void testValidUsername() {
         assertTrue(service.isValidUsername("irdina123"));
-        assertFalse(service.isValidUsername("a")); // terlalu pendek
+        assertFalse(service.isValidUsername("a")); 
     }
 
     @Test

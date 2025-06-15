@@ -9,10 +9,10 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
- //Mock database class untuk testing fitur checkout
+ 
 public class DatabaseCheckoutMock {
     public static boolean placeOrder(Order order, int customerId) {
-        // Validasi input
+       
         if (order == null) {
             System.out.println("❌ Mock: Order is null");
             return false;
@@ -28,7 +28,7 @@ public class DatabaseCheckoutMock {
             return false;
         }
         
-        // Validasi required fields
+        
         if (order.getShippingName() == null || order.getShippingName().trim().isEmpty()) {
             System.out.println("❌ Mock: Shipping name is required");
             return false;
@@ -39,7 +39,7 @@ public class DatabaseCheckoutMock {
             return false;
         }
         
-        // Simulate successful order placement
+       
         System.out.println("✅ Mock: Order placed successfully");
         System.out.println("   Customer ID: " + customerId);
         System.out.println("   Items count: " + order.getItems().size());
@@ -59,7 +59,7 @@ public class DatabaseCheckoutMock {
             return null;
         }
         
-        // Mock promo codes yang valid (case insensitive)
+       
         String upperCode = promoCode.toUpperCase().trim();
         switch (upperCode) {
             case "PROMO123":
@@ -104,13 +104,9 @@ public class DatabaseCheckoutMock {
         }
     }
     
-    /**
-     * Mock method untuk mendapatkan customer berdasarkan ID
-     * @param customerId ID customer
-     * @return true jika customer exists, false jika tidak
-     */
+    
     public static boolean isCustomerExists(int customerId) {
-        // Mock: customer ID 1-100 dianggap valid
+       
         boolean exists = customerId > 0 && customerId <= 100;
         if (exists) {
             System.out.println("✅ Mock: Customer " + customerId + " exists");
@@ -120,21 +116,17 @@ public class DatabaseCheckoutMock {
         return exists;
     }
     
-    /**
-     * Mock method untuk validasi credit card
-     * @param cardNumber Nomor credit card
-     * @return true jika valid, false jika tidak valid
-     */
+   
     public static boolean isValidCreditCard(String cardNumber) {
         if (cardNumber == null || cardNumber.trim().isEmpty()) {
             System.out.println("❌ Mock: Credit card number is empty");
             return false;
         }
         
-        // Remove spaces, dashes, and other formatting
+        
         String cleanCardNumber = cardNumber.replaceAll("[\\s-]", "");
         
-        // Basic validation: should be 16 digits
+        
         if (!cleanCardNumber.matches("\\d{16}")) {
             System.out.println("❌ Mock: Invalid credit card format");
             return false;

@@ -15,7 +15,7 @@ public class Order {
 
     private String cardFullName;
     private String cardNumber;
-    private String cardExpirationDate; // Format "MM/YY"
+    private String cardExpirationDate;
     private String cardCvv;
 
     private List<OrderItem> items;

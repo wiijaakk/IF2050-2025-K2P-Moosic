@@ -123,6 +123,7 @@
                         </VBox.margin>
                     </VBox>
 
+            
                     <VBox alignment="CENTER" spacing="30.0" styleClass="sectionA">
                         <padding>
                             <Insets top="40.0" right="0.0" bottom="0.0" left="0.0"/>
@@ -137,6 +138,7 @@
                         </children>
                     </VBox>
 
+                 
                     <VBox alignment="CENTER" spacing="20.0" styleClass="sectionB">
                         <padding>
                             <Insets top="0.0" right="0.0" bottom="40.0" left="0.0"/>

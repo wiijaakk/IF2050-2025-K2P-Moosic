@@ -29,7 +29,7 @@ class TransactionDAOTest {
     @AfterEach
     void tearDown() throws SQLException {
         if (conn != null) {
-            conn.rollback(); // Membatalkan semua perubahan setelah tes
+            conn.rollback(); 
             conn.close();
         }
     }
@@ -42,7 +42,6 @@ class TransactionDAOTest {
         cart.put(1, 2);
         cart.put(2, 1);
 
-        // Menghitung total harga yang diharapkan
         BigDecimal priceOfProduct1 = getProductPrice(1);
         BigDecimal priceOfProduct2 = getProductPrice(2);
         BigDecimal expectedTotalPrice = priceOfProduct1.multiply(new BigDecimal(2)).add(priceOfProduct2);

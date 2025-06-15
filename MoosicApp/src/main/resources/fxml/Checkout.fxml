@@ -21,6 +21,7 @@
             fx:controller="com.controller.CheckoutController" styleClass="root-pane"
             stylesheets="@../css/Checkout.css" fx:id="mainContainer">
 
+ 
     <top>
         <VBox spacing="10.0">
             <children>
@@ -71,7 +72,7 @@
                         <Insets top="10" right="40" bottom="10" left="40"/>
                     </padding>
 
-                    <!-- Back Button and Title -->
+                
                     <HBox spacing="15" alignment="CENTER_LEFT">
                         <children>
                             <Button fx:id="backButton" prefWidth="45" prefHeight="45" styleClass="back-button-container"
@@ -89,6 +90,7 @@
                         </children>
                     </HBox>
 
+                   
                     <VBox spacing="10">
                         <Label text="Shipping Information" styleClass="subtitle-label"/>
                         <GridPane hgap="20" vgap="8">
@@ -129,6 +131,7 @@
                         </GridPane>
                     </VBox>
 
+              
                     <VBox spacing="10">
                         <Label text="Your Order" styleClass="subtitle-label"/>
                         <HBox spacing="10" alignment="CENTER_LEFT" prefHeight="90" styleClass="order-item-container">
@@ -157,6 +160,7 @@
                         </HBox>
                     </VBox>
 
+                
                     <VBox spacing="10">
                         <Label text="Payment Details" styleClass="subtitle-label"/>
                         <GridPane hgap="20" vgap="8">
@@ -186,6 +190,7 @@
                         </GridPane>
                     </VBox>
 
+             
                     <VBox spacing="10">
                         <Label text="Promo" styleClass="subtitle-label"/>
                         <VBox maxWidth="400" spacing="4">
@@ -198,6 +203,7 @@
         </ScrollPane>
     </center>
 
+    
     <bottom>
         <VBox styleClass="footer">
             <HBox alignment="CENTER_LEFT" spacing="50" HBox.hgrow="ALWAYS">
