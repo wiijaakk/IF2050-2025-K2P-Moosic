@@ -42,33 +42,42 @@ import java.util.ResourceBundle;
 
 public class ProductController implements Initializable {
 
-    @FXML private Button logoButton;
-    @FXML private Button promotionNavButton;
-    @FXML private Button cartNavButton;
-    @FXML private Button shopNavButton;
-    @FXML private Button orderNavButton;
-    @FXML private Hyperlink backToShopLink;
-    @FXML private Label productTitleLabel;
-    @FXML private Label productPriceLabel;
-    @FXML private Label productDescriptionLabel;
-    @FXML private ImageView productImageView;
-    @FXML private Label ratingSummaryLabel;
-    @FXML private Label reviewCountLabel;
-    @FXML private VBox reviewListContainer;
-    @FXML private Button viewMoreButton;
-    @FXML private Button viewLessButton;
-    @FXML private Label quantityLabel;
-    @FXML private Button checkoutButton;
-    @FXML private BorderPane mainContainer;
+    // CHANGED: Made fields package-private for testing access
+    @FXML Button logoButton;
+    @FXML Button promotionNavButton;
+    @FXML Button cartNavButton;
+    @FXML Button shopNavButton;
+    @FXML Button orderNavButton;
+    @FXML Hyperlink backToShopLink;
+    @FXML Label productTitleLabel;
+    @FXML Label productPriceLabel;
+    @FXML Label productDescriptionLabel;
+    @FXML ImageView productImageView;
+    @FXML Label ratingSummaryLabel;
+    @FXML Label reviewCountLabel;
+    @FXML VBox reviewListContainer;
+    @FXML Button viewMoreButton;
+    @FXML Button viewLessButton;
+    @FXML Label quantityLabel;
+    @FXML Button checkoutButton;
+    @FXML BorderPane mainContainer;
 
-    private Product currentProduct;
-    private List<ProductReview> allProductReviews;
-    private static final int INITIAL_REVIEW_COUNT = 2;
-    private final IntegerProperty quantity = new SimpleIntegerProperty(1);
+    // CHANGED: Made fields package-private for testing access
+    Product currentProduct;
+    List<ProductReview> allProductReviews;
+    static final int INITIAL_REVIEW_COUNT = 2;
+    final IntegerProperty quantity = new SimpleIntegerProperty(1);
+
+    // ADDED: Fields that were referenced in tests but missing
+    @FXML ImageView logoImageView;
+    @FXML Button decreaseQuantityButton;
+    @FXML Button increaseQuantityButton;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        quantityLabel.textProperty().bind(quantity.asString());
+        if (quantityLabel != null) {
+            quantityLabel.textProperty().bind(quantity.asString());
+        }
 
         if (shopNavButton != null) {
             shopNavButton.getStyleClass().add("active");
@@ -84,60 +93,105 @@ public class ProductController implements Initializable {
             updateReviewSummary();
             displayReviews(INITIAL_REVIEW_COUNT);
         } else {
-            productTitleLabel.setText("Product Not Found");
-            reviewListContainer.getChildren().add(new Label("Could not load product details."));
-            checkoutButton.setDisable(true);
-            viewMoreButton.setVisible(false);
-            viewLessButton.setVisible(false);
+            if (productTitleLabel != null) {
+                productTitleLabel.setText("Product Not Found");
+            }
+            if (reviewListContainer != null) {
+                reviewListContainer.getChildren().add(new Label("Could not load product details."));
+            }
+            if (checkoutButton != null) {
+                checkoutButton.setDisable(true);
+            }
+            if (viewMoreButton != null) {
+                viewMoreButton.setVisible(false);
+            }
+            if (viewLessButton != null) {
+                viewLessButton.setVisible(false);
+            }
         }
     }
 
     private void populateProductData(Product product) {
-        productTitleLabel.setText(product.getName());
-        productDescriptionLabel.setText(product.getDescription());
-        NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(Locale.of("id", "ID"));
-        productPriceLabel.setText(currencyFormatter.format(product.getPrice()));
+        if (productTitleLabel != null) {
+            productTitleLabel.setText(product.getName());
+        }
+        if (productDescriptionLabel != null) {
+            productDescriptionLabel.setText(product.getDescription());
+        }
+        if (productPriceLabel != null) {
+            NumberFormat currencyFormatter = NumberFormat.getCurrencyInstance(new Locale("id", "ID"));
+            productPriceLabel.setText(currencyFormatter.format(product.getPrice()));
+        }
 
-        Image image = createSafeImage(product.getGambar());
-        productImageView.setImage(image != null ? image : createSafeImage("/image/placeholder.png"));
+        if (productImageView != null) {
+            Image image = createSafeImage(product.getGambar());
+            productImageView.setImage(image != null ? image : createSafeImage("/image/placeholder.png"));
+        }
     }
 
     private void updateReviewSummary() {
         if (allProductReviews == null || allProductReviews.isEmpty()) {
-            ratingSummaryLabel.setText("N/A");
-            reviewCountLabel.setText("from 0 reviews");
+            if (ratingSummaryLabel != null) {
+                ratingSummaryLabel.setText("N/A");
+            }
+            if (reviewCountLabel != null) {
+                reviewCountLabel.setText("from 0 reviews");
+            }
             return;
         }
         double averageRating = allProductReviews.stream()
                 .mapToDouble(ProductReview::getStar)
                 .average()
                 .orElse(0.0);
-        ratingSummaryLabel.setText(String.format("%.1f / 5", averageRating));
-        reviewCountLabel.setText("from " + allProductReviews.size() + " reviews");
+        if (ratingSummaryLabel != null) {
+            ratingSummaryLabel.setText(String.format("%.1f / 5", averageRating));
+        }
+        if (reviewCountLabel != null) {
+            reviewCountLabel.setText("from " + allProductReviews.size() + " reviews");
+        }
     }
 
     private void displayReviews(int limit) {
-        reviewListContainer.getChildren().clear();
+        if (reviewListContainer != null) {
+            reviewListContainer.getChildren().clear();
+        }
+        
         if (allProductReviews == null || allProductReviews.isEmpty()) {
-            reviewListContainer.getChildren().add(new Label("No reviews for this product yet."));
-            viewMoreButton.setVisible(false);
-            viewLessButton.setVisible(false);
+            if (reviewListContainer != null) {
+                reviewListContainer.getChildren().add(new Label("No reviews for this product yet."));
+            }
+            if (viewMoreButton != null) {
+                viewMoreButton.setVisible(false);
+            }
+            if (viewLessButton != null) {
+                viewLessButton.setVisible(false);
+            }
             return;
         }
 
         allProductReviews.stream().limit(limit).forEach(review -> {
-            reviewListContainer.getChildren().add(createReviewCard(review));
+            if (reviewListContainer != null) {
+                reviewListContainer.getChildren().add(createReviewCard(review));
+            }
         });
 
         boolean hasMoreReviews = allProductReviews.size() > INITIAL_REVIEW_COUNT;
         boolean isExpanded = limit >= allProductReviews.size();
         
         if (hasMoreReviews) {
-            viewMoreButton.setVisible(!isExpanded);
-            viewLessButton.setVisible(isExpanded);
+            if (viewMoreButton != null) {
+                viewMoreButton.setVisible(!isExpanded);
+            }
+            if (viewLessButton != null) {
+                viewLessButton.setVisible(isExpanded);
+            }
         } else {
-            viewMoreButton.setVisible(false);
-            viewLessButton.setVisible(false);
+            if (viewMoreButton != null) {
+                viewMoreButton.setVisible(false);
+            }
+            if (viewLessButton != null) {
+                viewLessButton.setVisible(false);
+            }
         }
     }
 
@@ -208,10 +262,12 @@ public class ProductController implements Initializable {
             System.out.println(" Price: " + currentProduct.getPrice());
 
             // Clear and set the checkout page in main container
-            mainContainer.setTop(null);
-            mainContainer.setBottom(null);
-            mainContainer.setCenter(null);
-            mainContainer.setCenter(checkoutPage);
+            if (mainContainer != null) {
+                mainContainer.setTop(null);
+                mainContainer.setBottom(null);
+                mainContainer.setCenter(null);
+                mainContainer.setCenter(checkoutPage);
+            }
 
             // Load Checkout CSS
             try {
@@ -354,21 +410,27 @@ public class ProductController implements Initializable {
 
     // ==================== OTHER NAVIGATION HANDLERS ====================
 
-    @FXML private void handleViewMore() {
+    @FXML 
+    public void handleViewMore() {
         if (allProductReviews != null) {
             displayReviews(allProductReviews.size());
         }
     }
 
-    @FXML private void handleViewLess() {
+    @FXML 
+    public void handleViewLess() {
         displayReviews(INITIAL_REVIEW_COUNT);
     }
 
-    @FXML private void handleIncreaseQuantity() {
+    // CHANGED: Made public for testing access
+    @FXML 
+    public void handleIncreaseQuantity() {
         quantity.set(quantity.get() + 1);
     }
 
-    @FXML private void handleDecreaseQuantity() {
+    // CHANGED: Made public for testing access
+    @FXML 
+    public void handleDecreaseQuantity() {
         if (quantity.get() > 1) {
             quantity.set(quantity.get() - 1);
         }
@@ -382,15 +444,12 @@ public class ProductController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Shop.fxml"));
             Parent shopPage = loader.load();
 
-            // GUNAKAN INI untuk BorderPane:
-            mainContainer.setTop(null);
-            mainContainer.setBottom(null);
-            mainContainer.setCenter(null);
-            mainContainer.setCenter(shopPage);
-
-            // JANGAN gunakan ini untuk BorderPane:
-            // mainContainer.getChildren().clear();
-            // mainContainer.getChildren().add(shopPage);
+            if (mainContainer != null) {
+                mainContainer.setTop(null);
+                mainContainer.setBottom(null);
+                mainContainer.setCenter(null);
+                mainContainer.setCenter(shopPage);
+            }
 
             // Load CSS
             try {
@@ -418,10 +477,12 @@ public class ProductController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
             Parent homePage = loader.load();
 
-            mainContainer.setTop(null);
-            mainContainer.setBottom(null);
-            mainContainer.setCenter(null);
-            mainContainer.setCenter(homePage);
+            if (mainContainer != null) {
+                mainContainer.setTop(null);
+                mainContainer.setBottom(null);
+                mainContainer.setCenter(null);
+                mainContainer.setCenter(homePage);
+            }
 
             try {
                 String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
@@ -470,7 +531,9 @@ public class ProductController implements Initializable {
 
     @FXML private void handleShopNav() {
         System.out.println("🛍️ Navigating to Shop page (Full Screen)...");
-        navigateToPageFullScreen("/fxml/Shop.fxml", "Moosic - Shop", "/css/shopstyle.css", shopNavButton);
+        if (shopNavButton != null) {
+            navigateToPageFullScreen("/fxml/Shop.fxml", "Moosic - Shop", "/css/shopstyle.css", shopNavButton);
+        }
     }
 
     @FXML private void handleOrderNav() {
@@ -478,46 +541,6 @@ public class ProductController implements Initializable {
         // navigateToPageFullScreen("/fxml/Order.fxml", "Moosic - Order", "/css/order.css", orderNavButton);
     }
 
-    // ==================== LEGACY NAVIGATION (for backward compatibility) ====================
-
-    private void navigateTo(String fxmlPath, Node currentNode) {
-        // Redirect to full screen navigation method
-        String title = "Moosic Application";
-        String cssPath = null;
-        
-        // Determine appropriate title and CSS based on path
-        if (fxmlPath.contains("Shop")) {
-            title = "Moosic - Shop";
-            cssPath = "/css/shopstyle.css";
-        } else if (fxmlPath.contains("homepage") || fxmlPath.contains("Homepage")) {
-            title = "Moosic - Home";
-            cssPath = "/css/homepage.css";
-        } else if (fxmlPath.contains("Checkout")) {
-            title = "Moosic - Checkout";
-            cssPath = "/css/checkout.css";
-        }
-        
-        navigateToPageFullScreen(fxmlPath, title, cssPath, currentNode);
-    }
-
-    private void loadStylesheet(Scene scene, String fxmlPath) {
-        String cssPath = fxmlPath.replace("/fxml/", "/css/").replace(".fxml", ".css");
-        
-        if (cssPath.contains("Shop")) {
-            cssPath = "/css/shopstyle.css";
-        } else if (cssPath.contains("LoginView")) {
-            cssPath = "/css/loginstyle.css";
-        }
-        
-        try {
-            String cssUri = getClass().getResource(cssPath).toExternalForm();
-            scene.getStylesheets().add(cssUri);
-            System.out.println("Stylesheet berhasil dimuat: " + cssUri);
-        } catch (NullPointerException e) {
-            System.err.println("Stylesheet tidak ditemukan untuk: " + cssPath + ". Menggunakan style default.");
-        }
-    }
-    
     // ==================== UTILITY METHODS ====================
     
     private Image createSafeImage(String path) {
