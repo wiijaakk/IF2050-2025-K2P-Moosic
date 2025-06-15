@@ -224,6 +224,7 @@ public class ShopController {
 
             try {
                 String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
+                homePage.getStylesheets().clear();
                 homePage.getStylesheets().add(cssPath);
                 System.out.println("Loading Home CSS from: " + cssPath);
             } catch (Exception e) {

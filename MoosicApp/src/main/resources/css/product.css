@@ -29,6 +29,10 @@
     -fx-min-height: 60px;
 }
 
+#header {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 2);
+}
+
 .scroll-pane {
     -fx-background-color: #E5E9DB;
     -fx-background: #E5E9DB;

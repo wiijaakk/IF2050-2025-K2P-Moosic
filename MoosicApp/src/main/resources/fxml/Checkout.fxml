@@ -21,45 +21,48 @@
             fx:controller="com.controller.CheckoutController" styleClass="root-pane"
             stylesheets="@../css/Checkout.css" fx:id="mainContainer">
 
-    <!-- TOP: Header Navigation -->
     <top>
-        <HBox fx:id="header" alignment="CENTER_LEFT">
-            <padding>
-                <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-            </padding>
+        <VBox spacing="10.0">
             <children>
-                <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
-                    <graphic>
-                        <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                <HBox fx:id="header" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                            <graphic>
+                                <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../image/logo.png" />
+                                    </image>
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
+                            <children>
+                                <HBox fx:id="navLinks" alignment="CENTER">
+                                <children>
+                                    <Button mnemonicParsing="false" text="Promotion" />
+                                    <Button fx:id="navCart" mnemonicParsing="false" text="Cart" />
+                                    <Button mnemonicParsing="false" text="Shop" onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited" />
+                                    <Button mnemonicParsing="false" text="Order" />
+                                </children>
+                            </HBox>
+                            </children>
+                        </HBox>
+                        <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
                             <image>
-                                <Image url="@../image/logo.png" />
+                                <Image url="@../image/profile.png" />
                             </image>
                         </ImageView>
-                    </graphic>
-                </Button>
-                <Region HBox.hgrow="ALWAYS" />
-                <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
-                    <children>
-                        <HBox fx:id="navLinks" alignment="CENTER">
-                         <children>
-                            <Button mnemonicParsing="false" text="Promotion" />
-                            <Button fx:id="navCart" mnemonicParsing="false" text="Cart" />
-                            <Button mnemonicParsing="false" text="Shop" onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited" />
-                            <Button mnemonicParsing="false" text="Order" />
-                         </children>
-                      </HBox>
                     </children>
                 </HBox>
-                <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
-                    <image>
-                        <Image url="@../image/profile.png" />
-                    </image>
-                </ImageView>
+                <Region minHeight="4" maxHeight="4" style="-fx-background-color: transparent;" id="shadow-separator"/>
             </children>
-        </HBox>
+        </VBox>     
     </top>
 
-    <!-- CENTER: Main Content with ScrollPane -->
     <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="scroll-pane">
             <content>
@@ -86,7 +89,6 @@
                         </children>
                     </HBox>
 
-                    <!-- Shipping Information -->
                     <VBox spacing="10">
                         <Label text="Shipping Information" styleClass="subtitle-label"/>
                         <GridPane hgap="20" vgap="8">
@@ -127,7 +129,6 @@
                         </GridPane>
                     </VBox>
 
-                    <!-- Your Order -->
                     <VBox spacing="10">
                         <Label text="Your Order" styleClass="subtitle-label"/>
                         <HBox spacing="10" alignment="CENTER_LEFT" prefHeight="90" styleClass="order-item-container">
@@ -156,7 +157,6 @@
                         </HBox>
                     </VBox>
 
-                    <!-- Payment Details -->
                     <VBox spacing="10">
                         <Label text="Payment Details" styleClass="subtitle-label"/>
                         <GridPane hgap="20" vgap="8">
@@ -186,7 +186,6 @@
                         </GridPane>
                     </VBox>
 
-                    <!-- Promo -->
                     <VBox spacing="10">
                         <Label text="Promo" styleClass="subtitle-label"/>
                         <VBox maxWidth="400" spacing="4">
@@ -199,7 +198,6 @@
         </ScrollPane>
     </center>
 
-    <!-- BOTTOM: Footer with Payment Summary -->
     <bottom>
         <VBox styleClass="footer">
             <HBox alignment="CENTER_LEFT" spacing="50" HBox.hgrow="ALWAYS">

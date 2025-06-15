@@ -34,38 +34,42 @@
 
 <BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-container" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.HomepageController" fx:id="mainContainer">
    <top>
-            <HBox fx:id="header" alignment="CENTER_LEFT">
-               <padding>
-                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-               </padding>
-               <children>
-                  <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#handleLogoClick" styleClass="clickable">
-                     <image>
-                        <Image url="@../image/logo.png" />
-                     </image>
-                  </ImageView>
-                  <Region HBox.hgrow="ALWAYS" />
-                  <HBox fx:id="navLinks" alignment="CENTER">
-                     <children>
-                        <Button mnemonicParsing="false" text="Promotion" onAction="#handlePromotionClick" />
-                        <Button mnemonicParsing="false" text="Cart" onAction="#handleCartClick" />
-                        <Button mnemonicParsing="false" text="Shop" onAction="#handleShopClick" />
-                        <Button mnemonicParsing="false" text="Order" onAction="#handleOrderClick" />
-                     </children>
-                  </HBox>
-                  <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
-                     <image>
-                        <Image url="@../image/profile.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
+        <VBox spacing="10.0">
+            <children>
+                <HBox fx:id="header" alignment="CENTER_LEFT">
+                <padding>
+                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                </padding>
+                <children>
+                    <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true" onMouseClicked="#handleLogoClick" styleClass="clickable">
+                        <image>
+                            <Image url="@../image/logo.png" />
+                        </image>
+                    </ImageView>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox fx:id="navLinks" alignment="CENTER">
+                        <children>
+                            <Button mnemonicParsing="false" text="Promotion" onAction="#handlePromotionClick" />
+                            <Button mnemonicParsing="false" text="Cart" onAction="#handleCartClick" />
+                            <Button mnemonicParsing="false" text="Shop" onAction="#handleShopClick" />
+                            <Button mnemonicParsing="false" text="Order" onAction="#handleOrderClick" />
+                        </children>
+                    </HBox>
+                    <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
+                        <image>
+                            <Image url="@../image/profile.png" />
+                        </image>
+                    </ImageView>
+                </children>
+                </HBox>
+                <Region minHeight="4" maxHeight="4" style="-fx-background-color: transparent;" id="shadow-separator"/>
+            </children>
+        </VBox>
     </top>
    <center>
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane">
             <content>
                 <VBox fx:id="rootLayout" alignment="TOP_CENTER" styleClass="root-container">
-                    <!-- Hero Section -->
                     <VBox alignment="CENTER" prefHeight="300.0" prefWidth="800.0" styleClass="hero-section-container">
                         <children>
                             <HBox alignment="CENTER_LEFT">
@@ -119,7 +123,6 @@
                         </VBox.margin>
                     </VBox>
 
-                    <!-- Section A -->
                     <VBox alignment="CENTER" spacing="30.0" styleClass="sectionA">
                         <padding>
                             <Insets top="40.0" right="0.0" bottom="0.0" left="0.0"/>
@@ -134,7 +137,6 @@
                         </children>
                     </VBox>
 
-                    <!-- Section B -->
                     <VBox alignment="CENTER" spacing="20.0" styleClass="sectionB">
                         <padding>
                             <Insets top="0.0" right="0.0" bottom="40.0" left="0.0"/>
