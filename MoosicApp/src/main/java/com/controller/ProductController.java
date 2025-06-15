@@ -473,32 +473,24 @@ public class ProductController implements Initializable {
 
     @FXML
     private void handleLogoNavigationToHome(ActionEvent event) {
-        System.out.println("Logo clicked, navigating to Home page (inline & corrected)...");
-
-        String fxmlPath = "/fxml/homepage.fxml";
-        String cssPath = "/css/homepage.css";
+        System.out.println("Logo clicked, navigating to Home page (inline)...");
 
         try {
-            // 1. Dapatkan Scene dari event klik (misal: dari tombol logo)
-            Node sourceNode = (Node) event.getSource();
-            Scene scene = sourceNode.getScene();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
+            Parent homePage = loader.load();
 
-            // 2. Dapatkan BorderPane utama dari root Scene (mencegah NullPointerException)
-            BorderPane mainContainer = (BorderPane) scene.getRoot();
-
-            // 3. Muat FXML halaman tujuan
-            Parent homePage = FXMLLoader.load(getClass().getResource(fxmlPath));
-
-            // 4. Atur Ulang CSS di Scene (Hapus yang lama, tambah yang baru)
-            scene.getStylesheets().clear();
-            scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
-            System.out.println("CSS Cleared. Applied: " + cssPath);
-            
-            // 5. Ganti konten di BorderPane utama
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(homePage);
+
+            try {
+                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
+                homePage.getStylesheets().add(cssPath);
+                System.out.println("Loading Home CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Home CSS not found, using default styling");
+            }
 
             System.out.println("Switched to Home Page (inline)");
 
