@@ -1,5 +1,18 @@
 /* --- Font Definitions (Using System Fonts for now) --- */
-/* Temporary: Using system fonts until we add the actual font files */
+@font-face {
+    -fx-font-family: 'Alata';
+    src: url('../fonts/Alata-Regular.ttf');
+}
+@font-face {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    src: url('../fonts/AlbertSans-Bold.ttf');
+}
+@font-face {
+    -fx-font-family: 'Alatsi';
+    -fx-font-weight: bold;
+    src: url('../fonts/Alatsi-Regular.ttf');
+}
 
 /* --- Style Utama & Latar Belakang --- */
 .root-pane {
@@ -23,6 +36,30 @@
     -fx-max-width: Infinity;
 }
 
+#navLinks {
+    -fx-spacing: 15px;
+}
+#navLinks .button {
+    -fx-padding: 8px 20px;
+    -fx-font-family: 'Alata';  
+    -fx-font-weight: 400;     
+    -fx-font-size: 16px;
+    -fx-text-fill: #92AC4F;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+#navLinks .button:hover {
+    -fx-font-family: 'Albert Sans';
+    -fx-text-fill: #4D7111; 
+}
+
+#navLinks .button.active {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: 800;        
+    -fx-text-fill: #4D7111;
+}
+
 /* --- Logo Button Styles (No Hover Background) --- */
 #logoButton {
     -fx-background-color: transparent;
@@ -38,7 +75,7 @@
 #logoButton:hover {
     -fx-background-color: transparent !important;
     -fx-border-color: transparent !important;
-    -fx-effect: none;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
     -fx-background-insets: 0;
     -fx-border-insets: 0;
 }
@@ -72,7 +109,7 @@
 /* --- Default Navigation Button Styles --- */
 #navLinks .button {
     -fx-padding: 8px 20px;
-    -fx-font-family: 'Albert Sans';
+    -fx-font-family: 'Alata';
     -fx-font-weight: bold;
     -fx-font-size: 16px;
     -fx-text-fill: #92AC4F;
@@ -168,6 +205,7 @@
 /* --- Profile Icon --- */
 .profile-icon {
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
 
 /* --- Konten Utama (Dalam ScrollPane) --- */

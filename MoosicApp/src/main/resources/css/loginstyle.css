@@ -1,3 +1,17 @@
+@font-face {
+    -fx-font-family: 'Alata';
+    src: url('../fonts/Alata-Regular.ttf');
+}
+@font-face {
+    -fx-font-family: 'Albert Sans';
+    -fx-font-weight: bold;
+    src: url('../fonts/AlbertSans-Bold.ttf');
+}
+@font-face {
+    -fx-font-family: 'Alatsi';
+    -fx-font-weight: bold;
+    src: url('../fonts/Alatsi-Regular.ttf');
+}
 
 #login-form-box {
     -fx-background-color: rgba(31, 75, 44, 0.9);
@@ -57,7 +71,7 @@
     -fx-font-weight: bold;
     -fx-underline: false;
     -fx-cursor: hand;
-    -fx-font-family: "Albert Sans ExtraBold";
+    -fx-font-family: "Albert Sans";
 }
 
 .register-link:hover {

@@ -40,6 +40,7 @@
 }
 
 #navLinks .button:hover {
+    -fx-font-family: 'Albert Sans';
     -fx-text-fill: #4D7111; 
 }
 
@@ -49,7 +50,7 @@
     -fx-text-fill: #4D7111;
 }
 /* --- Control Bar --- */
-#searchField {
+.search-field {
     -fx-pref-height: 40px;
     -fx-background-color: white;
     -fx-border-color: #CED4DA;
@@ -73,37 +74,41 @@
     -fx-cursor: hand;
 }
 
-#searchField .text-input{
+.search-field .text-input{
     -fx-prompt-text-fill: #BABABA;
 }
 #controlBar .combo-box .text-input {
     -fx-prompt-text-fill: #BABABA;
 }
 
-#searchField:hover, #controlBar .combo-box:hover {
+.search-field:hover, #controlBar .combo-box:hover {
     -fx-border-color: #92AC4F;
 }
 
-#searchField:focused, #controlBar .combo-box:focused {
+.search-field:focused, #controlBar .combo-box:focused {
     -fx-border-color: #92AC4F;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;
 }
 
 .combo-box-popup .list-view {
+    -fx-backgorund-insets: 0;
     -fx-background-color: white;
     -fx-border-color: #CED4DA;
     -fx-border-width: 1px;
     -fx-background-radius: 15px;
     -fx-border-radius: 15px;
+    -fx-clip: null;
 }
 .combo-box-popup .list-cell {
+    -fx-backgorund-insets: 0;
     -fx-background-color: transparent;
     -fx-text-fill: #1F4B2C;
     -fx-font-family: 'Alata';
     -fx-font-size: 14px;
     -fx-padding: 8px 15px;
     -fx-cursor: hand;
+    -fx-background-clip: padding-box;
 }
 .combo-box-popup .list-cell:hover,
 .combo-box-popup .list-cell:filled:selected {
@@ -117,7 +122,6 @@
     -fx-background-radius: 0em 0em 15px 15px;
     -fx-border-radius: 0em 0em 15px 15px;
 }
-
 
 /* --- Paginasi --- */
 .pagination {
@@ -257,6 +261,7 @@
 
 .profile-icon {
     -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
 }
 
 .rating-star {
@@ -284,7 +289,7 @@
 #logoButton:hover {
     -fx-background-color: transparent !important;
     -fx-border-color: transparent !important;
-    -fx-effect: none;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
     -fx-background-insets: 0;
     -fx-border-insets: 0;
 }

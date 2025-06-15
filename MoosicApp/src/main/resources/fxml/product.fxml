@@ -7,6 +7,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -14,39 +15,47 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer">
-   <children>
-      <HBox fx:id="header" alignment="CENTER_LEFT" styleClass="header">
-         <padding>
-            <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-         </padding>
+<BorderPane prefHeight="800.0" prefWidth="1100.0" styleClass="root-pane" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.ProductController"  fx:id="mainContainer">
+   <top>
+      <VBox spacing="10.0">
          <children>
-            <Button fx:id="logoButton" onAction="#handleLogoClick" styleClass="logo-button">
-               <graphic>
-                  <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+            <HBox fx:id="header" alignment="CENTER_LEFT">
+               <padding>
+                  <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+               </padding>
+               <children>
+                  <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
+                     <graphic>
+                        <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../image/logo.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <HBox fx:id="navLinks" alignment="CENTER" spacing="20">
+                     <children>
+                        <Button fx:id="promotionNavButton" onAction="#handlePromotionNav" mnemonicParsing="false" text="Promotion" />
+                        <Button fx:id="cartNavButton" onAction="#handleCartNav" mnemonicParsing="false" text="Cart" />
+                        <Button fx:id="shopNavButton" onAction="#handleShopNav" mnemonicParsing="false" text="Shop" />
+                        <Button fx:id="orderNavButton" onAction="#handleOrderNav" mnemonicParsing="false" text="Order" />
+                     </children>
+                  </HBox>
+                  <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
                      <image>
-                        <Image url="@../image/logo.png" />
+                        <Image url="@../image/profile.png" />
                      </image>
                   </ImageView>
-               </graphic>
-            </Button>
-            <Region HBox.hgrow="ALWAYS" />
-            <HBox fx:id="navLinks" alignment="CENTER" spacing="20">
-               <children>
-                  <Button fx:id="promotionNavButton" onAction="#handlePromotionNav" mnemonicParsing="false" text="Promotion" />
-                  <Button fx:id="cartNavButton" onAction="#handleCartNav" mnemonicParsing="false" text="Cart" />
-                  <Button fx:id="shopNavButton" onAction="#handleShopNav" mnemonicParsing="false" text="Shop" />
-                  <Button fx:id="orderNavButton" onAction="#handleOrderNav" mnemonicParsing="false" text="Order" />
                </children>
             </HBox>
-            <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" styleClass="profile-icon">
-               <image>
-                  <Image url="@../image/Account circle.png" />
-               </image>
-            </ImageView>
+            <Region minHeight="4" maxHeight="4" style="-fx-background-color: transparent;" id="shadow-separator"/>
          </children>
-      </HBox>
-      <ScrollPane fx:id="rootScrollPane" fitToWidth="true" hbarPolicy="NEVER" VBox.vgrow="ALWAYS">
+      </VBox>
+   </top>
+   
+   <center>
+      <ScrollPane fx:id="rootScrollPane" fitToWidth="true" hbarPolicy="NEVER">
          <content>
             <VBox alignment="TOP_CENTER" spacing="25.0">
                <padding>
@@ -138,11 +147,11 @@
                         <Insets top="30.0" />
                      </VBox.margin>
                   </VBox>
-                  <Button fx:id="viewMoreButton" onAction="#handleViewMore" styleClass="view-more-button" text="view more" />
-                  <Button fx:id="viewLessButton" onAction="#handleViewLess" styleClass="view-more-button" text="view less" visible="false" />
+                  <Button fx:id="viewMoreButton" onAction="#handleViewMore" styleClass="view-more-button" text="View More" />
+                  <Button fx:id="viewLessButton" onAction="#handleViewLess" styleClass="view-more-button" text="View Less" visible="false" />
                </children>
             </VBox>
          </content>
       </ScrollPane>
-   </children>
-</VBox>
+   </center>
+</BorderPane>

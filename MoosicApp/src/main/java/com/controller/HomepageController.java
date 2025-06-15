@@ -12,6 +12,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -32,36 +33,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.IOException;
 import java.math.BigDecimal;
-import com.model.AllProduct; // FIXED: Import AllProduct
+import com.model.AllProduct;
 import com.database.HomepageDAO;
 import com.database.DatabaseHomepage;
-import javafx.scene.control.Alert;
 
 public class HomepageController {
 
-    @FXML
-    private ScrollPane recommendedScrollPane;
+    // CHANGED: Made fields package-private for testing access
+    @FXML ScrollPane recommendedScrollPane;
+    @FXML HBox recommendedProductsContainer;
+    @FXML HBox topSellingProductsContainer;
+    @FXML public TextField searchField;
+    @FXML BorderPane mainContainer;
+    @FXML StackPane searchBarContainer;
 
-    @FXML
-    private HBox recommendedProductsContainer;
-
-    @FXML
-    private HBox topSellingProductsContainer;
-    
-    @FXML
-    public TextField searchField;
-
-    @FXML
-    private BorderPane mainContainer;
-
-    private Node lastHighlightedCard = null;
-    private int originalCardCount;
-    private static final int DUPLICATE_COUNT = 2;
-    private ObservableList<AllProduct> shoppingCart = FXCollections.observableArrayList(); // FIXED: AllProduct
-    private int currProductID;
+    // CHANGED: Made fields package-private for testing access
+    Node lastHighlightedCard = null;
+    int originalCardCount;
+    static final int DUPLICATE_COUNT = 2;
+    ObservableList<AllProduct> shoppingCart = FXCollections.observableArrayList();
+    int currProductID;
 
     @FXML
     public void initialize() {
+        Platform.runLater(() -> {
+            if (searchBarContainer != null && searchBarContainer.getParent() != null) {
+                searchBarContainer.getParent().requestFocus();
+            }
+        });
         HomepageDAO.init();
         loadTopSellingProducts();
         loadRecommendedProducts();
@@ -89,7 +88,7 @@ public class HomepageController {
             });
         }
         
-        // FIXED: AllProduct listener
+        // Shopping cart listener
         shoppingCart.addListener((javafx.collections.ListChangeListener.Change<? extends AllProduct> change) -> {
             while (change.next()) {
                 if (change.wasAdded()) {
@@ -107,10 +106,12 @@ public class HomepageController {
     }
 
     private void loadRecommendedProducts() {
-        recommendedProductsContainer.getChildren().clear();
+        if (recommendedProductsContainer != null) {
+            recommendedProductsContainer.getChildren().clear();
+        }
 
         try {
-            List<AllProduct> products = HomepageDAO.getRecommendedProducts(10); // FIXED: AllProduct
+            List<AllProduct> products = HomepageDAO.getRecommendedProducts(10);
             
             if (products.isEmpty()) {
                 System.out.println("No recommended products found in database. Loading fallback data...");
@@ -118,9 +119,9 @@ public class HomepageController {
                 return;
             }
 
-            for (AllProduct product : products) { // FIXED: AllProduct
+            for (AllProduct product : products) {
                 VBox card = createProductCard(product);
-                if (card != null) {
+                if (card != null && recommendedProductsContainer != null) {
                     recommendedProductsContainer.getChildren().add(card);
                 }
             }
@@ -134,8 +135,9 @@ public class HomepageController {
 
     private void loadFallbackRecommendedProducts() {
         try {
-            List<AllProduct> products = new ArrayList<>(); // FIXED: AllProduct
-            // FIXED: Use AllProduct constructor (id, name, desc, price, genre, variant, image, rating, sold)
+            List<AllProduct> products = new ArrayList<>();
+            // FIXED: Use AllProduct constructor with all 9 required parameters
+            // Constructor: (int id, String name, String desc, BigDecimal price, String genre, String variant, String image, Float rating, int sold)
             products.add(new AllProduct(1, "Midnights Vinyl - Taylor Swift", "Exclusive Midnights edition", 
                 new BigDecimal("525000"), "Pop", "Vinyl", "/image/album/midnights.png", 4.5f, 15));
             products.add(new AllProduct(2, "25 Vinyl - Adele", "25 by Adele in Vinyl format", 
@@ -147,9 +149,9 @@ public class HomepageController {
             products.add(new AllProduct(5, "Come Away with Me Vinyl - Norah Jones", "Come Away with Me by Norah Jones", 
                 new BigDecimal("252000"), "Jazz", "Vinyl", "/image/album/comeaway.png", 4.6f, 17));
 
-            for (AllProduct product : products) { // FIXED: AllProduct
+            for (AllProduct product : products) {
                 VBox card = createProductCard(product);
-                if (card != null) {
+                if (card != null && recommendedProductsContainer != null) {
                     recommendedProductsContainer.getChildren().add(card);
                 }
             }
@@ -160,7 +162,7 @@ public class HomepageController {
         }
     }
 
-    private VBox createProductCard(AllProduct product) { // FIXED: AllProduct parameter
+    private VBox createProductCard(AllProduct product) {
         VBox card = new VBox();
         card.setAlignment(Pos.TOP_CENTER);
         card.setSpacing(5);
@@ -197,7 +199,7 @@ public class HomepageController {
         nameLabel.getStyleClass().add("product-name");
         nameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
-        // FIXED: Format price for AllProduct
+        // FIXED: Use getPrice() method that returns double
         Label priceLabel = new Label(formatPrice(product.getPrice()));
         priceLabel.getStyleClass().add("product-price");
 
@@ -305,13 +307,10 @@ public class HomepageController {
         return card;
     }
 
-    // FIXED: Helper method untuk format price
+    // FIXED: Helper method untuk format price dari double
     private String formatPrice(double price) {
         return String.format("Rp %.0f", price);
     }
-
-    // Rest of your existing methods (setHighlightedWithAnimation, highlightCenterCard, etc.) 
-    // remain the same - just keeping them for completeness...
 
     private void setHighlightedWithAnimation(Node card, boolean highlighted) {
         if (card == null) return;
@@ -444,13 +443,13 @@ public class HomepageController {
         }
     }
 
-    // FIXED: Event handlers dengan AllProduct
-    private void handleTopSellingProductClick(AllProduct product) {
+    // CHANGED: Made event handlers public for testing access
+    public void handleTopSellingProductClick(AllProduct product) {
         System.out.println("Top selling product clicked: " + product.getName());
         navigateToProductDetail(product);
     }
     
-    private void handleRecommendedProductClick(AllProduct product, VBox card) {
+    public void handleRecommendedProductClick(AllProduct product, VBox card) {
         if (card.getStyleClass().contains("highlighted-card")) {
             System.out.println("Highlighted recommended product clicked: " + product.getName());
             navigateToProductDetail(product);
@@ -459,66 +458,48 @@ public class HomepageController {
         }
     }
     
-    public void navigateToProductDetail(AllProduct product) { // FIXED: AllProduct
+    private void navigateToProductDetail(AllProduct product) {
+        System.out.println("Anda mengklik produk: " + product.getName()); // kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        currProductID = product.getId();
+        
         if (!isValidProduct(product)) {
             System.out.println("Cannot navigate: invalid product");
             return;
         }
+        
         currProductID = product.getId();
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
-            Parent root = loader.load();
+            Parent productPage = loader.load();
             
             ProductController productController = loader.getController();
             productController.initData(currProductID);
             
-            Stage stage = (Stage) searchField.getScene().getWindow();
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(productPage);
             
-            // Save window state
-            boolean wasMaximized = stage.isMaximized();
-            double currentWidth = stage.getWidth();
-            double currentHeight = stage.getHeight();
-            double currentX = stage.getX();
-            double currentY = stage.getY();
-            
-            // Create scene with same size as current stage
-            Scene scene;
-            if (wasMaximized) {
-                // Set scene to full screen dimensions immediately
-                scene = new Scene(root, stage.getWidth(), stage.getHeight());
-            } else {
-                scene = new Scene(root, currentWidth, currentHeight);
+            try {
+                String cssPath = getClass().getResource("/css/product.css").toExternalForm();
+                productPage.getStylesheets().clear();
+                productPage.getStylesheets().add(cssPath);
+                System.out.println("Loading Product CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Product CSS not found, using default styling");
             }
             
-            // Set scene
-            stage.setScene(scene);
-            stage.setTitle("Moose - Product Details");
+            System.out.println("Switched to Product Detail Page (inline) - Product ID: " + currProductID);
             
-            // Force window state immediately after scene change
-            if (wasMaximized) {
-                stage.setMaximized(false); // Reset first
-                stage.setMaximized(true);  // Then maximize
-            } else {
-                stage.setWidth(currentWidth);
-                stage.setHeight(currentHeight);
-                stage.setX(currentX);
-                stage.setY(currentY);
-            }
-            
-            // Final check with Platform.runLater
-            javafx.application.Platform.runLater(() -> {
-                if (wasMaximized && !stage.isMaximized()) {
-                    stage.setMaximized(true);
-                }
-                stage.toFront();
-                stage.requestFocus();
-                System.out.println("Final window state - Maximized: " + stage.isMaximized());
-            });
-            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open product detail page: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred while navigating to product detail: " + e.getMessage());
         }
     }
     
@@ -529,13 +510,15 @@ public class HomepageController {
     
     @FXML
     public void handleSearchAction() {
-        String searchQuery = searchField.getText().trim();
-    
-        if (!searchQuery.isEmpty()) {
-            System.out.println("Search triggered with query: '" + searchQuery + "'");
-            navigateToSearchResults(searchQuery);
-        } else {
-            System.out.println("Empty search query, ignoring...");
+        if (searchField != null) {
+            String searchQuery = searchField.getText().trim();
+        
+            if (!searchQuery.isEmpty()) {
+                System.out.println("Search triggered with query: '" + searchQuery + "'");
+                navigateToSearchResults(searchQuery);
+            } else {
+                System.out.println("Empty search query, ignoring...");
+            }
         }
     }
     
@@ -569,10 +552,12 @@ public class HomepageController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Shop.fxml"));
             Parent homePage = loader.load();
 
-            mainContainer.setTop(null);
-            mainContainer.setBottom(null);
-            mainContainer.setCenter(null);
-            mainContainer.setCenter(homePage);
+            if (mainContainer != null) {
+                mainContainer.setTop(null);
+                mainContainer.setBottom(null);
+                mainContainer.setCenter(null);
+                mainContainer.setCenter(homePage);
+            }
 
             try {
                 String cssPath = getClass().getResource("/css/shopstyle.css").toExternalForm();
@@ -601,21 +586,20 @@ public class HomepageController {
     }
 
     private void handleAddToCart(Button button) {
-        AllProduct product = (AllProduct) button.getUserData(); // FIXED: AllProduct
+        AllProduct product = (AllProduct) button.getUserData();
         if (product != null) {
             shoppingCart.add(product);
             System.out.println("Added " + product.getName() + " to cart!");
         }
     }
 
-    // Continue with existing methods (addInfiniteScrollDuplicates, createDeepCopy, etc.)
-    // They remain mostly the same, just keeping for space...
-
     private void loadTopSellingProducts() {
-        topSellingProductsContainer.getChildren().clear();
+        if (topSellingProductsContainer != null) {
+            topSellingProductsContainer.getChildren().clear();
+        }
 
         try {
-            List<AllProduct> topProducts = HomepageDAO.getTopSellingProducts(3); // FIXED: AllProduct
+            List<AllProduct> topProducts = HomepageDAO.getTopSellingProducts(3);
             
             if (topProducts.isEmpty()) {
                 loadFallbackTopSellingProducts();
@@ -623,8 +607,10 @@ public class HomepageController {
             }
 
             int index = 1;
-            for (AllProduct product : topProducts) { // FIXED: AllProduct
-                topSellingProductsContainer.getChildren().add(createTopSellingCard(product, index));
+            for (AllProduct product : topProducts) {
+                if (topSellingProductsContainer != null) {
+                    topSellingProductsContainer.getChildren().add(createTopSellingCard(product, index));
+                }
                 index++;
             }
             
@@ -634,7 +620,8 @@ public class HomepageController {
     }
 
     private void loadFallbackTopSellingProducts() {
-        List<AllProduct> topProducts = new ArrayList<>(); // FIXED: AllProduct
+        List<AllProduct> topProducts = new ArrayList<>();
+        // FIXED: Use AllProduct constructor with all 9 required parameters
         topProducts.add(new AllProduct(1, "Midnights Vinyl - Taylor Swift", "Exclusive Midnights edition", 
             new BigDecimal("525000"), "Pop", "Vinyl", "/image/album/midnights.png", 4.5f, 15));
         topProducts.add(new AllProduct(2, "25 Vinyl - Adele", "25 by Adele in Vinyl format", 
@@ -643,13 +630,15 @@ public class HomepageController {
             new BigDecimal("243000"), "R&B", "Vinyl", "/image/album/afterhours.png", 4.9f, 25));
 
         int index = 1;
-        for (AllProduct product : topProducts) { // FIXED: AllProduct
-            topSellingProductsContainer.getChildren().add(createTopSellingCard(product, index));
+        for (AllProduct product : topProducts) {
+            if (topSellingProductsContainer != null) {
+                topSellingProductsContainer.getChildren().add(createTopSellingCard(product, index));
+            }
             index++;
         }
     }
 
-    private StackPane createTopSellingCard(AllProduct product, int displayIndex) { // FIXED: AllProduct + displayIndex
+    private StackPane createTopSellingCard(AllProduct product, int displayIndex) {
         StackPane stackPane = new StackPane();
 
         VBox cardVBox = new VBox();
@@ -710,10 +699,10 @@ public class HomepageController {
         nameLabel.getStyleClass().add("product-name");
         nameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
-        // FIXED: Create sales info for AllProduct
         Label salesLabel = new Label(String.format("%.1f ⭐ | %d sold", product.getRating(), product.getTerjual()));
         salesLabel.getStyleClass().add("product-sales");
 
+        // FIXED: Use getPrice() method that returns double
         Label priceLabel = new Label(formatPrice(product.getPrice()));
         priceLabel.getStyleClass().add("product-price");
 
@@ -771,7 +760,8 @@ public class HomepageController {
         };
     }
 
-    // FIXED: Business logic methods untuk testing
+    // ==================== BUSINESS LOGIC METHODS FOR TESTING ====================
+
     public boolean isValidSearchQuery(String query) {
         if (query == null) return false;
         if (query.trim().isEmpty()) return false;
@@ -784,29 +774,30 @@ public class HomepageController {
         return query.trim().toLowerCase();
     }
 
-    public boolean isValidProduct(AllProduct product) { // FIXED: AllProduct
+    public boolean isValidProduct(AllProduct product) {
         if (product == null) return false;
         if (product.getName() == null || product.getName().trim().isEmpty()) return false;
         
-        double priceValue = product.getPrice();
-        if (priceValue < 0) return false;
+        // FIXED: Use getPrice() method that returns double
+        double price = product.getPrice();
+        if (price < 0) return false;
         
         return true;
     }
 
-    public ObservableList<AllProduct> getShoppingCart() { // FIXED: AllProduct
+    public ObservableList<AllProduct> getShoppingCart() {
         return this.shoppingCart;
     }
 
     public double calculateCartTotalAsDouble() {
         return shoppingCart.stream()
-            .mapToDouble(AllProduct::getPrice) // FIXED: AllProduct::getPrice
+            .mapToDouble(AllProduct::getPrice)
             .sum();
     }
 
     public BigDecimal calculateCartTotal() {
         double total = shoppingCart.stream()
-            .mapToDouble(AllProduct::getPrice) // FIXED: AllProduct::getPrice
+            .mapToDouble(AllProduct::getPrice)
             .sum();
         return BigDecimal.valueOf(total);
     }
@@ -819,15 +810,18 @@ public class HomepageController {
         shoppingCart.clear();
     }
 
-    public boolean isProductInCart(AllProduct product) { // FIXED: AllProduct
+    public boolean isProductInCart(AllProduct product) {
         return shoppingCart.contains(product);
     }
 
-    public long getCartProductCountByGenre(String genre) {
-        return shoppingCart.stream()
+    // FIXED: Return int instead of long to match test expectations
+    public int getCartProductCountByGenre(String genre) {
+        return (int) shoppingCart.stream()
             .filter(product -> genre.equals(product.getGenre()))
             .count();
     }
+
+    // ==================== UTILITY METHODS ====================
 
     private Node findCenterCard(ObservableList<Node> cards, double hvalue, double totalContentWidth, double viewportWidth) {
         Node centerCard = null;
@@ -863,6 +857,11 @@ public class HomepageController {
         
         if (originalCardCount < DUPLICATE_COUNT) {
             System.err.println("Not enough cards for infinite scroll (need at least " + DUPLICATE_COUNT + ", got " + originalCardCount + ")");
+            return;
+        }
+
+        if (recommendedProductsContainer == null) {
+            System.err.println("Cannot add infinite scroll duplicates: container is null");
             return;
         }
 
@@ -958,6 +957,10 @@ public class HomepageController {
     }
 
     private void handleInfiniteScrollLoop() {
+        if (recommendedScrollPane == null || recommendedProductsContainer == null) {
+            return;
+        }
+
         double currentHvalue = recommendedScrollPane.getHvalue();
         double totalContentWidth = recommendedProductsContainer.getWidth();
         double viewportWidth = recommendedScrollPane.getWidth();
@@ -994,6 +997,10 @@ public class HomepageController {
 
     @FXML
     private void scrollLeft() {
+        if (recommendedScrollPane == null || recommendedProductsContainer == null) {
+            return;
+        }
+
         double currentHvalue = recommendedScrollPane.getHvalue();
         ObservableList<Node> allCards = recommendedProductsContainer.getChildren();
         double viewportWidth = recommendedScrollPane.getWidth();
@@ -1024,6 +1031,10 @@ public class HomepageController {
 
     @FXML
     private void scrollRight() {
+        if (recommendedScrollPane == null || recommendedProductsContainer == null) {
+            return;
+        }
+
         double currentHvalue = recommendedScrollPane.getHvalue();
         ObservableList<Node> allCards = recommendedProductsContainer.getChildren();
         double viewportWidth = recommendedScrollPane.getWidth();

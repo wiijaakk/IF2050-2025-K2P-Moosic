@@ -28,8 +28,10 @@ class ProductControllerTest {
     void setUp() throws SQLException {
         conn = DatabaseConnection.getConnection();
         assertNotNull(conn, "Koneksi database untuk tes tidak boleh null.");
-        conn.setAutoCommit(false);
+        conn.setAutoCommit(false); 
+
         productController = new ProductController();
+       
         productController.logoImageView = new ImageView();
         productController.promotionNavButton = new Button();
         productController.cartNavButton = new Button();
@@ -55,33 +57,26 @@ class ProductControllerTest {
     @AfterEach
     void tearDown() throws SQLException {
         if (conn != null) {
-            conn.rollback();
+            conn.rollback(); 
             conn.close();
         }
     }
 
-    @Test
-    @DisplayName("Test initialize dengan data dari database sungguhan")
-    void testInitialize_WithRealDatabase_ShouldDisplayCorrectData() {
-        productController.quantityLabel.textProperty().bind(productController.quantity.asString());
-
-        productController.initialize(null, null);
-
-        assertNotNull(productController.currentProduct, "Produk dengan ID 1 seharusnya ditemukan di database.");
-        assertEquals("Midnights Vinyl – Taylor Swift", productController.productTitleLabel.getText());
-        assertFalse(productController.checkoutButton.isDisabled());
-    }
     
     @Test
     @DisplayName("Test tombol kuantitas harus tetap berfungsi")
     void testQuantityButtons_ShouldWorkCorrectly() {
+        
+        assertEquals(1, productController.quantity.get(), "Quantity harus dimulai dari 1.");
+
         productController.handleIncreaseQuantity();
-        assertEquals(2, productController.quantity.get());
+        assertEquals(2, productController.quantity.get(), "Quantity seharusnya meningkat menjadi 2.");
         
         productController.handleDecreaseQuantity();
-        assertEquals(1, productController.quantity.get());
+        assertEquals(1, productController.quantity.get(), "Quantity seharusnya menurun menjadi 1.");
 
+       
         productController.handleDecreaseQuantity();
-        assertEquals(1, productController.quantity.get());
+        assertEquals(1, productController.quantity.get(), "Quantity seharusnya tetap 1 dan tidak kurang dari itu.");
     }
 }

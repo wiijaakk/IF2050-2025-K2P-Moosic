@@ -8,6 +8,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -16,220 +17,238 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Rectangle?>
 
-<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="com.controller.CheckoutController" styleClass="root-pane"
-      stylesheets="@../css/Checkout.css">
+<BorderPane xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.controller.CheckoutController" styleClass="root-pane"
+            stylesheets="@../css/Checkout.css" fx:id="mainContainer">
 
-    <HBox fx:id="header" alignment="CENTER_LEFT" style="-fx-background-color: #E5E9DB; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);">
-        <padding>
-            <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
-        </padding>
-        <children>
-            <!-- UPDATED: Logo menjadi Button yang bisa diklik untuk ke Home -->
-            <Button fx:id="logoButton" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-cursor: hand;" 
-                    onAction="#handleLogoNavigationToHome" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
-                <graphic>
-                    <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../image/logo.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-            </Button>
-            <Region HBox.hgrow="ALWAYS" />
-            <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
-                <children>
-                    <Button mnemonicParsing="false" text="Promotion" style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
-                    <Button fx:id="cartNavButton" mnemonicParsing="false" text="Cart" style="-fx-background-color: transparent; -fx-text-fill: #4D7111; -fx-font-size: 16px; -fx-font-weight: bold; -fx-padding: 8px 20px;" />
-                    <!-- UPDATED: Shop button dengan navigation functionality -->
-                    <Button fx:id="shopNavButton" mnemonicParsing="false" text="Shop" 
-                            onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited"
-                            style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
-                    <Button mnemonicParsing="false" text="Order" style="-fx-background-color: transparent; -fx-text-fill: #92AC4F; -fx-font-size: 16px; -fx-padding: 8px 20px;" />
-                </children>
-            </HBox>
-            <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
-                <image>
-                    <Image url="@../image/profile.png" />
-                </image>
-            </ImageView>
-        </children>
-    </HBox>
-
-    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
-        <content>
-            <VBox spacing="10" styleClass="scroll-pane-content">
-                <padding>
-                    <Insets top="10" right="40" bottom="10" left="40"/>
-                </padding>
-
-                <HBox spacing="15" alignment="CENTER_LEFT">
+ 
+    <top>
+        <VBox spacing="10.0">
+            <children>
+                <HBox fx:id="header" alignment="CENTER_LEFT">
+                    <padding>
+                        <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                    </padding>
                     <children>
-                        <!-- Back Button untuk kembali ke Product page -->
-                        <Button fx:id="backButton" prefWidth="35" prefHeight="35" styleClass="back-button-container" 
-                                onAction="#handleBackButtonAction" onMouseEntered="#handleBackButtonEntered" 
-                                onMouseExited="#handleBackButtonExited">
+                        <Button fx:id="logoButton" onAction="#handleLogoNavigationToHome" styleClass="logo-button" onMouseEntered="#handleLogoButtonEntered" onMouseExited="#handleLogoButtonExited">
                             <graphic>
-                                <Label text="←" styleClass="back-button-label"/>
+                                <ImageView fx:id="logoImageView" fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../image/logo.png" />
+                                    </image>
+                                </ImageView>
                             </graphic>
                         </Button>
-                        <Label text="Check Out" styleClass="title-label"/>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <HBox fx:id="navLinks" alignment="CENTER" spacing="15">
+                            <children>
+                                <HBox fx:id="navLinks" alignment="CENTER">
+                                <children>
+                                    <Button mnemonicParsing="false" text="Promotion" />
+                                    <Button fx:id="navCart" mnemonicParsing="false" text="Cart" />
+                                    <Button mnemonicParsing="false" text="Shop" onAction="#handleShopButtonAction" onMouseEntered="#handleShopButtonEntered" onMouseExited="#handleShopButtonExited" />
+                                    <Button mnemonicParsing="false" text="Order" />
+                                </children>
+                            </HBox>
+                            </children>
+                        </HBox>
+                        <ImageView fx:id="profileIcon" fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true" style="-fx-cursor: hand;">
+                            <image>
+                                <Image url="@../image/profile.png" />
+                            </image>
+                        </ImageView>
                     </children>
                 </HBox>
+                <Region minHeight="4" maxHeight="4" style="-fx-background-color: transparent;" id="shadow-separator"/>
+            </children>
+        </VBox>     
+    </top>
 
-                <VBox spacing="10">
-                    <Label text="Shipping Information" styleClass="subtitle-label"/>
-                    <GridPane hgap="20" vgap="8">
-                        <columnConstraints>
-                            <ColumnConstraints percentWidth="50"/>
-                            <ColumnConstraints percentWidth="50"/>
-                        </columnConstraints>
-                        <children>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="4">
-                                <Label text="Name" styleClass="form-label"/>
-                                <TextField fx:id="nameField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="4">
-                                <Label text="Mobile Phone" styleClass="form-label"/>
-                                <TextField fx:id="mobilePhoneField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" spacing="4">
-                                <Label text="Address Line" styleClass="form-label"/>
-                                <TextField fx:id="addressField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="4">
-                                <Label text="Country" styleClass="form-label"/>
-                                <TextField fx:id="countryField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="4">
-                                <Label text="State" styleClass="form-label"/>
-                                <TextField fx:id="stateField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="4">
-                                <Label text="City" styleClass="form-label"/>
-                                <TextField fx:id="cityField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="4">
-                                <Label text="Zip Code" styleClass="form-label"/>
-                                <TextField fx:id="zipCodeField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                        </children>
-                    </GridPane>
-                </VBox>
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED" styleClass="scroll-pane">
+            <content>
+                <VBox spacing="10" styleClass="scroll-pane-content">
+                    <padding>
+                        <Insets top="10" right="40" bottom="10" left="40"/>
+                    </padding>
 
-                <VBox spacing="10">
-                    <Label text="Your Order" styleClass="subtitle-label"/>
-                    <HBox spacing="10" alignment="CENTER_LEFT" prefHeight="90" styleClass="order-item-container">
-                        <padding>
-                            <Insets top="10" right="10" bottom="10" left="10"/>
-                        </padding>
+                
+                    <HBox spacing="15" alignment="CENTER_LEFT">
                         <children>
-                            <!-- Product Image - akan diupdate dari database -->
-                            <ImageView fx:id="productImageView" fitHeight="60" fitWidth="60" preserveRatio="true">
-                                <image>
-                                    <Image url="@../image/album/midnight-ts-vinyl.jpg"/>
-                                </image>
-                                <clip>
-                                    <Rectangle width="60" height="60" arcWidth="8" arcHeight="8"/>
-                                </clip>
-                            </ImageView>
-                            <VBox alignment="CENTER_LEFT" prefHeight="60">
-                                <!-- Product Name - akan diupdate dari database -->
-                                <Label fx:id="productNameLabel" text="Loading..." styleClass="order-item-label"/>
-                            </VBox>
-                            <Region HBox.hgrow="ALWAYS"/>
-                            <HBox spacing="15" alignment="CENTER_RIGHT">
-                                <!-- Price, Quantity, Total - akan diupdate dari database -->
-                                <Label fx:id="priceLabel" text="Rp0" styleClass="order-item-label"/>
-                                <Label fx:id="quantityLabel" text="x 0" styleClass="order-item-label"/>
-                                <Label fx:id="totalPriceLabel" text="Rp0" styleClass="order-item-label"/>
-                            </HBox>
+                            <Button fx:id="backButton" prefWidth="45" prefHeight="45" styleClass="back-button-container"
+                                    onAction="#handleBackButtonAction" onMouseEntered="#handleBackButtonEntered"
+                                    onMouseExited="#handleBackButtonExited">
+                                <graphic>
+                                    <ImageView fitWidth="20" fitHeight="20" pickOnBounds="true" preserveRatio="true">
+                                        <image>
+                                            <Image url="@../image/backtoproduct.png" />
+                                        </image>
+                                    </ImageView>
+                                </graphic>
+                            </Button>
+                            <Label text="Check Out" styleClass="title-label"/>
                         </children>
                     </HBox>
-                </VBox>
 
-                <VBox spacing="10">
-                    <Label text="Payment Details" styleClass="subtitle-label"/>
-                    <GridPane hgap="20" vgap="8">
-                        <columnConstraints>
-                            <ColumnConstraints percentWidth="50"/>
-                            <ColumnConstraints percentWidth="25"/>
-                            <ColumnConstraints percentWidth="25"/>
-                        </columnConstraints>
-                        <children>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" spacing="4">
-                                <Label text="Full Name on Card" styleClass="form-label"/>
-                                <TextField fx:id="cardNameField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="4">
-                                <Label text="Card Number" styleClass="form-label"/>
-                                <TextField fx:id="cardNumberField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="4">
-                                <Label text="Valid Through" styleClass="form-label"/>
-                                <TextField fx:id="validThroughField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                            <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="4">
-                                <Label text="CVV" styleClass="form-label"/>
-                                <TextField fx:id="cvvField" prefHeight="30" styleClass="text-field"/>
-                            </VBox>
-                        </children>
-                    </GridPane>
-                </VBox>
+                   
+                    <VBox spacing="10">
+                        <Label text="Shipping Information" styleClass="subtitle-label"/>
+                        <GridPane hgap="20" vgap="8">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="50"/>
+                            </columnConstraints>
+                            <children>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" spacing="4">
+                                    <Label text="Name" styleClass="form-label"/>
+                                    <TextField fx:id="nameField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="4">
+                                    <Label text="Mobile Phone" styleClass="form-label"/>
+                                    <TextField fx:id="mobilePhoneField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2" spacing="4">
+                                    <Label text="Address Line" styleClass="form-label"/>
+                                    <TextField fx:id="addressField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="2" spacing="4">
+                                    <Label text="Country" styleClass="form-label"/>
+                                    <TextField fx:id="countryField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="2" spacing="4">
+                                    <Label text="State" styleClass="form-label"/>
+                                    <TextField fx:id="stateField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="3" spacing="4">
+                                    <Label text="City" styleClass="form-label"/>
+                                    <TextField fx:id="cityField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="3" spacing="4">
+                                    <Label text="Zip Code" styleClass="form-label"/>
+                                    <TextField fx:id="zipCodeField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                            </children>
+                        </GridPane>
+                    </VBox>
 
-                <VBox spacing="10">
-                    <Label text="Promo" styleClass="subtitle-label"/>
-                    <VBox maxWidth="400" spacing="4">
-                        <Label text="Enter promo code" styleClass="form-label"/>
-                        <TextField fx:id="promoCodeField" prefHeight="30" styleClass="text-field"/>
+              
+                    <VBox spacing="10">
+                        <Label text="Your Order" styleClass="subtitle-label"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT" prefHeight="90" styleClass="order-item-container">
+                            <padding>
+                                <Insets top="10" right="10" bottom="10" left="10"/>
+                            </padding>
+                            <children>
+                                <ImageView fx:id="productImageView" fitHeight="60" fitWidth="60" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../image/album/midnight-ts-vinyl.jpg"/>
+                                    </image>
+                                    <clip>
+                                        <Rectangle width="60" height="60" arcWidth="8" arcHeight="8"/>
+                                    </clip>
+                                </ImageView>
+                                <VBox alignment="CENTER_LEFT" prefHeight="60">
+                                    <Label fx:id="productNameLabel" text="Loading..." styleClass="order-item-label"/>
+                                </VBox>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <HBox spacing="15" alignment="CENTER_RIGHT">
+                                    <Label fx:id="priceLabel" text="Rp0" styleClass="order-item-label"/>
+                                    <Label fx:id="quantityLabel" text="x 0" styleClass="order-item-label"/>
+                                    <Label fx:id="totalPriceLabel" text="Rp0" styleClass="order-item-label"/>
+                                </HBox>
+                            </children>
+                        </HBox>
+                    </VBox>
+
+                
+                    <VBox spacing="10">
+                        <Label text="Payment Details" styleClass="subtitle-label"/>
+                        <GridPane hgap="20" vgap="8">
+                            <columnConstraints>
+                                <ColumnConstraints percentWidth="50"/>
+                                <ColumnConstraints percentWidth="25"/>
+                                <ColumnConstraints percentWidth="25"/>
+                            </columnConstraints>
+                            <children>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.columnSpan="3" spacing="4">
+                                    <Label text="Full Name on Card" styleClass="form-label"/>
+                                    <TextField fx:id="cardNameField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="0" GridPane.rowIndex="1" spacing="4">
+                                    <Label text="Card Number" styleClass="form-label"/>
+                                    <TextField fx:id="cardNumberField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="4">
+                                    <Label text="Valid Through" styleClass="form-label"/>
+                                    <TextField fx:id="validThroughField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                                <VBox GridPane.columnIndex="2" GridPane.rowIndex="1" spacing="4">
+                                    <Label text="CVV" styleClass="form-label"/>
+                                    <TextField fx:id="cvvField" prefHeight="30" styleClass="text-field"/>
+                                </VBox>
+                            </children>
+                        </GridPane>
+                    </VBox>
+
+             
+                    <VBox spacing="10">
+                        <Label text="Promo" styleClass="subtitle-label"/>
+                        <VBox maxWidth="400" spacing="4">
+                            <Label text="Enter promo code" styleClass="form-label"/>
+                            <TextField fx:id="promoCodeField" prefHeight="30" styleClass="text-field"/>
+                        </VBox>
                     </VBox>
                 </VBox>
-            </VBox>
-        </content>
-    </ScrollPane>
+            </content>
+        </ScrollPane>
+    </center>
 
-    <VBox styleClass="footer">
-        <HBox alignment="CENTER_LEFT" spacing="50" HBox.hgrow="ALWAYS">
-            <padding>
-                <Insets top="8" right="40" bottom="8" left="40"/>
-            </padding>
-            <children>
-                <VBox spacing="3" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
-                    <children>
-                        <HBox spacing="70" alignment="CENTER_LEFT">
-                            <Label text="Subtotal" prefWidth="90" styleClass="footer-label"/>
-                            <Label fx:id="subtotalLabel" text="Rp0" styleClass="footer-label-bold"/>
-                        </HBox>
-                        <HBox spacing="70" alignment="CENTER_LEFT">
-                            <Label text="Shipping" prefWidth="90" styleClass="footer-label"/>
-                            <Label text="FREE" styleClass="footer-label-bold"/>
-                        </HBox>
-                        <HBox spacing="70" alignment="CENTER_LEFT">
-                            <Label text="Discount" prefWidth="90" styleClass="footer-label"/>
-                            <Label text="Rp0" styleClass="footer-label-bold"/>
-                        </HBox>
-                        <HBox spacing="70" alignment="CENTER_LEFT">
-                            <Label text="Tax" prefWidth="90" styleClass="footer-label"/>
-                            <Label text="Rp0" styleClass="footer-label-bold"/>
-                        </HBox>
-                    </children>
-                </VBox>
+    
+    <bottom>
+        <VBox styleClass="footer">
+            <HBox alignment="CENTER_LEFT" spacing="50" HBox.hgrow="ALWAYS">
+                <padding>
+                    <Insets top="8" right="40" bottom="8" left="40"/>
+                </padding>
+                <children>
+                    <VBox spacing="3" alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                        <children>
+                            <HBox spacing="70" alignment="CENTER_LEFT">
+                                <Label text="Subtotal" prefWidth="90" styleClass="footer-label"/>
+                                <Label fx:id="subtotalLabel" text="Rp0" styleClass="footer-label-bold"/>
+                            </HBox>
+                            <HBox spacing="70" alignment="CENTER_LEFT">
+                                <Label text="Shipping" prefWidth="90" styleClass="footer-label"/>
+                                <Label text="FREE" styleClass="footer-label-bold"/>
+                            </HBox>
+                            <HBox spacing="70" alignment="CENTER_LEFT">
+                                <Label text="Discount" prefWidth="90" styleClass="footer-label"/>
+                                <Label text="Rp0" styleClass="footer-label-bold"/>
+                            </HBox>
+                            <HBox spacing="70" alignment="CENTER_LEFT">
+                                <Label text="Tax" prefWidth="90" styleClass="footer-label"/>
+                                <Label text="Rp0" styleClass="footer-label-bold"/>
+                            </HBox>
+                        </children>
+                    </VBox>
 
-                <Region HBox.hgrow="ALWAYS"/>
+                    <Region HBox.hgrow="ALWAYS"/>
 
-                <HBox spacing="20" alignment="CENTER_RIGHT">
-                    <children>
-                        <VBox alignment="CENTER_RIGHT" spacing="0">
-                            <Label text="Total:" styleClass="footer-label-bold"/>
-                            <Label text="1 item" styleClass="footer-label"/>
-                        </VBox>
-                        <Label fx:id="finalTotalLabel" text="Rp0" styleClass="total-label"/>
-                        <Button fx:id="payButton" text="Pay Now" onAction="#handlePayButtonAction"
-                                onMouseEntered="#handlePayButtonEntered" onMouseExited="#handlePayButtonExited"
-                                prefWidth="150" prefHeight="35" styleClass="pay-button"/>
-                    </children>
-                </HBox>
-            </children>
-        </HBox>
-    </VBox>
-</VBox>
+                    <HBox spacing="20" alignment="CENTER_RIGHT">
+                        <children>
+                            <VBox alignment="CENTER_RIGHT" spacing="0">
+                                <Label text="Total:" styleClass="footer-label-bold"/>
+                                <Label text="1 item" styleClass="footer-label"/>
+                            </VBox>
+                            <Label fx:id="finalTotalLabel" text="Rp0" styleClass="total-label"/>
+                            <Button fx:id="payButton" text="Pay Now" onAction="#handlePayButtonAction"
+                                    onMouseEntered="#handlePayButtonEntered" onMouseExited="#handlePayButtonExited"
+                                    prefWidth="150" prefHeight="35" styleClass="pay-button"/>
+                        </children>
+                    </HBox>
+                </children>
+            </HBox>
+        </VBox>
+    </bottom>
+
+</BorderPane>

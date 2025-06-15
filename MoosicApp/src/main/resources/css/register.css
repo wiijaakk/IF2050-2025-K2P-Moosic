@@ -1,3 +1,8 @@
+@font-face {
+    -fx-font-family: 'Alata';
+    src: url('../fonts/Alata-Regular.ttf');
+}
+
 
    .root-pane {
     -fx-background-image: url("/image/background.png");
@@ -25,6 +30,8 @@
     -fx-background-radius: 8;
     -fx-prompt-text-fill: #A3A3A3;
     -fx-border-color: transparent;
+    -fx-font-family: "Alata";
+    -fx-font-size: 10px;
 }
 
 

@@ -22,10 +22,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
+import javafx.application.Platform;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -36,18 +38,17 @@ public class CheckoutController {
 
     private Order currentOrder;
     
-    // Product data yang akan ditampilkan - support both Product and AllProduct
     private Product selectedProduct;
     private AllProduct selectedAllProduct;
     private int quantity = 1;
 
     @FXML private Button payButton;
     @FXML private Button exitButton;
-    @FXML private Button backButton;  // Back button to Product page
-    @FXML private Button logoButton;  // Logo button to Home page
-    @FXML private Button shopNavButton;  // Shop navigation button to Shop page
+    @FXML private Button backButton;
+    @FXML private Button logoButton;
+    @FXML private Button shopNavButton;
     @FXML private Label navPromotion;
-    @FXML private Label navCart;
+    @FXML private Button navCart;
     @FXML private Button navShop;
     @FXML private Label navOrder;
     @FXML private TextField nameField;
@@ -63,7 +64,6 @@ public class CheckoutController {
     @FXML private TextField cvvField;
     @FXML private TextField promoCodeField;
     
-    // FXML elements untuk product display
     @FXML private ImageView productImageView;
     @FXML private Label productNameLabel;
     @FXML private Label priceLabel;
@@ -72,20 +72,19 @@ public class CheckoutController {
     @FXML private Label subtotalLabel;
     @FXML private Label finalTotalLabel;
 
+    @FXML private BorderPane mainContainer;
+
     @FXML
     public void initialize() {
         this.currentOrder = new Order();
         
-        // DEFAULT: Kalau tidak ada data yang di-pass, gunakan produk default
         if (selectedProduct == null && selectedAllProduct == null) {
-            // Gunakan data default yang sesuai dengan database
             selectedProduct = new Product(1, "Midnights Vinyl – Taylor Swift", 
                 "Exclusive \"Midnights\" edition by Taylor Swift", 
                 new BigDecimal("525000.00"), "Pop", "Vinyl", 
                 "midnight-ts-vinyl.jpg", new ArrayList<>());
         }
         
-        // Load product data ke UI
         loadProductToUI();
         
         setupTextFieldFocusListeners(nameField);
@@ -104,14 +103,27 @@ public class CheckoutController {
         if (navShop != null){
             navShop.getStyleClass().add("active");
         }
+        if (navCart != null) {
+            navCart.getStyleClass().add("active");
+        }
+
+        nameField.setOnAction(e -> mobilePhoneField.requestFocus());
+        mobilePhoneField.setOnAction(e -> addressField.requestFocus());
+        addressField.setOnAction(e -> countryField.requestFocus());
+        countryField.setOnAction(e -> stateField.requestFocus());
+        stateField.setOnAction(e -> cityField.requestFocus());
+        cityField.setOnAction(e -> zipCodeField.requestFocus());
+        zipCodeField.setOnAction(e -> cardNameField.requestFocus());
+        cardNameField.setOnAction(e -> cardNumberField.requestFocus());
+        cardNumberField.setOnAction(e -> validThroughField.requestFocus());
+        validThroughField.setOnAction(e -> cvvField.requestFocus());
+        cvvField.setOnAction(e -> promoCodeField.requestFocus());
+        promoCodeField.setOnAction(e -> handlePayButtonAction(new ActionEvent(payButton, payButton)));
     }
     
-    // ==================== DATA SETTERS - SUPPORT MULTIPLE PRODUCT TYPES ====================
-    
-    // METHOD UNTUK MENERIMA DATA DARI HALAMAN SEBELUMNYA (Product model)
     public void setProductData(Product product, int qty) {
         this.selectedProduct = product;
-        this.selectedAllProduct = null; // Clear other type
+        this.selectedAllProduct = null;
         this.quantity = qty;
         
         System.out.println("✅ Product data received:");
@@ -119,16 +131,14 @@ public class CheckoutController {
         System.out.println("   Quantity: " + qty);
         System.out.println("   Price: Rp" + String.format("%,.0f", product.getPrice().doubleValue()));
         
-        // Kalau controller sudah di-initialized, langsung update UI
         if (productNameLabel != null) {
             loadProductToUI();
         }
     }
     
-    // METHOD UNTUK MENERIMA DATA DARI HOMEPAGE/SHOP (AllProduct model)
     public void setAllProductData(AllProduct product, int qty) {
         this.selectedAllProduct = product;
-        this.selectedProduct = null; // Clear other type
+        this.selectedProduct = null;
         this.quantity = qty;
         
         System.out.println("✅ AllProduct data received:");
@@ -136,102 +146,84 @@ public class CheckoutController {
         System.out.println("   Quantity: " + qty);
         System.out.println("   Price: Rp" + String.format("%,.0f", product.getPrice()));
         
-        // Kalau controller sudah di-initialized, langsung update UI
         if (productNameLabel != null) {
             loadProductToUI();
         }
     }
     
-    // Helper method to get current product name regardless of type
     private String getCurrentProductName() {
         if (selectedProduct != null) return selectedProduct.getName();
         if (selectedAllProduct != null) return selectedAllProduct.getName();
         return "Unknown Product";
     }
     
-    // Helper method to get current product price regardless of type
     private double getCurrentProductPrice() {
         if (selectedProduct != null) return selectedProduct.getPrice().doubleValue();
         if (selectedAllProduct != null) return selectedAllProduct.getPrice();
         return 0.0;
     }
     
-    // Helper method to get current product image regardless of type
     private String getCurrentProductImage() {
         if (selectedProduct != null) return selectedProduct.getGambar();
         if (selectedAllProduct != null) return selectedAllProduct.getImage();
-        return "midnight-ts-vinyl.jpg"; // Default fallback
+        return "midnight-ts-vinyl.jpg";
     }
     
-    // ==================== UI LOADING METHODS ====================
-    
-    // METHOD UNTUK LOAD PRODUCT DATA KE UI
     private void loadProductToUI() {
         if (selectedProduct == null && selectedAllProduct == null) return;
         
         System.out.println("🔄 Loading product data to UI...");
         
-        // Update product name
         if (productNameLabel != null) {
             String productName = getCurrentProductName();
             productNameLabel.setText(productName);
             System.out.println("   ✅ Product name loaded: " + productName);
         }
         
-        // Update price
         if (priceLabel != null) {
             double priceValue = getCurrentProductPrice();
             priceLabel.setText(String.format("Rp%,.0f", priceValue));
             System.out.println("   ✅ Price loaded: Rp" + String.format("%,.0f", priceValue));
         }
         
-        // Update quantity
         if (quantityLabel != null) {
             quantityLabel.setText("x " + quantity);
             System.out.println("   ✅ Quantity loaded: x" + quantity);
         }
         
-        // Update total price
         double totalPrice = getCurrentProductPrice() * quantity;
         if (totalPriceLabel != null) {
             totalPriceLabel.setText(String.format("Rp%,.0f", totalPrice));
             System.out.println("   ✅ Total price loaded: Rp" + String.format("%,.0f", totalPrice));
         }
         
-        // Update subtotal di footer
         if (subtotalLabel != null) {
             subtotalLabel.setText(String.format("Rp%,.0f", totalPrice));
         }
         
-        // Update final total (tanpa discount dulu)
         if (finalTotalLabel != null) {
             finalTotalLabel.setText(String.format("Rp%,.0f", totalPrice));
         }
-        
-        // Load product image
+
         loadProductImage();
         
-        // Update order model
         updateOrderModel();
         
         System.out.println("✅ All product data loaded successfully!");
     }
     
-    // METHOD UNTUK LOAD GAMBAR PRODUK
     private void loadProductImage() {
         if (productImageView == null) return;
         
         try {
             String imagePath = getCurrentProductImage();
             
-            // Handle both /image/album/ and direct paths from AllProduct
             if (!imagePath.startsWith("/")) {
                 imagePath = "/image/album/" + imagePath;
             }
             
             System.out.println("🖼️ Trying to load image: " + imagePath);
             
-            // Coba load image
             Image image = new Image(getClass().getResourceAsStream(imagePath));
             
             if (!image.isError()) {
@@ -250,7 +242,6 @@ public class CheckoutController {
     
     private void useDefaultImage() {
         try {
-            // Try multiple default image paths
             String[] defaultPaths = {
                 "/image/album/midnight-ts-vinyl.jpg",
                 "/image/album/midnights.png",
@@ -277,20 +268,15 @@ public class CheckoutController {
         }
     }
     
-    // METHOD UNTUK UPDATE ORDER MODEL
     private void updateOrderModel() {
         if (selectedProduct == null && selectedAllProduct == null) return;
         
-        // Clear existing items
         currentOrder = new Order();
         
-        // Create new order item based on available product type
         if (selectedProduct != null) {
             OrderItem item = new OrderItem(selectedProduct, quantity);
             currentOrder.addItem(item);
         } else if (selectedAllProduct != null) {
-            // Convert AllProduct to Product for OrderItem if needed
-            // This assumes OrderItem constructor exists for AllProduct or we need to adapt
             Product tempProduct = new Product(
                 selectedAllProduct.getId(),
                 selectedAllProduct.getName(),
@@ -299,7 +285,7 @@ public class CheckoutController {
                 selectedAllProduct.getGenre(),
                 selectedAllProduct.getVariant(),
                 selectedAllProduct.getImage(),
-                new ArrayList<>() // Empty reviews for now
+                new ArrayList<>()
             );
             OrderItem item = new OrderItem(tempProduct, quantity);
             currentOrder.addItem(item);
@@ -308,28 +294,22 @@ public class CheckoutController {
         System.out.println("✅ Order model updated with current product");
     }
 
-    // ==================== NAVIGATION METHODS WITH FULL SCREEN ====================
-    
-    // Handler untuk logo button - Navigate to Home page (homepage.fxml di folder fxml)
     @FXML
     private void handleLogoNavigationToHome(ActionEvent event) {
-        System.out.println("🏠 Navigating to Home page (Full Screen)...");
+        System.out.println("🏠 Logo clicked, navigating to Homepage (Full Screen)...");
         navigateToPage(event, "/fxml/homepage.fxml", "Moosic - Home");
     }
     
-    // Handler untuk shop button - Navigate to Shop page (Shop.fxml di folder fxml)
     @FXML
     private void handleShopButtonAction(ActionEvent event) {
         System.out.println("🛍️ Navigating to Shop page (Full Screen)...");
         navigateToPage(event, "/fxml/Shop.fxml", "Moosic - Shop");
     }
 
-    // Handler untuk back button - Navigate to Product page dengan data passing
     @FXML
     private void handleBackButtonAction(ActionEvent event) {
         System.out.println("🔙 Navigating back to Product page (Full Screen)...");
         
-        // Try multiple possible product file names
         String[] productPaths = {
             "/fxml/Product.fxml",
             "/fxml/product.fxml"
@@ -342,10 +322,8 @@ public class CheckoutController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource(productPath));
                 Parent root = loader.load();
                 
-                // Get ProductController and initialize with data
                 ProductController productController = loader.getController();
                 if (productController != null) {
-                    // Use initData method with product ID
                     if (selectedProduct != null) {
                         productController.initData(selectedProduct.getId());
                         System.out.println("   ✅ Product initialized with ID: " + selectedProduct.getId());
@@ -353,31 +331,25 @@ public class CheckoutController {
                         productController.initData(selectedAllProduct.getId());
                         System.out.println("   ✅ AllProduct initialized with ID: " + selectedAllProduct.getId());
                     } else {
-                        // Use default product ID if no product data
                         productController.initData(1);
                         System.out.println("   ✅ Default product initialized with ID: 1");
                     }
                 }
                 
-                // Get current stage
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 
-                // Save current window state - FORCE FULL SCREEN
                 boolean wasMaximized = stage.isMaximized();
                 double currentWidth = stage.getWidth();
                 double currentHeight = stage.getHeight();
                 
-                // Create scene dengan ukuran penuh
                 Scene scene;
                 if (wasMaximized) {
                     scene = new Scene(root, stage.getWidth(), stage.getHeight());
                 } else {
                     scene = new Scene(root, currentWidth, currentHeight);
-                    // Force maximize
                     wasMaximized = true;
                 }
                 
-                // Load product CSS
                 try {
                     String cssUrl = getClass().getResource("/css/product.css").toExternalForm();
                     scene.getStylesheets().add(cssUrl);
@@ -386,11 +358,9 @@ public class CheckoutController {
                     System.out.println("⚠️ Product CSS not found - " + e.getMessage());
                 }
                 
-                // Set scene
                 stage.setScene(scene);
                 stage.setTitle("Moosic - Product Details");
                 
-                // Force maximize window with enhanced method
                 ensureMaximizedWindow(stage);
                 
                 stage.show();
@@ -416,37 +386,29 @@ public class CheckoutController {
                      "4. Database connection issue");
         }
     }
-    
-    // Generic navigation method with FULL SCREEN enforcement
+
     private void navigateToPage(ActionEvent event, String fxmlPath, String title) {
         try {
             System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             
-            // Get current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             
-            // Save current window state
             boolean wasMaximized = stage.isMaximized();
             double currentWidth = stage.getWidth();
             double currentHeight = stage.getHeight();
             double currentX = stage.getX();
             double currentY = stage.getY();
             
-            // Create scene dengan ukuran yang sesuai
             Scene scene;
             if (wasMaximized) {
-                // Set scene to full screen dimensions immediately
                 scene = new Scene(root, stage.getWidth(), stage.getHeight());
             } else {
-                // Force full screen for checkout navigation
                 scene = new Scene(root, currentWidth, currentHeight);
-                // Set to maximized after scene creation
                 wasMaximized = true;
             }
-            
-            // Load CSS berdasarkan page yang dibuka
+
             String cssPath = null;
             if (fxmlPath.contains("homepage")) {
                 cssPath = "/css/homepage.css";
@@ -454,6 +416,8 @@ public class CheckoutController {
                 cssPath = "/css/shopstyle.css";
             } else if (fxmlPath.contains("product")) {
                 cssPath = "/css/product.css";
+            } else if (fxmlPath.contains("SuccessPage")) {
+                cssPath = "/css/successpage.css";
             }
             
             if (cssPath != null) {
@@ -466,11 +430,9 @@ public class CheckoutController {
                 }
             }
             
-            // Set scene
             stage.setScene(scene);
             stage.setTitle(title);
             
-            // Force maximize window with enhanced method
             ensureMaximizedWindow(stage);
             
             stage.show();
@@ -482,7 +444,48 @@ public class CheckoutController {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error", 
                      "Could not navigate to " + title + ". File not found: " + fxmlPath);
-        } catch (Exception e) {
+        } catch (ClassCastException e) {
+            System.err.println("❌ ClassCastException in navigateToPage: " + e.getMessage());
+            System.err.println("This often happens when navigateToPage is called from a non-Node source (like a Task).");
+            e.printStackTrace();
+            try {
+                Stage stage = (Stage) payButton.getScene().getWindow(); 
+                
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+                Parent root = loader.load();
+                Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+
+                String cssPath = null;
+                if (fxmlPath.contains("homepage")) {
+                    cssPath = "/css/homepage.css";
+                } else if (fxmlPath.contains("Shop")) {
+                    cssPath = "/css/shopstyle.css";
+                } else if (fxmlPath.contains("product")) {
+                    cssPath = "/css/product.css";
+                } else if (fxmlPath.contains("SuccessPage")) {
+                    cssPath = "/css/successpage.css";
+                }
+                if (cssPath != null) {
+                    try {
+                        String cssUrl = getClass().getResource(cssPath).toExternalForm();
+                        scene.getStylesheets().add(cssUrl);
+                    } catch (Exception cssE) {
+                        System.out.println("⚠️ CSS not found during ClassCastException recovery: " + cssPath + " - " + cssE.getMessage());
+                    }
+                }
+                stage.setScene(scene);
+                stage.setTitle(title);
+                ensureMaximizedWindow(stage);
+                stage.show();
+                System.out.println("✅ Successfully navigated to " + title + " (Full Screen) via ClassCastException recovery.");
+            } catch (Exception recoveryE) {
+                System.err.println("❌ Error during ClassCastException recovery: " + recoveryE.getMessage());
+                recoveryE.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Navigation Error", 
+                         "An error occurred during navigation: " + recoveryE.getMessage());
+            }
+        }
+        catch (Exception e) {
             System.err.println("❌ Unexpected error navigating to " + title + ": " + e.getMessage());
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Unexpected Error", 
@@ -490,15 +493,12 @@ public class CheckoutController {
         }
     }
     
-    // Enhanced method untuk memastikan window full screen
     private void ensureMaximizedWindow(Stage stage) {
         try {
-            // Method 1: Set maximized immediately
-            stage.setMaximized(false); // Reset first
-            stage.setMaximized(true);  // Then maximize
+            stage.setMaximized(false);
+            stage.setMaximized(true);
             
-            // Method 2: Use Platform.runLater for delayed execution
-            javafx.application.Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 if (!stage.isMaximized()) {
                     stage.setMaximized(true);
                 }
@@ -506,7 +506,6 @@ public class CheckoutController {
                 stage.requestFocus();
             });
             
-            // Method 3: Use Timeline for multiple attempts (aggressive approach)
             Timeline maxChecker = new Timeline();
             maxChecker.getKeyFrames().addAll(
                 new KeyFrame(Duration.millis(50), e -> {
@@ -537,16 +536,13 @@ public class CheckoutController {
         }
     }
     
-    // Optional: Method alternatif untuk force full screen
     private void forceFullScreen(Stage stage) {
         try {
-            // Multiple attempts to ensure maximized state
             stage.setMaximized(false);
             
-            javafx.application.Platform.runLater(() -> {
+            Platform.runLater(() -> {
                 stage.setMaximized(true);
                 
-                // Double-check setelah delay kecil
                 Timeline timeline = new Timeline(new KeyFrame(
                     Duration.millis(100), 
                     e -> {
@@ -564,9 +560,6 @@ public class CheckoutController {
         }
     }
     
-    // ==================== HOVER EFFECTS ====================
-    
-    // Hover effects untuk logo button
     @FXML
     private void handleLogoButtonEntered(MouseEvent event) {
         if (logoButton != null) {
@@ -581,7 +574,6 @@ public class CheckoutController {
         }
     }
     
-    // Hover effects untuk shop button
     @FXML
     private void handleShopButtonEntered(MouseEvent event) {
         if (shopNavButton != null) {
@@ -596,7 +588,6 @@ public class CheckoutController {
         }
     }
     
-    // Hover effects untuk back button
     @FXML
     private void handleBackButtonEntered(MouseEvent event) {
         if (backButton != null) {
@@ -610,8 +601,6 @@ public class CheckoutController {
             backButton.setStyle("-fx-background-color: #C4EA57; -fx-background-radius: 8;");
         }
     }
-
-    // ==================== PAYMENT AND OTHER METHODS ====================
 
     @FXML
     private void handlePayButtonAction(ActionEvent event) {
@@ -655,7 +644,7 @@ public class CheckoutController {
         saveOrderTask.setOnSucceeded(e -> {
             boolean success = saveOrderTask.getValue();
             if (success) {
-                showAlert(Alert.AlertType.INFORMATION, "Berhasil", "Pesanan Anda telah berhasil disimpan!");
+                navigateToPage(new ActionEvent(payButton, payButton), "/fxml/SuccessPage.fxml", "Moosic - Payment Success"); 
             } else {
                 showAlert(Alert.AlertType.ERROR, "Gagal", "Terjadi kesalahan saat menyimpan pesanan.");
             }

@@ -55,13 +55,70 @@ public class ShopController {
         
         genreComboBox.setOnAction(e -> filterProducts());
         variantComboBox.setOnAction(e -> filterProducts());
-        searchField.setOnAction(e -> filterProducts());
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterProducts();
+        });
 
         updateProductDisplay();
         createPaginationControls();
-        // if (shopNavButton != null) {
-        //     shopNavButton.getStyleClass().add("active");
-        // }
+
+        variantComboBox.setCellFactory(listView -> new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    int index = getIndex();
+                    int lastIndex = variantComboBox.getItems().size() - 1;
+
+                    if (index == 0) {
+                        setStyle("-fx-background-radius: 15px 15px 0 0;");
+                    } else if (index == lastIndex) {
+                        setStyle("-fx-background-radius: 0 0 15px 15px;");
+                    } else {
+                        setStyle("-fx-background-radius: 0;");
+                    }
+                }
+            }
+        });
+
+        genreComboBox.setCellFactory(listView -> new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                    setStyle("");
+                } else {
+                    setText(item);
+                    int index = getIndex();
+                    int lastIndex = genreComboBox.getItems().size() - 1;
+
+                    if (index == 0) {
+                        setStyle("-fx-background-radius: 15px 15px 0 0;");
+                    } else if (index == lastIndex) {
+                        setStyle("-fx-background-radius: 0 0 15px 15px;");
+                    } else {
+                        setStyle("-fx-background-radius: 0;");
+                    }
+                }
+            }
+        });
+
+        variantComboBox.setButtonCell(new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item);
+            }
+        });
+
+        genreComboBox.setButtonCell(new javafx.scene.control.ListCell<>() {
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? "" : item);
+            }
+        });
     }
     
     private void updateProductDisplay() {
@@ -166,9 +223,9 @@ public class ShopController {
             mainContainer.setCenter(homePage);
 
             try {
-                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Home CSS from: " + cssPath);
+                mainContainer.getStylesheets().clear();
+                mainContainer.getStylesheets().add(getClass().getResource("/css/homepage.css").toExternalForm());
+                System.out.println("Loading Home CSS from: ");
             } catch (Exception e) {
                 System.out.println("Home CSS not found, using default styling");
             }
@@ -203,13 +260,9 @@ public class ShopController {
     private Node createProductItemNode(AllProduct product) {
         VBox itemBox = new VBox(8);
         itemBox.getStyleClass().add("product-item");
-        // itemBox.setAlignment(Pos.CENTER_LEFT);
 
         itemBox.setOnMouseClicked(event -> navigateToProductDetail(product));
 
-        // Region imagePlaceholder = new Region();
-        // imagePlaceholder.setPrefSize(180, 180);
-        // imagePlaceholder.setStyle("-fx-background-color: #f0f0f0;"); 
         StackPane imageContainer = new StackPane();
         Image image = new Image(product.getImage());
         ImageView imageView = new ImageView(image);
@@ -256,72 +309,48 @@ public class ShopController {
         createPaginationControls();
     }
 
-//     private void showAlert(Alert.AlertType alertType, String title, String message) {
-//         Alert alert = new Alert(alertType);
-//         alert.setTitle(title);
-//         alert.setHeaderText(null);
-//         alert.setContentText(message);
-//         alert.showAndWait();
-//     }
-// }
-
     private void navigateToProductDetail(AllProduct product) {
-        System.out.println("Anda mengklik produk: " + product.getName()); //kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        System.out.println("Anda mengklik produk: " + product.getName());
         currProductID = product.getId();
+        
         if (!isValidProduct(product)) {
             System.out.println("Cannot navigate: invalid product");
             return;
         }
+        
         currProductID = product.getId();
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
-            Parent root = loader.load();
+            Parent productPage = loader.load();
             
             ProductController productController = loader.getController();
             productController.initData(currProductID);
             
-            Stage stage = (Stage) searchField.getScene().getWindow();
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(productPage);
             
-            // Save window state
-            boolean wasMaximized = stage.isMaximized();
-            double currentWidth = stage.getWidth();
-            double currentHeight = stage.getHeight();
-            double currentX = stage.getX();
-            double currentY = stage.getY();
-            
-            Scene scene;
-            if (wasMaximized) {
-                scene = new Scene(root, stage.getWidth(), stage.getHeight());
-            } else {
-                scene = new Scene(root, currentWidth, currentHeight);
+            try {
+                String cssPath = getClass().getResource("/css/product.css").toExternalForm();
+                productPage.getStylesheets().clear();
+                productPage.getStylesheets().add(cssPath);
+                System.out.println("Loading Product CSS from: " + cssPath);
+            } catch (Exception e) {
+                System.out.println("Product CSS not found, using default styling");
             }
             
-            stage.setScene(scene);
-            stage.setTitle("Moose - Product Details");
+            System.out.println("Switched to Product Detail Page (inline) - Product ID: " + currProductID);
             
-            if (wasMaximized) {
-                stage.setMaximized(false);
-                stage.setMaximized(true); 
-            } else {
-                stage.setWidth(currentWidth);
-                stage.setHeight(currentHeight);
-                stage.setX(currentX);
-                stage.setY(currentY);
-            }
-            
-            javafx.application.Platform.runLater(() -> {
-                if (wasMaximized && !stage.isMaximized()) {
-                    stage.setMaximized(true);
-                }
-                stage.toFront();
-                stage.requestFocus();
-                System.out.println("Final window state - Maximized: " + stage.isMaximized());
-            });
-            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                "Could not open product detail page: " + e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Unexpected Error",
+                "An unexpected error occurred while navigating to product detail: " + e.getMessage());
         }
     }
 
@@ -329,7 +358,7 @@ public class ShopController {
         return currProductID;
     }
 
-    public boolean isValidProduct(AllProduct product) { // FIXED: AllProduct
+    public boolean isValidProduct(AllProduct product) {
         if (product == null) return false;
         if (product.getName() == null || product.getName().trim().isEmpty()) return false;
         

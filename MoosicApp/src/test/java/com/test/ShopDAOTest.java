@@ -23,7 +23,7 @@ public class ShopDAOTest {
 
     @Test
     public void testGetProductById_validId_shouldReturnCorrectProduct() {
-        int validId = 1; // asumsi ID 1 ada di database
+        int validId = 1; 
         AllProduct product = ShopDAO.getProductById(validId);
         assertNotNull(product);
         assertEquals(validId, product.getId());

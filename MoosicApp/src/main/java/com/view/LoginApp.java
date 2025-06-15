@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.geometry.Insets;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 
@@ -36,10 +36,10 @@ public class LoginApp extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/LoginView.fxml"));
         Parent root = loader.load();
 
-        AnchorPane rootAnchorPane = (AnchorPane) root;
-        ImageView backgroundImageView = (ImageView) rootAnchorPane.lookup("#backgroundImageView");
-        loginFormBox = (VBox) rootAnchorPane.lookup("#login-form-box");
-        logoImageView = (ImageView) rootAnchorPane.lookup("#logoImageView");
+        StackPane rootStackPane = (StackPane) root;
+        ImageView backgroundImageView = (ImageView) rootStackPane.lookup("#backgroundImageView");
+        loginFormBox = (VBox) rootStackPane.lookup("#login-form-box");
+        logoImageView = (ImageView) rootStackPane.lookup("#logoImageView");
 
         if (backgroundImageView != null) {
             backgroundImageView.fitWidthProperty().bind(primaryStage.widthProperty());
@@ -128,11 +128,12 @@ public class LoginApp extends Application {
             targetLogoFitWidth = LOGO_DEFAULT_FIT_WIDTH;
         }
 
-        double leftAnchor = currentStageWidth - targetLoginFormWidth - RIGHT_MARGIN;
-        AnchorPane.setLeftAnchor(loginFormBox, leftAnchor);
+        double leftBorder = currentStageWidth - targetLoginFormWidth - RIGHT_MARGIN;
+        Insets margin = new Insets(0, 0, 0, leftBorder); // top, right, bottom, left
+        StackPane.setMargin(loginFormBox, margin);
+
         loginFormBox.setPrefWidth(targetLoginFormWidth);
         loginFormBox.setPrefHeight(targetLoginFormHeight);
-
         logoImageView.setFitWidth(targetLogoFitWidth);
     }
 
