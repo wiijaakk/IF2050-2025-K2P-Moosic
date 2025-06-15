@@ -430,9 +430,9 @@ public class ProductController implements Initializable {
             }
 
             try {
-                String cssPath = getClass().getResource("/css/shopstyle.css").toExternalForm();
-                shopPage.getStylesheets().add(cssPath);
-                System.out.println("Loading Shop CSS from: " + cssPath);
+                mainContainer.getStylesheets().clear();
+                mainContainer.getStylesheets().add(getClass().getResource("/css/shopstyle.css").toExternalForm());
+                System.out.println("Loading Shop CSS from: ");
             } catch (Exception e) {
                 System.out.println("Shop CSS not found, using default styling");
             }
@@ -459,10 +459,18 @@ public class ProductController implements Initializable {
             mainContainer.setCenter(null);
             mainContainer.setCenter(homePage);
 
+            if (homePage instanceof Parent) {
+                ((Parent) homePage).getStylesheets().clear();
+            }
+
+            if (mainContainer.getScene() != null) {
+                mainContainer.getScene().getStylesheets().clear();
+            }
+
             try {
-                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Home CSS from: " + cssPath);
+                mainContainer.getStylesheets().clear();
+                mainContainer.getStylesheets().add(getClass().getResource("/css/homepage.css").toExternalForm());
+                System.out.println("Loading Home CSS from: ");
             } catch (Exception e) {
                 System.out.println("Home CSS not found, using default styling");
             }

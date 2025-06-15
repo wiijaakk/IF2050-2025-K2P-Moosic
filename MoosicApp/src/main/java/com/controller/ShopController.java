@@ -223,10 +223,9 @@ public class ShopController {
             mainContainer.setCenter(homePage);
 
             try {
-                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
-                homePage.getStylesheets().clear();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Home CSS from: " + cssPath);
+                mainContainer.getStylesheets().clear();
+                mainContainer.getStylesheets().add(getClass().getResource("/css/homepage.css").toExternalForm());
+                System.out.println("Loading Home CSS from: ");
             } catch (Exception e) {
                 System.out.println("Home CSS not found, using default styling");
             }
