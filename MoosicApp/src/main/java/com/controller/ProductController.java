@@ -23,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.animation.Timeline;
@@ -61,6 +62,7 @@ public class ProductController implements Initializable {
     @FXML Label quantityLabel;
     @FXML Button checkoutButton;
     @FXML BorderPane mainContainer;
+    @FXML StackPane searchBarContainer;
 
     // CHANGED: Made fields package-private for testing access
     Product currentProduct;
@@ -471,26 +473,32 @@ public class ProductController implements Initializable {
 
     @FXML
     private void handleLogoNavigationToHome(ActionEvent event) {
-        System.out.println("Logo clicked, navigating to Home page (inline)...");
+        System.out.println("Logo clicked, navigating to Home page (inline & corrected)...");
+
+        String fxmlPath = "/fxml/homepage.fxml";
+        String cssPath = "/css/homepage.css";
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
-            Parent homePage = loader.load();
+            // 1. Dapatkan Scene dari event klik (misal: dari tombol logo)
+            Node sourceNode = (Node) event.getSource();
+            Scene scene = sourceNode.getScene();
 
-            if (mainContainer != null) {
-                mainContainer.setTop(null);
-                mainContainer.setBottom(null);
-                mainContainer.setCenter(null);
-                mainContainer.setCenter(homePage);
-            }
+            // 2. Dapatkan BorderPane utama dari root Scene (mencegah NullPointerException)
+            BorderPane mainContainer = (BorderPane) scene.getRoot();
 
-            try {
-                String cssPath = getClass().getResource("/css/homepage.css").toExternalForm();
-                homePage.getStylesheets().add(cssPath);
-                System.out.println("Loading Home CSS from: " + cssPath);
-            } catch (Exception e) {
-                System.out.println("Home CSS not found, using default styling");
-            }
+            // 3. Muat FXML halaman tujuan
+            Parent homePage = FXMLLoader.load(getClass().getResource(fxmlPath));
+
+            // 4. Atur Ulang CSS di Scene (Hapus yang lama, tambah yang baru)
+            scene.getStylesheets().clear();
+            scene.getStylesheets().add(getClass().getResource(cssPath).toExternalForm());
+            System.out.println("CSS Cleared. Applied: " + cssPath);
+            
+            // 5. Ganti konten di BorderPane utama
+            mainContainer.setTop(null);
+            mainContainer.setBottom(null);
+            mainContainer.setCenter(null);
+            mainContainer.setCenter(homePage);
 
             System.out.println("Switched to Home Page (inline)");
 

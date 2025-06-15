@@ -12,6 +12,7 @@ import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -44,6 +45,7 @@ public class HomepageController {
     @FXML HBox topSellingProductsContainer;
     @FXML public TextField searchField;
     @FXML BorderPane mainContainer;
+    @FXML StackPane searchBarContainer;
 
     // CHANGED: Made fields package-private for testing access
     Node lastHighlightedCard = null;
@@ -54,6 +56,11 @@ public class HomepageController {
 
     @FXML
     public void initialize() {
+        Platform.runLater(() -> {
+            if (searchBarContainer != null && searchBarContainer.getParent() != null) {
+                searchBarContainer.getParent().requestFocus();
+            }
+        });
         HomepageDAO.init();
         loadTopSellingProducts();
         loadRecommendedProducts();

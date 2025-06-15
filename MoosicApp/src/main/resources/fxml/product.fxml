@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:controller="com.controller.ProductController" styleClass="root" stylesheets="@../css/product.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer">
+<BorderPane fx:controller="com.controller.ProductController" styleClass="root" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:id="mainContainer">
    <top>
       <HBox fx:id="header" alignment="CENTER_LEFT">
          <padding>

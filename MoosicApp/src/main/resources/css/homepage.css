@@ -95,7 +95,8 @@
     -fx-padding: 10px; /* Hilangkan padding default */
 }
 .search-field:focused {
-    -fx-focussed-border-color: transparent; /* Hilangkan border saat fokus */
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent; /* Hilangkan border saat fokus */
 }
 
 .search-field .text { /* Untuk teks aktual di dalam TextField */

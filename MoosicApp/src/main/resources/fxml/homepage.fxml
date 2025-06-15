@@ -65,9 +65,6 @@
         <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane">
             <content>
                 <VBox fx:id="rootLayout" alignment="TOP_CENTER" styleClass="root-container">
-                    <stylesheets>
-                        <URL value="@../css/homepage.css"/>
-                    </stylesheets>
                     <!-- Hero Section -->
                     <VBox alignment="CENTER" prefHeight="300.0" prefWidth="800.0" styleClass="hero-section-container">
                         <children>
@@ -97,16 +94,22 @@
                                     <Insets bottom="50.0" left="220.0"/>
                                 </VBox.margin>
                             </HBox>
-                            <HBox alignment="CENTER" styleClass="search-bar-container">
+                            <StackPane fx:id="searchBarContainer" styleClass="search-bar-container" HBox.hgrow="ALWAYS">
                                 <children>
-                                    <ImageView fitHeight="30" fitWidth="30" preserveRatio="true">
+                                    <TextField fx:id="searchField" promptText="Search here" styleClass="search-field" 
+                                            style="-fx-padding: 8px 10px 8px 45px;"/>
+
+                                    <ImageView fitHeight="30" fitWidth="30" preserveRatio="true"
+                                            pickOnBounds="true" StackPane.alignment="CENTER_LEFT">
                                         <image>
                                             <Image url="/image/Search.png"/>
                                         </image>
+                                        <StackPane.margin>
+                                            <Insets left="15.0" />
+                                        </StackPane.margin>
                                     </ImageView>
-                                    <TextField fx:id="searchField" promptText="Search here" styleClass="search-field" HBox.hgrow="ALWAYS" onAction="#handleSearchAction"/>
                                 </children>
-                            </HBox>
+                            </StackPane>
                         </children>
                         <padding>
                             <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
