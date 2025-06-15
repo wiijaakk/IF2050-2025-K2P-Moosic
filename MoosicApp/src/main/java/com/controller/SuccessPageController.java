@@ -3,15 +3,15 @@ package com.controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;     // Import Node
-import javafx.scene.Parent;   // Import Parent
-import javafx.scene.Scene;    // Import Scene
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.stage.Stage;    // Import Stage
-import java.io.IOException;   // Import IOException
-import javafx.animation.Timeline; // For ensuring maximized window
-import javafx.animation.KeyFrame;   // For ensuring maximized window
-import javafx.util.Duration;    // For ensuring maximized window
+import javafx.stage.Stage;
+import java.io.IOException;
+import javafx.animation.Timeline;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 
 
 public class SuccessPageController {
@@ -23,17 +23,13 @@ public class SuccessPageController {
     private void handleReturntoHome(ActionEvent event) {
         System.out.println("Returning to Home...");
         try {
-            // Load the homepage.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/homepage.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
 
-            // Create a new scene with the homepage.fxml content
-            Scene scene = new Scene(root, stage.getWidth(), stage.getHeight()); // Maintain current window size
+            Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
 
-            // Load homepage.css if it exists
             try {
                 String cssUrl = getClass().getResource("/css/homepage.css").toExternalForm();
                 scene.getStylesheets().add(cssUrl);
@@ -42,11 +38,9 @@ public class SuccessPageController {
                 System.out.println("⚠️ Homepage CSS not found - " + e.getMessage());
             }
 
-            // Set the new scene to the stage
             stage.setScene(scene);
-            stage.setTitle("Moosic - Home"); // Set the title for the home page
+            stage.setTitle("Moosic - Home");
 
-            // Ensure the window is maximized (optional, based on your app's behavior)
             ensureMaximizedWindow(stage);
 
             stage.show();
@@ -55,12 +49,9 @@ public class SuccessPageController {
         } catch (IOException e) {
             System.err.println("❌ Failed to load homepage.fxml: " + e.getMessage());
             e.printStackTrace();
-            // You might want to show an alert to the user here
-            // showAlert(Alert.AlertType.ERROR, "Navigation Error", "Could not load the home page.");
         }
     }
 
-    // Helper method to ensure the window is maximized, copied from CheckoutController
     private void ensureMaximizedWindow(Stage stage) {
         try {
             stage.setMaximized(false);

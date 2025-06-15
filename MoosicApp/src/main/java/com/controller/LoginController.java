@@ -1,5 +1,3 @@
-// MoosicApp/src/main/java/com/controller/LoginController.java
-
 package com.controller;
 
 import javafx.fxml.FXML;
@@ -53,7 +51,6 @@ public class LoginController {
             System.out.println(loginResult + "!");
             errorLabel.setVisible(false);
             
-            // Navigate to homepage with full screen
             navigateToPage("/fxml/homepage.fxml", "MoosicApp Dashboard", "/css/homepage.css");
             
         } else {
@@ -64,24 +61,20 @@ public class LoginController {
 
     @FXML
     private void handleRegisterLinkAction() {
-        // 1. Informasi yang tadinya parameter, sekarang kita definisikan di sini
         String fxmlPath = "/fxml/register.fxml";
         String title = "Register Page";
         String cssPath = "/css/register.css";
 
-        // 2. Sisa logika di dalamnya tetap sama persis
         try {
             System.out.println("🔍 Attempting to load FXML: " + fxmlPath);
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent homePage = loader.load();
 
-            // Clear main container and set page
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(homePage);
 
-            // Load CSS if provided
             if (cssPath != null && !cssPath.isEmpty()) {
                 try {
                     String cssUrl = getClass().getResource(cssPath).toExternalForm();
@@ -117,13 +110,11 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent homePage = loader.load();
 
-            // Clear main container and set page
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(homePage);
 
-            // Load CSS if provided
             if (cssPath != null && !cssPath.isEmpty()) {
                 try {
                     String cssUrl = getClass().getResource(cssPath).toExternalForm();
@@ -153,11 +144,9 @@ public class LoginController {
      */
     private void ensureMaximizedWindow(Stage stage) {
         try {
-            // Method 1: Set maximized immediately
-            stage.setMaximized(false); // Reset first
-            stage.setMaximized(true);  // Then maximize
+            stage.setMaximized(false);
+            stage.setMaximized(true);
             
-            // Method 2: Use Platform.runLater for delayed execution
             Platform.runLater(() -> {
                 if (!stage.isMaximized()) {
                     stage.setMaximized(true);
@@ -166,7 +155,6 @@ public class LoginController {
                 stage.requestFocus();
             });
             
-            // Method 3: Use Timeline for multiple attempts (aggressive approach)
             Timeline maxChecker = new Timeline();
             maxChecker.getKeyFrames().addAll(
                 new KeyFrame(Duration.millis(50), e -> {

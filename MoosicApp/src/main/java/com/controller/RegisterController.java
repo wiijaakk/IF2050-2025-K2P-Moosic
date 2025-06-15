@@ -97,7 +97,7 @@ public class RegisterController implements Initializable {
         String reenterPassword = reenterPasswordField.getText();
         String email = emailField.getText().trim();
 
-        // Validate Full Name and Address
+        
         if (fullName.isEmpty()) {
             System.out.println("Full Name cannot be empty.");
             errorRegistrationText.setText("Nama Lengkap tidak boleh kosong.");
@@ -111,10 +111,8 @@ public class RegisterController implements Initializable {
             isValid = false;
         }
 
-        // Create a new RegisterService instance for validation checks
         RegisterService service = new RegisterService();
 
-        // Validate Username
         if (!service.isValidUsername(username)) {
             errorUsernameText.setText("*Username harus alphanumeric 6–15 karakter");
             errorUsernameText.setVisible(true);
@@ -125,27 +123,23 @@ public class RegisterController implements Initializable {
             isValid = false;
         }
 
-        // Validate Password
         if (!service.isValidPassword(password)) {
             errorPasswordText.setText("*Password harus mengandung huruf, angka, simbol, min. 6 karakter");
             errorPasswordText.setVisible(true);
             isValid = false;
         }
 
-        // Validate Re-enter Password
         if (!service.isPasswordMatch(password, reenterPassword)) {
             errorReenterPasswordText.setText("*Password tidak cocok");
             errorReenterPasswordText.setVisible(true);
             isValid = false;
         }
 
-        // Validate Email (using service and then additional regex for clarity)
-        if (!service.isValidEmail(email)) { // This should ideally contain regex, but keeping for structure
+        if (!service.isValidEmail(email)) {
             errorEmailText.setText("*Email tidak valid");
             errorEmailText.setVisible(true);
             isValid = false;
         } else {
-            // Additional check using regex for robustness
             Pattern emailPattern = Pattern.compile("^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$");
             Matcher emailMatcher = emailPattern.matcher(email);
             if (!emailMatcher.matches()) {
@@ -170,7 +164,6 @@ public class RegisterController implements Initializable {
                 errorRegistrationText.setVisible(true);
                 errorRegistrationText.setStyle("-fx-fill: green;");
 
-                // Navigate to login page with full screen after successful registration
                 navigateToPage("/fxml/LoginView.fxml", "Moosic - Login", "/css/loginstyle.css");
                 
             } else {
@@ -216,25 +209,20 @@ public class RegisterController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            // Get current stage
             Stage stage = (Stage) rootPane.getScene().getWindow();
             
-            // Save current window state
             boolean wasMaximized = stage.isMaximized();
             double currentWidth = stage.getWidth();
             double currentHeight = stage.getHeight();
             
-            // Create scene with appropriate size
             Scene scene;
             if (wasMaximized) {
                 scene = new Scene(root, stage.getWidth(), stage.getHeight());
             } else {
                 scene = new Scene(root, currentWidth, currentHeight);
-                // Force maximize for navigation
                 wasMaximized = true;
             }
 
-            // Load CSS if provided
             if (cssPath != null) {
                 try {
                     URL cssUrl = getClass().getResource(cssPath);
@@ -249,11 +237,9 @@ public class RegisterController implements Initializable {
                 }
             }
 
-            // Set scene
             stage.setScene(scene);
             stage.setTitle(title);
             
-            // Force maximize window with enhanced method
             ensureMaximizedWindow(stage);
             
             stage.show();
@@ -278,11 +264,9 @@ public class RegisterController implements Initializable {
      */
     private void ensureMaximizedWindow(Stage stage) {
         try {
-            // Method 1: Set maximized immediately
-            stage.setMaximized(false); // Reset first
-            stage.setMaximized(true);  // Then maximize
+            stage.setMaximized(false);
+            stage.setMaximized(true);
             
-            // Method 2: Use Platform.runLater for delayed execution
             Platform.runLater(() -> {
                 if (!stage.isMaximized()) {
                     stage.setMaximized(true);
@@ -291,7 +275,6 @@ public class RegisterController implements Initializable {
                 stage.requestFocus();
             });
             
-            // Method 3: Use Timeline for multiple attempts (aggressive approach)
             Timeline maxChecker = new Timeline();
             maxChecker.getKeyFrames().addAll(
                 new KeyFrame(Duration.millis(50), e -> {
@@ -344,11 +327,9 @@ public class RegisterController implements Initializable {
      * @param fxmlPath The path to the FXML file (e.g., "/fxml/LoginView.fxml").
      */
     private void loadPage(String fxmlPath) {
-        // Redirect to new navigation method with full screen
         String title = "Moosic Application";
         String cssPath = null;
         
-        // Determine appropriate CSS based on path
         if (fxmlPath.contains("LoginView")) {
             title = "Moosic - Login";
             cssPath = "/css/login.css";

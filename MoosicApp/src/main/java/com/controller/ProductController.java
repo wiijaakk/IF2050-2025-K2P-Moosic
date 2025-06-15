@@ -43,7 +43,6 @@ import java.util.ResourceBundle;
 
 public class ProductController implements Initializable {
 
-    // CHANGED: Made fields package-private for testing access
     @FXML Button logoButton;
     @FXML Button promotionNavButton;
     @FXML Button cartNavButton;
@@ -64,13 +63,11 @@ public class ProductController implements Initializable {
     @FXML BorderPane mainContainer;
     @FXML StackPane searchBarContainer;
 
-    // CHANGED: Made fields package-private for testing access
     Product currentProduct;
     List<ProductReview> allProductReviews;
     static final int INITIAL_REVIEW_COUNT = 2;
     final IntegerProperty quantity = new SimpleIntegerProperty(1);
 
-    // ADDED: Fields that were referenced in tests but missing
     @FXML ImageView logoImageView;
     @FXML Button decreaseQuantityButton;
     @FXML Button increaseQuantityButton;
@@ -197,7 +194,6 @@ public class ProductController implements Initializable {
         }
     }
 
-    // Metode untuk membuat kartu review
     private HBox createReviewCard(ProductReview review) {
         HBox card = new HBox(15);
         card.getStyleClass().add("card");
@@ -226,14 +222,12 @@ public class ProductController implements Initializable {
         return card;
     }
     
-    // ==================== NAVIGATION METHODS WITH FULL SCREEN ====================
     
     @FXML
     private void handleCheckout() {
         System.out.println("🛒 Navigating to Checkout page (inline)...");
 
         try {
-            // Debug: Print current product data BEFORE loading
             System.out.println("🔍 DEBUG - Current product data before checkout:");
             if (currentProduct != null) {
                 System.out.println(" Product: " + currentProduct.getName());
@@ -246,16 +240,13 @@ public class ProductController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Checkout.fxml"));
             Parent checkoutPage = loader.load();
 
-            // Get CheckoutController and pass product data
             CheckoutController checkoutController = loader.getController();
             
-            // Debug: Verify controller is not null
             if (checkoutController == null) {
                 System.out.println("❌ CheckoutController is NULL!");
                 throw new RuntimeException("Failed to get CheckoutController");
             }
 
-            // Pass the product data
             checkoutController.setProductData(currentProduct, quantity.get());
 
             System.out.println("✅ Product data passed to checkout:");
@@ -263,7 +254,6 @@ public class ProductController implements Initializable {
             System.out.println(" Quantity: " + quantity.get());
             System.out.println(" Price: " + currentProduct.getPrice());
 
-            // Clear and set the checkout page in main container
             if (mainContainer != null) {
                 mainContainer.setTop(null);
                 mainContainer.setBottom(null);
@@ -271,7 +261,6 @@ public class ProductController implements Initializable {
                 mainContainer.setCenter(checkoutPage);
             }
 
-            // Load Checkout CSS
             try {
                 String cssPath = getClass().getResource("/css/checkout.css").toExternalForm();
                 checkoutPage.getStylesheets().add(cssPath);
@@ -308,25 +297,20 @@ public class ProductController implements Initializable {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
 
-            // Get current stage
             Stage stage = (Stage) sourceNode.getScene().getWindow();
             
-            // Save current window state
             boolean wasMaximized = stage.isMaximized();
             double currentWidth = stage.getWidth();
             double currentHeight = stage.getHeight();
             
-            // Create scene with appropriate size
             Scene scene;
             if (wasMaximized) {
                 scene = new Scene(root, stage.getWidth(), stage.getHeight());
             } else {
                 scene = new Scene(root, currentWidth, currentHeight);
-                // Force maximize for navigation
                 wasMaximized = true;
             }
 
-            // Load CSS if provided
             if (cssPath != null) {
                 try {
                     String cssUrl = getClass().getResource(cssPath).toExternalForm();
@@ -337,11 +321,9 @@ public class ProductController implements Initializable {
                 }
             }
 
-            // Set scene and title
             stage.setScene(scene);
             stage.setTitle(title);
             
-            // Force maximize window with enhanced method
             ensureMaximizedWindow(stage);
             
             stage.show();
@@ -366,11 +348,9 @@ public class ProductController implements Initializable {
      */
     private void ensureMaximizedWindow(Stage stage) {
         try {
-            // Method 1: Set maximized immediately
-            stage.setMaximized(false); // Reset first
-            stage.setMaximized(true);  // Then maximize
+            stage.setMaximized(false);
+            stage.setMaximized(true); 
             
-            // Method 2: Use Platform.runLater for delayed execution
             Platform.runLater(() -> {
                 if (!stage.isMaximized()) {
                     stage.setMaximized(true);
@@ -379,7 +359,6 @@ public class ProductController implements Initializable {
                 stage.requestFocus();
             });
             
-            // Method 3: Use Timeline for multiple attempts (aggressive approach)
             Timeline maxChecker = new Timeline();
             maxChecker.getKeyFrames().addAll(
                 new KeyFrame(Duration.millis(50), e -> {
@@ -410,7 +389,6 @@ public class ProductController implements Initializable {
         }
     }
 
-    // ==================== OTHER NAVIGATION HANDLERS ====================
 
     @FXML 
     public void handleViewMore() {
@@ -424,13 +402,11 @@ public class ProductController implements Initializable {
         displayReviews(INITIAL_REVIEW_COUNT);
     }
 
-    // CHANGED: Made public for testing access
     @FXML 
     public void handleIncreaseQuantity() {
         quantity.set(quantity.get() + 1);
     }
 
-    // CHANGED: Made public for testing access
     @FXML 
     public void handleDecreaseQuantity() {
         if (quantity.get() > 1) {
@@ -453,7 +429,6 @@ public class ProductController implements Initializable {
                 mainContainer.setCenter(shopPage);
             }
 
-            // Load CSS
             try {
                 String cssPath = getClass().getResource("/css/shopstyle.css").toExternalForm();
                 shopPage.getStylesheets().add(cssPath);
@@ -521,12 +496,10 @@ public class ProductController implements Initializable {
 
     @FXML private void handlePromotionNav() {
         System.out.println("🎯 Navigating to Promotion page (Full Screen)...");
-        // navigateToPageFullScreen("/fxml/Promotion.fxml", "Moosic - Promotion", "/css/promotion.css", promotionNavButton);
     }
 
     @FXML private void handleCartNav() {
         System.out.println("🛒 Navigating to Cart page (Full Screen)...");
-        // navigateToPageFullScreen("/fxml/Cart.fxml", "Moosic - Cart", "/css/cart.css", cartNavButton);
     }
 
     @FXML private void handleShopNav() {
@@ -538,10 +511,7 @@ public class ProductController implements Initializable {
 
     @FXML private void handleOrderNav() {
         System.out.println("📦 Navigating to Order page (Full Screen)...");
-        // navigateToPageFullScreen("/fxml/Order.fxml", "Moosic - Order", "/css/order.css", orderNavButton);
     }
-
-    // ==================== UTILITY METHODS ====================
     
     private Image createSafeImage(String path) {
         if (path == null || path.trim().isEmpty()) return null;

@@ -39,7 +39,6 @@ import com.database.DatabaseHomepage;
 
 public class HomepageController {
 
-    // CHANGED: Made fields package-private for testing access
     @FXML ScrollPane recommendedScrollPane;
     @FXML HBox recommendedProductsContainer;
     @FXML HBox topSellingProductsContainer;
@@ -47,7 +46,6 @@ public class HomepageController {
     @FXML BorderPane mainContainer;
     @FXML StackPane searchBarContainer;
 
-    // CHANGED: Made fields package-private for testing access
     Node lastHighlightedCard = null;
     int originalCardCount;
     static final int DUPLICATE_COUNT = 2;
@@ -88,7 +86,6 @@ public class HomepageController {
             });
         }
         
-        // Shopping cart listener
         shoppingCart.addListener((javafx.collections.ListChangeListener.Change<? extends AllProduct> change) -> {
             while (change.next()) {
                 if (change.wasAdded()) {
@@ -136,8 +133,6 @@ public class HomepageController {
     private void loadFallbackRecommendedProducts() {
         try {
             List<AllProduct> products = new ArrayList<>();
-            // FIXED: Use AllProduct constructor with all 9 required parameters
-            // Constructor: (int id, String name, String desc, BigDecimal price, String genre, String variant, String image, Float rating, int sold)
             products.add(new AllProduct(1, "Midnights Vinyl - Taylor Swift", "Exclusive Midnights edition", 
                 new BigDecimal("525000"), "Pop", "Vinyl", "/image/album/midnights.png", 4.5f, 15));
             products.add(new AllProduct(2, "25 Vinyl - Adele", "25 by Adele in Vinyl format", 
@@ -199,7 +194,6 @@ public class HomepageController {
         nameLabel.getStyleClass().add("product-name");
         nameLabel.setTextAlignment(javafx.scene.text.TextAlignment.CENTER);
 
-        // FIXED: Use getPrice() method that returns double
         Label priceLabel = new Label(formatPrice(product.getPrice()));
         priceLabel.getStyleClass().add("product-price");
 
@@ -307,7 +301,6 @@ public class HomepageController {
         return card;
     }
 
-    // FIXED: Helper method untuk format price dari double
     private String formatPrice(double price) {
         return String.format("Rp %.0f", price);
     }
@@ -443,7 +436,6 @@ public class HomepageController {
         }
     }
 
-    // CHANGED: Made event handlers public for testing access
     public void handleTopSellingProductClick(AllProduct product) {
         System.out.println("Top selling product clicked: " + product.getName());
         navigateToProductDetail(product);
@@ -459,7 +451,7 @@ public class HomepageController {
     }
     
     private void navigateToProductDetail(AllProduct product) {
-        System.out.println("Anda mengklik produk: " + product.getName()); // kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        System.out.println("Anda mengklik produk: " + product.getName());
         currProductID = product.getId();
         
         if (!isValidProduct(product)) {
@@ -473,17 +465,14 @@ public class HomepageController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
             Parent productPage = loader.load();
             
-            // Initialize product controller with data
             ProductController productController = loader.getController();
             productController.initData(currProductID);
             
-            // Clear main container and set product page
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(productPage);
             
-            // Load product page CSS
             try {
                 String cssPath = getClass().getResource("/css/product.css").toExternalForm();
                 productPage.getStylesheets().clear();
@@ -624,7 +613,6 @@ public class HomepageController {
 
     private void loadFallbackTopSellingProducts() {
         List<AllProduct> topProducts = new ArrayList<>();
-        // FIXED: Use AllProduct constructor with all 9 required parameters
         topProducts.add(new AllProduct(1, "Midnights Vinyl - Taylor Swift", "Exclusive Midnights edition", 
             new BigDecimal("525000"), "Pop", "Vinyl", "/image/album/midnights.png", 4.5f, 15));
         topProducts.add(new AllProduct(2, "25 Vinyl - Adele", "25 by Adele in Vinyl format", 
@@ -705,7 +693,6 @@ public class HomepageController {
         Label salesLabel = new Label(String.format("%.1f ⭐ | %d sold", product.getRating(), product.getTerjual()));
         salesLabel.getStyleClass().add("product-sales");
 
-        // FIXED: Use getPrice() method that returns double
         Label priceLabel = new Label(formatPrice(product.getPrice()));
         priceLabel.getStyleClass().add("product-price");
 
@@ -715,7 +702,6 @@ public class HomepageController {
         stackPane.setOnMouseClicked(event -> handleTopSellingProductClick(product));
         stackPane.getStyleClass().add("clickable-card");
 
-        // Add ranking badge
         Label rankingLabel = new Label(String.valueOf(displayIndex));
         
         rankingLabel.setStyle(
@@ -763,8 +749,6 @@ public class HomepageController {
         };
     }
 
-    // ==================== BUSINESS LOGIC METHODS FOR TESTING ====================
-
     public boolean isValidSearchQuery(String query) {
         if (query == null) return false;
         if (query.trim().isEmpty()) return false;
@@ -781,7 +765,6 @@ public class HomepageController {
         if (product == null) return false;
         if (product.getName() == null || product.getName().trim().isEmpty()) return false;
         
-        // FIXED: Use getPrice() method that returns double
         double price = product.getPrice();
         if (price < 0) return false;
         
@@ -817,14 +800,11 @@ public class HomepageController {
         return shoppingCart.contains(product);
     }
 
-    // FIXED: Return int instead of long to match test expectations
     public int getCartProductCountByGenre(String genre) {
         return (int) shoppingCart.stream()
             .filter(product -> genre.equals(product.getGenre()))
             .count();
     }
-
-    // ==================== UTILITY METHODS ====================
 
     private Node findCenterCard(ObservableList<Node> cards, double hvalue, double totalContentWidth, double viewportWidth) {
         Node centerCard = null;

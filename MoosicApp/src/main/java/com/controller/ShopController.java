@@ -119,9 +119,6 @@ public class ShopController {
                 setText(empty || item == null ? "" : item);
             }
         });
-        // if (shopNavButton != null) {
-        //     shopNavButton.getStyleClass().add("active");
-        // }
     }
     
     private void updateProductDisplay() {
@@ -263,13 +260,9 @@ public class ShopController {
     private Node createProductItemNode(AllProduct product) {
         VBox itemBox = new VBox(8);
         itemBox.getStyleClass().add("product-item");
-        // itemBox.setAlignment(Pos.CENTER_LEFT);
 
         itemBox.setOnMouseClicked(event -> navigateToProductDetail(product));
 
-        // Region imagePlaceholder = new Region();
-        // imagePlaceholder.setPrefSize(180, 180);
-        // imagePlaceholder.setStyle("-fx-background-color: #f0f0f0;"); 
         StackPane imageContainer = new StackPane();
         Image image = new Image(product.getImage());
         ImageView imageView = new ImageView(image);
@@ -316,17 +309,8 @@ public class ShopController {
         createPaginationControls();
     }
 
-//     private void showAlert(Alert.AlertType alertType, String title, String message) {
-//         Alert alert = new Alert(alertType);
-//         alert.setTitle(title);
-//         alert.setHeaderText(null);
-//         alert.setContentText(message);
-//         alert.showAndWait();
-//     }
-// }
-
     private void navigateToProductDetail(AllProduct product) {
-        System.out.println("Anda mengklik produk: " + product.getName()); // kebutuhan debug brooo nanti jadi komen aja kalo udah implement
+        System.out.println("Anda mengklik produk: " + product.getName());
         currProductID = product.getId();
         
         if (!isValidProduct(product)) {
@@ -340,17 +324,14 @@ public class ShopController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Product.fxml"));
             Parent productPage = loader.load();
             
-            // Initialize product controller with data
             ProductController productController = loader.getController();
             productController.initData(currProductID);
             
-            // Clear main container and set product page
             mainContainer.setTop(null);
             mainContainer.setBottom(null);
             mainContainer.setCenter(null);
             mainContainer.setCenter(productPage);
             
-            // Load product page CSS
             try {
                 String cssPath = getClass().getResource("/css/product.css").toExternalForm();
                 productPage.getStylesheets().clear();
@@ -377,7 +358,7 @@ public class ShopController {
         return currProductID;
     }
 
-    public boolean isValidProduct(AllProduct product) { // FIXED: AllProduct
+    public boolean isValidProduct(AllProduct product) {
         if (product == null) return false;
         if (product.getName() == null || product.getName().trim().isEmpty()) return false;
         
