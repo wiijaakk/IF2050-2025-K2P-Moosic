@@ -50,7 +50,7 @@
     -fx-text-fill: #4D7111;
 }
 /* --- Control Bar --- */
-#searchField {
+.search-field {
     -fx-pref-height: 40px;
     -fx-background-color: white;
     -fx-border-color: #CED4DA;
@@ -74,18 +74,18 @@
     -fx-cursor: hand;
 }
 
-#searchField .text-input{
+.search-field .text-input{
     -fx-prompt-text-fill: #BABABA;
 }
 #controlBar .combo-box .text-input {
     -fx-prompt-text-fill: #BABABA;
 }
 
-#searchField:hover, #controlBar .combo-box:hover {
+.search-field:hover, #controlBar .combo-box:hover {
     -fx-border-color: #92AC4F;
 }
 
-#searchField:focused, #controlBar .combo-box:focused {
+.search-field:focused, #controlBar .combo-box:focused {
     -fx-border-color: #92AC4F;
     -fx-focus-color: transparent;
     -fx-faint-focus-color: transparent;

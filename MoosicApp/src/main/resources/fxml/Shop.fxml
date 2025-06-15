@@ -55,7 +55,7 @@
                <children>
                   <StackPane HBox.hgrow="ALWAYS">
                         <children>
-                           <TextField fx:id="searchField" promptText="What are you looking for?" 
+                           <TextField fx:id="searchField" styleClass="search-field" promptText="What are you looking for?" 
                                     style="-fx-padding: 10px 10px 10px 40px;"/>
                            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="false" 
                                     StackPane.alignment="CENTER_LEFT" translateX="12">
