@@ -19,7 +19,7 @@ public class OrderItem {
         if (product == null || product.getPrice() == null) {
             return 0.0;
         }
-        // Konversi quantity ke BigDecimal, lalu kalikan, dan ambil nilai double-nya
+    
         return product.getPrice().multiply(new BigDecimal(this.quantity)).doubleValue();
     }
 }

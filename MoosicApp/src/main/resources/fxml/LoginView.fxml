@@ -17,14 +17,14 @@
 <StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
            fx:controller="com.controller.LoginController">
     <children>
-        <!-- Background layer (paling belakang) -->
+     
         <ImageView fx:id="backgroundImageView" pickOnBounds="false">
             <image>
                 <Image url="/image/backgroundlogin.png" />
             </image>
         </ImageView>
         
-        <!-- Main content layer (di atas background) -->
+       
         <BorderPane fx:id="mainContainer">
             <center>
                 <AnchorPane>

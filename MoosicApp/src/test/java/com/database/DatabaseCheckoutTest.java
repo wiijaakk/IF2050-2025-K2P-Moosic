@@ -92,7 +92,7 @@ public class DatabaseCheckoutTest {
         System.out.println("✅ PASSED: Correctly rejected order with missing fields");
     }
 
-    // ==================== PROMO CODE TESTS ====================
+  
 
     @Test
     @DisplayName("✅ Test: Valid Promo Code PROMO123")
@@ -194,7 +194,7 @@ public class DatabaseCheckoutTest {
         System.out.println("✅ PASSED: Invalid credit card correctly rejected");
     }
 
-    // ==================== INTEGRATION TESTS ====================
+  
 
     @Test
     @DisplayName("🔄 Integration Test: Complete Order Flow")
@@ -258,16 +258,13 @@ public class DatabaseCheckoutTest {
         System.out.println("✅ PASSED: Credit card formatting works correctly");
     }
 
-    /**
-     * Creates a valid order for testing
-     */
     private Order createValidOrder() {
         OrderItem item = new OrderItem(testProduct, 2);
         
         Order order = new Order();
         order.addItem(item);
         
-        // Set required shipping information
+
         order.setShippingName("John Doe");
         order.setShippingAddress("123 Test Street");
         order.setShippingCity("Test City");
@@ -276,7 +273,7 @@ public class DatabaseCheckoutTest {
         order.setShippingZipCode("12345");
         order.setShippingMobilePhone("08123456789");
         
-        // Set required payment information
+    
         order.setCardFullName("John Doe");
         order.setCardNumber("1234567890123456");
         order.setCardExpirationDate("12/25");
